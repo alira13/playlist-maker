@@ -1,31 +1,27 @@
 package com.example.playlistmaker
 
-import androidx.appcompat.app.AppCompatActivity
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.widget.Button
-import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        val searchButton = findViewById<Button>(R.id.search_button)
-        val searchButtonClickListener=object: View.OnClickListener{
-            override fun onClick(p0: View?) {
-                Toast.makeText(this@MainActivity, "Вы нажали на кнопку \"Поиск\"", Toast.LENGTH_SHORT).show()
-            }
+        setButtonOnClickListener(R.id.search_button, SearchActivity())
+        setButtonOnClickListener(R.id.media_button, MediaActivity())
+        setButtonOnClickListener(R.id.settings_button, SettingsActivity())
+    }
+
+    private fun <T : AppCompatActivity> setButtonOnClickListener(buttonId: Int, activity: T) {
+        val button = findViewById<Button>(buttonId)
+        val buttonClickListener = View.OnClickListener {
+            val displayIntent = Intent(this, activity::class.java)
+            startActivity(displayIntent)
         }
-        searchButton.setOnClickListener(searchButtonClickListener)
-
-        val mediaButton = findViewById<Button>(R.id.media_button)
-        val mediaButtonClickListener=View.OnClickListener { Toast.makeText(this@MainActivity, "Вы нажали на кнопку \"Медиа\"", Toast.LENGTH_SHORT).show() }
-        mediaButton.setOnClickListener(mediaButtonClickListener)
-
-        val settingsButton = findViewById<Button>(R.id.settings_button)
-        val settingsButtonClickListener= View.OnClickListener { Toast.makeText(this@MainActivity, "Вы нажали на кнопку \"Настройки\"", Toast.LENGTH_SHORT).show() }
-        settingsButton.setOnClickListener(settingsButtonClickListener)
-
+        button.setOnClickListener(buttonClickListener)
     }
 }
