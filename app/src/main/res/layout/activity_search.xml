@@ -2,36 +2,21 @@
 <androidx.constraintlayout.widget.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:background="@color/YP_white"
-    android:padding="@dimen/layout_padding"
-    tools:context=".SearchActivity">
+    tools:context=".SearchActivity"
+    style="@style/SecondaryScreenLayoutStyle">
 
     <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/header_height"
-        android:orientation="horizontal"
-        tools:ignore="MissingConstraints">
+        tools:ignore="MissingConstraints"
+        style="@style/HeaderStyle">
 
         <ImageButton
             android:id="@+id/arrow_back_button"
-            android:layout_width="24dp"
-            android:layout_height="match_parent"
-            android:layout_gravity="start"
-            android:background="@color/YP_white"
-            android:src="@drawable/arrow_back" />
+            android:src="@drawable/arrow_back"
+            style="@style/PanelHeaderButton" />
 
         <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_margin="@dimen/icon_padding"
-            android:gravity="center"
             android:text="@string/search_label"
-            android:textColor="@color/YP_black"
-            android:textSize="@dimen/primary_text_size"
-            android:textStyle="bold" />
+            style="@style/PanelHeaderText" />
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
