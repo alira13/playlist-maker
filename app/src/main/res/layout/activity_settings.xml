@@ -1,62 +1,62 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     style="@style/SecondaryScreenLayoutStyle">
 
     <LinearLayout style="@style/HeaderStyle">
 
         <ImageButton
             android:id="@+id/arrow_back_button"
-            android:src="@drawable/arrow_back"
-            style="@style/PanelHeaderButton" />
+            style="@style/PanelHeaderButton"
+            android:src="@drawable/arrow_back" />
 
         <TextView
-            android:text="@string/settings_label"
-            style="@style/PanelHeaderText" />
+            style="@style/PanelHeaderText"
+            android:text="@string/settings_label" />
     </LinearLayout>
 
     <FrameLayout style="@style/SettingsFrameLayoutStyle">
 
         <TextView
-            android:text="@string/dark_theme_label"
-            style="@style/SettingsListText" />
+            style="@style/SettingsListText"
+            android:text="@string/dark_theme_label" />
 
-        <Switch
-            style="@style/SettingsToggle"
-            />
+        <Switch style="@style/SettingsToggle" />
     </FrameLayout>
 
     <FrameLayout style="@style/SettingsFrameLayoutStyle">
 
         <TextView
-            android:text="@string/share_app_label"
-            style="@style/SettingsListText" />
+            style="@style/SettingsListText"
+            android:text="@string/share_app_label" />
 
         <ImageButton
-            android:src="@drawable/share"
-            style="@style/SettingsListButton" />
+            android:id="@+id/share_button"
+            style="@style/SettingsListButton"
+            android:src="@drawable/share" />
     </FrameLayout>
 
     <FrameLayout style="@style/SettingsFrameLayoutStyle">
 
         <TextView
-            android:text="@string/support_label"
-            style="@style/SettingsListText"/>
+            style="@style/SettingsListText"
+            android:text="@string/support_label" />
 
         <ImageButton
-            android:src="@drawable/support"
-            style="@style/SettingsListButton" />
+            android:id="@+id/support_button"
+            style="@style/SettingsListButton"
+            android:src="@drawable/support" />
     </FrameLayout>
 
     <FrameLayout style="@style/SettingsFrameLayoutStyle">
 
         <TextView
-            android:text="@string/user_agreement_label"
-            style="@style/SettingsListText"/>
+            style="@style/SettingsListText"
+            android:text="@string/user_agreement_label" />
 
         <ImageButton
-            android:src="@drawable/arrow_forward"
-            style="@style/SettingsListButton" />
+            android:id="@+id/agreement_button"
+            style="@style/SettingsListButton"
+            android:src="@drawable/arrow_forward" />
     </FrameLayout>
 
 </LinearLayout>
