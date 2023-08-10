@@ -16,7 +16,7 @@
         <item name="cornerRadius">@dimen/big_button_corner_radius</item>
         <item name="iconGravity">textStart</item>
         <item name="iconPadding">@dimen/icon_padding</item>
-        <item name="iconTint">@color/YP_white</item>
+        <item name="iconTint">@color/YP_black</item>
         <item name="fontFamily">@font/ys_text_medium</item>
         <item name="android:textFontWeight">500</item>
     </style>
