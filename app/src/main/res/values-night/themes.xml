@@ -45,4 +45,24 @@
         <item name="android:layout_gravity">end</item>
         <item name="android:checked">true</item>
     </style>
+
+    <style name="SearchEditText">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:paddingLeft">36dp</item>
+        <item name="android:layout_gravity">start|center</item>
+        <item name="android:textSize">@dimen/regular_text_size</item>
+        <item name="android:textFontWeight">@dimen/regular_text_weight</item>
+        <item name="android:layout_marginVertical">8dp</item>
+        <item name="android:fontFamily">@font/ys_text_regular</item>
+        <item name="android:background">@drawable/rectangle</item>
+
+    </style>
+
+    <style name="IconInSearchEditText">
+        <item name="android:layout_width">16dp</item>
+        <item name="android:layout_height">16dp</item>
+        <item name="tint">@color/YP_black</item>
+        <item name="android:layout_gravity">start|center</item>
+    </style>
 </resources>

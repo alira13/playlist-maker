@@ -4,22 +4,22 @@
 
 
     <style name="PanelHeaderText">
-        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">match_parent</item>
         <item name="android:layout_margin">@dimen/icon_padding</item>
-        <item name="android:gravity">center</item>
+        <item name="android:gravity">start|center</item>
         <item name="android:textColor">?attr/colorOnPrimary</item>
         <item name="android:textSize">@dimen/medium_text_size</item>
         <item name="android:textStyle">bold</item>
         <item name="android:fontFamily">@font/ys_text_medium</item>
         <item name="iconTint">?attr/colorOnPrimary</item>
-        <item name="android:textFontWeight">500</item>
+        <item name="android:textFontWeight">@dimen/medium_text_weight</item>
     </style>
 
     <style name="PanelHeaderButton">
         <item name="android:layout_width">24dp</item>
-        <item name="android:layout_height">match_parent</item>
-        <item name="android:layout_gravity">start</item>
+        <item name="android:layout_height">24dp</item>
+        <item name="android:layout_gravity">start|center</item>
         <item name="android:background">?attr/colorPrimary</item>
     </style>
 
@@ -31,7 +31,7 @@
         <item name="android:textColor">?attr/colorOnPrimary</item>
         <item name="android:textSize">@dimen/regular_text_size</item>
         <item name="android:fontFamily">@font/ys_text_regular</item>
-        <item name="android:textFontWeight">400</item>
+        <item name="android:textFontWeight">@dimen/regular_text_weight</item>
     </style>
 
 
@@ -46,7 +46,9 @@
         <item name="android:layout_height">match_parent</item>
         <item name="android:orientation">vertical</item>
         <item name="android:background">?attr/colorPrimary</item>
-        <item name="android:padding">@dimen/layout_padding</item>
+        <item name="android:paddingStart">@dimen/layout_padding</item>
+        <item name="android:paddingTop">@dimen/layout_padding</item>
+        <item name="android:paddingEnd">@dimen/layout_padding</item>
     </style>
 
     <style name="HeaderStyle">
