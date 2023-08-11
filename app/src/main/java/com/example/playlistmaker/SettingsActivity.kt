@@ -21,7 +21,7 @@ class SettingsActivity : AppCompatActivity() {
         }
         button.setOnClickListener(buttonClickListener)
 
-        val shareButton = findViewById<ImageButton>(R.id.share_button)
+        /*val shareButton = findViewById<ImageButton>(R.id.share_button)
         val shareButtonClickListener = View.OnClickListener {
             val shareIntent = Intent(Intent.ACTION_SEND)
             val message = "https://practicum.yandex.ru/android-developer/?from=catalog"
@@ -36,7 +36,8 @@ class SettingsActivity : AppCompatActivity() {
             val email="Bezglasnaya@gmail.com"
             val emailSubject="Сообщение разработчикам и разработчицам приложения Playlist Maker"
             val message = " «Спасибо разработчикам и разработчицам за крутое приложение!»"
-            supportIntent.putExtra(Intent.EXTRA_EMAIL, email)
+            supportIntent.data = Uri.parse("mailto:")
+            supportIntent.putExtra(Intent.EXTRA_EMAIL, arrayOf(email))
             supportIntent.putExtra(Intent.EXTRA_SUBJECT, emailSubject)
             supportIntent.putExtra(Intent.EXTRA_TEXT, message)
             startActivity(supportIntent)
@@ -50,5 +51,6 @@ class SettingsActivity : AppCompatActivity() {
             startActivity(agreementIntent)
         }
         agreementButton.setOnClickListener(agreementButtonClickListener)
+         */
     }
 }

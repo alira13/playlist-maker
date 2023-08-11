@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="Theme.PlaylistMaker" parent="Base.Theme.PlaylistMaker" />
+
+
+    <style name="PanelHeaderText">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:layout_margin">@dimen/icon_padding</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textColor">?attr/colorOnPrimary</item>
+        <item name="android:textSize">@dimen/medium_text_size</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:fontFamily">@font/ys_text_medium</item>
+        <item name="iconTint">?attr/colorOnPrimary</item>
+        <item name="android:textFontWeight">500</item>
+    </style>
+
+    <style name="PanelHeaderButton">
+        <item name="android:layout_width">24dp</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:layout_gravity">start</item>
+        <item name="android:background">?attr/colorPrimary</item>
+    </style>
+
+    <style name="SettingsListText">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:layout_gravity">start</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textColor">?attr/colorOnPrimary</item>
+        <item name="android:textSize">@dimen/regular_text_size</item>
+        <item name="android:fontFamily">@font/ys_text_regular</item>
+        <item name="android:textFontWeight">400</item>
+    </style>
+
+
+    <style name="SettingsFrameLayoutStyle">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">@dimen/string_height</item>
+        <item name="android:orientation">horizontal</item>
+    </style>
+
+    <style name="SecondaryScreenLayoutStyle">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:orientation">vertical</item>
+        <item name="android:background">?attr/colorPrimary</item>
+        <item name="android:padding">@dimen/layout_padding</item>
+    </style>
+
+    <style name="HeaderStyle">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">@dimen/header_height</item>
+        <item name="android:orientation">horizontal</item>
+    </style>
+</resources>
