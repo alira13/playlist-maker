@@ -52,11 +52,9 @@
         <item name="android:paddingLeft">36dp</item>
         <item name="android:layout_gravity">start|center</item>
         <item name="android:textSize">@dimen/regular_text_size</item>
-        <item name="android:textFontWeight">@dimen/regular_text_weight</item>
         <item name="android:layout_marginVertical">8dp</item>
         <item name="android:fontFamily">@font/ys_text_regular</item>
         <item name="android:background">@drawable/rectangle</item>
-
     </style>
 
     <style name="IconInSearchEditText">

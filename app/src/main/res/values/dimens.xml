@@ -7,6 +7,4 @@
     <dimen name="button_marginTop">16dp</dimen>
     <dimen name="header_height">64dp</dimen>
     <dimen name="string_height">64dp</dimen>
-    <dimen name="medium_text_weight">500</dimen>
-    <dimen name="regular_text_weight">400</dimen>
 </resources>
