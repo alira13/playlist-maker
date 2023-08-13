@@ -27,7 +27,7 @@
         <item name="iconGravity">textStart</item>
         <item name="iconPadding">@dimen/icon_padding</item>
         <item name="iconTint">@color/YP_black</item>
-        <item name="fontFamily">@font/ys_text_medium</item>
+        <item name="fontFamily">@font/ys_font_family_medium</item>
         <item name="android:textFontWeight">500</item>
     </style>
 
@@ -52,7 +52,7 @@
         <item name="android:layout_gravity">start|center</item>
         <item name="android:textSize">@dimen/regular_text_size</item>
         <item name="android:layout_marginVertical">8dp</item>
-        <item name="android:fontFamily">@font/ys_text_regular</item>
+        <item name="android:fontFamily">@font/ys_font_family_regular</item>
         <item name="android:background">@drawable/rectangle</item>
     </style>
 

@@ -43,7 +43,7 @@ class SettingsActivity : AppCompatActivity() {
             startActivity(supportIntent)
         }
         supportButton.setOnClickListener(supportButtonClickListener)
-
+ */
         val agreementButton = findViewById<ImageButton>(R.id.agreement_button)
         val agreementButtonClickListener = View.OnClickListener {
             val web = "https://yandex.ru/legal/practicum_offer/"
@@ -51,6 +51,5 @@ class SettingsActivity : AppCompatActivity() {
             startActivity(agreementIntent)
         }
         agreementButton.setOnClickListener(agreementButtonClickListener)
-         */
     }
 }

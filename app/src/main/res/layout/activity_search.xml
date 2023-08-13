@@ -27,7 +27,8 @@
 
         <EditText
             android:hint="@string/search_label"
-            style="@style/SearchEditText">
+            style="@style/SearchEditText"
+            android:fontFamily="@font/ys_font_family_medium">
         </EditText>
         <ImageView
             android:src="@drawable/search"
