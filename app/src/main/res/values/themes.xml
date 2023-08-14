@@ -14,7 +14,7 @@
         <item name="android:padding">@dimen/layout_padding</item>
     </style>
 
-    <style name="ButtonBig">
+    <style name="ButtonBig" parent="Widget.MaterialComponents.Button.UnelevatedButton">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">match_parent</item>
         <item name="android:layout_marginTop">@dimen/button_marginTop</item>
@@ -54,6 +54,10 @@
         <item name="android:layout_marginVertical">8dp</item>
         <item name="android:fontFamily">@font/ys_font_family_regular</item>
         <item name="android:background">@drawable/rectangle</item>
+        <item name="backgroundColor">@color/YP_white</item>
+        <item name="android:inputType">text</item>
+        <item name="maxLines">1</item>
+        <item name="android:textColorHint">@color/YP_grey</item>
     </style>
 
     <style name="IconInSearchEditText">

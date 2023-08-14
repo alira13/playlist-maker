@@ -26,20 +26,23 @@
         tools:ignore="MissingConstraints">
 
         <EditText
+            android:id="@+id/input_edit_text"
             android:hint="@string/search_label"
-            style="@style/SearchEditText"
-            android:fontFamily="@font/ys_font_family_medium">
+            style="@style/SearchEditText">
         </EditText>
         <ImageView
+            android:id="@+id/search_button"
             android:src="@drawable/search"
             android:layout_marginStart="12dp"
             android:layout_gravity="start|center"
             style="@style/IconInSearchEditText">
         </ImageView>
         <ImageView
+            android:id="@+id/clear_button"
             android:src="@drawable/close"
             android:layout_gravity="end|center"
             android:layout_marginEnd="12dp"
+            android:visibility="gone"
             style="@style/IconInSearchEditText">
         </ImageView>
     </FrameLayout>
