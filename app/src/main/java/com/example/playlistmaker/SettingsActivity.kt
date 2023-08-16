@@ -21,29 +21,46 @@ class SettingsActivity : AppCompatActivity() {
         }
         button.setOnClickListener(buttonClickListener)
 
-        /*val shareButton = findViewById<ImageButton>(R.id.share_button)
-        val shareButtonClickListener = View.OnClickListener {
-            val shareIntent = Intent(Intent.ACTION_SEND)
-            val message = "https://practicum.yandex.ru/android-developer/?from=catalog"
-            shareIntent.putExtra(Intent.EXTRA_TEXT, message)
+        val shareButton = findViewById<ImageButton>(R.id.share_button)
+        shareButton.setOnClickListener {
+            val sendIntent: Intent = Intent().apply {
+                action = Intent.ACTION_SEND
+                putExtra(Intent.EXTRA_TEXT, "https://practicum.yandex.ru/android-developer/?from=catalog")
+                type = "text/plain"
+            }
+            val shareIntent=Intent.createChooser(sendIntent, null)
             startActivity(shareIntent)
         }
-        shareButton.setOnClickListener(shareButtonClickListener)
+
+        /*val supportButton = findViewById<ImageButton>(R.id.support_button)
+        val supportButtonClickListener = View.OnClickListener {
+            val email="Bezglasnaya@gmail.com"
+            val subject="Сообщение разработчикам и разработчицам приложения Playlist Maker"
+            val body = "Спасибо разработчикам и разработчицам за крутое приложение!"
+            val uri = Uri.parse("mailto:$email")
+                .buildUpon()
+                .appendQueryParameter("subject", subject)
+                .appendQueryParameter("body", body)
+                .build()
+            val emailIntent = Intent(Intent.ACTION_SENDTO, uri)
+            startActivity(Intent.createChooser(emailIntent, subject))
+        }
+        supportButton.setOnClickListener(supportButtonClickListener)
+         */
 
         val supportButton = findViewById<ImageButton>(R.id.support_button)
-        val supportButtonClickListener = View.OnClickListener {
+        supportButton.setOnClickListener {
             val supportIntent = Intent(Intent.ACTION_SENDTO)
             val email="Bezglasnaya@gmail.com"
             val emailSubject="Сообщение разработчикам и разработчицам приложения Playlist Maker"
-            val message = " «Спасибо разработчикам и разработчицам за крутое приложение!»"
+            val message =" «Спасибо разработчикам и разработчицам за крутое приложение!»"
             supportIntent.data = Uri.parse("mailto:")
             supportIntent.putExtra(Intent.EXTRA_EMAIL, arrayOf(email))
             supportIntent.putExtra(Intent.EXTRA_SUBJECT, emailSubject)
             supportIntent.putExtra(Intent.EXTRA_TEXT, message)
-            startActivity(supportIntent)
+            startActivity(Intent.createChooser(supportIntent, emailSubject))
         }
-        supportButton.setOnClickListener(supportButtonClickListener)
- */
+
         val agreementButton = findViewById<ImageButton>(R.id.agreement_button)
         val agreementButtonClickListener = View.OnClickListener {
             val web = "https://yandex.ru/legal/practicum_offer/"
