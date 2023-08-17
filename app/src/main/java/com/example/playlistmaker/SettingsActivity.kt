@@ -32,22 +32,6 @@ class SettingsActivity : AppCompatActivity() {
             startActivity(shareIntent)
         }
 
-        /*val supportButton = findViewById<ImageButton>(R.id.support_button)
-        val supportButtonClickListener = View.OnClickListener {
-            val email="Bezglasnaya@gmail.com"
-            val subject="Сообщение разработчикам и разработчицам приложения Playlist Maker"
-            val body = "Спасибо разработчикам и разработчицам за крутое приложение!"
-            val uri = Uri.parse("mailto:$email")
-                .buildUpon()
-                .appendQueryParameter("subject", subject)
-                .appendQueryParameter("body", body)
-                .build()
-            val emailIntent = Intent(Intent.ACTION_SENDTO, uri)
-            startActivity(Intent.createChooser(emailIntent, subject))
-        }
-        supportButton.setOnClickListener(supportButtonClickListener)
-         */
-
         val supportButton = findViewById<ImageButton>(R.id.support_button)
         supportButton.setOnClickListener {
             val supportIntent = Intent(Intent.ACTION_SENDTO)
