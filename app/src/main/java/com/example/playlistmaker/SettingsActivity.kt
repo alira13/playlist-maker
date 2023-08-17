@@ -25,7 +25,7 @@ class SettingsActivity : AppCompatActivity() {
         shareButton.setOnClickListener {
             val sendIntent: Intent = Intent().apply {
                 action = Intent.ACTION_SEND
-                putExtra(Intent.EXTRA_TEXT, "https://practicum.yandex.ru/android-developer/?from=catalog")
+                putExtra(Intent.EXTRA_TEXT, getString(R.string.practicum_link))
                 type = "text/plain"
             }
             val shareIntent=Intent.createChooser(sendIntent, null)
@@ -35,9 +35,9 @@ class SettingsActivity : AppCompatActivity() {
         val supportButton = findViewById<ImageButton>(R.id.support_button)
         supportButton.setOnClickListener {
             val supportIntent = Intent(Intent.ACTION_SENDTO)
-            val email="Bezglasnaya@gmail.com"
-            val emailSubject="Сообщение разработчикам и разработчицам приложения Playlist Maker"
-            val message =" «Спасибо разработчикам и разработчицам за крутое приложение!»"
+            val email=getString(R.string.support_email)
+            val emailSubject=getString(R.string.support_email_subject)
+            val message =getString(R.string.support_email_message)
             supportIntent.data = Uri.parse("mailto:")
             supportIntent.putExtra(Intent.EXTRA_EMAIL, arrayOf(email))
             supportIntent.putExtra(Intent.EXTRA_SUBJECT, emailSubject)
@@ -47,7 +47,7 @@ class SettingsActivity : AppCompatActivity() {
 
         val agreementButton = findViewById<ImageButton>(R.id.agreement_button)
         val agreementButtonClickListener = View.OnClickListener {
-            val web = "https://yandex.ru/legal/practicum_offer/"
+            val web = getString(R.string.agreement_link)
             val agreementIntent=Intent((Intent.ACTION_VIEW), Uri.parse(web))
             startActivity(agreementIntent)
         }
