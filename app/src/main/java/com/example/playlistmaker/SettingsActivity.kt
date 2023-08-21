@@ -15,11 +15,11 @@ class SettingsActivity : AppCompatActivity() {
         setContentView(R.layout.activity_settings)
 
         val button = findViewById<ImageButton>(R.id.arrow_back_button)
-        val buttonClickListener = View.OnClickListener {
+        button.setOnClickListener{
             val displayIntent = Intent(this, MainActivity::class.java)
             startActivity(displayIntent)
+            finish()
         }
-        button.setOnClickListener(buttonClickListener)
 
         val shareButton = findViewById<ImageButton>(R.id.share_button)
         shareButton.setOnClickListener {

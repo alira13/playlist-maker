@@ -2,7 +2,7 @@
     <dimen name="medium_text_size">22sp</dimen>
     <dimen name="regular_text_size">16sp</dimen>
     <dimen name="big_button_corner_radius">16dp</dimen>
-    <dimen name="icon_padding">8dp</dimen>
+    <dimen name="icon_padding">12dp</dimen>
     <dimen name="layout_padding">16dp</dimen>
     <dimen name="button_marginTop">16dp</dimen>
     <dimen name="header_height">64dp</dimen>

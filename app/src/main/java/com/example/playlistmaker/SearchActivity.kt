@@ -29,14 +29,12 @@ class SearchActivity : AppCompatActivity() {
         val inputEditText = findViewById<EditText>(R.id.input_edit_text)
         val clearButton = findViewById<ImageView>(R.id.clear_button)
 
-        if (savedInstanceState != null) {
-            searchValue = savedInstanceState.getString(SEARCH_VALUE, "")
-            inputEditText.setText(searchValue)
-        }
+        inputEditText.setText(searchValue)
 
         val backButtonClickListener = View.OnClickListener {
             val displayIntent = Intent(this, MainActivity::class.java)
             startActivity(displayIntent)
+            finish()
         }
         backButton.setOnClickListener(backButtonClickListener)
 
@@ -47,6 +45,7 @@ class SearchActivity : AppCompatActivity() {
             }
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                searchValue=s.toString()
                 val inputMethodManager =
                     getSystemService(Context.INPUT_METHOD_SERVICE) as? InputMethodManager
                 if (s.isNullOrEmpty()) {
@@ -72,5 +71,12 @@ class SearchActivity : AppCompatActivity() {
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
         outState.putString(SEARCH_VALUE, searchValue)
+    }
+
+    override fun onRestoreInstanceState(savedInstanceState: Bundle) {
+        super.onRestoreInstanceState(savedInstanceState)
+        if (savedInstanceState != null) {
+            searchValue = savedInstanceState.getString(SEARCH_VALUE, "")
+        }
     }
 }
