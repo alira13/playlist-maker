@@ -1,7 +1,69 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
     <style name="Base.Theme.PlaylistMaker" parent="Theme.Material3.DayNight.NoActionBar">
-        <!-- Customize your dark theme here. -->
-        <!-- <item name="colorPrimary">@color/my_dark_primary</item> -->
+        <item name="colorPrimary">@color/YP_black</item>
+        <item name="colorOnPrimary">@color/YP_white</item>
+        <item name="colorAccent">@color/YP_blue</item>
+    </style>
+
+    <style name="MainScreenLayout">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:background">@color/YP_black</item>
+        <item name="android:orientation">vertical</item>
+        <item name="android:padding">@dimen/layout_padding</item>
+    </style>
+
+    <style name="ButtonBig" parent="Widget.MaterialComponents.Button.UnelevatedButton">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:layout_marginTop">@dimen/button_marginTop</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:backgroundTint">@color/YP_white</item>
+        <item name="android:textColor">@color/YP_black</item>
+        <item name="android:textSize">@dimen/medium_text_size</item>
+        <item name="android:textAllCaps">false</item>
+        <item name="cornerRadius">@dimen/big_button_corner_radius</item>
+        <item name="iconGravity">textStart</item>
+        <item name="iconPadding">@dimen/icon_padding</item>
+        <item name="iconTint">@color/YP_black</item>
+        <item name="fontFamily">@font/ys_font_family_medium</item>
+        <item name="android:textFontWeight">500</item>
+    </style>
+
+    <style name="SettingsListButton">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:layout_gravity">end</item>
+        <item name="android:tint">@color/YP_white</item>
+        <item name="android:background">@color/YP_black</item>
+    </style>
+
+    <style name="SettingsToggle">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:layout_gravity">end</item>
+        <item name="android:checked">true</item>
+    </style>
+
+    <style name="SearchEditText">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:paddingLeft">36dp</item>
+        <item name="android:layout_gravity">start|center</item>
+        <item name="android:textSize">@dimen/regular_text_size</item>
+        <item name="android:layout_marginVertical">8dp</item>
+        <item name="android:fontFamily">@font/ys_font_family_regular</item>
+        <item name="android:background">@drawable/rectangle</item>
+        <item name="android:inputType">text</item>
+        <item name="maxLines">1</item>
+        <item name="android:textColorHint">@color/YP_black</item>
+    </style>
+
+    <style name="IconInSearchEditText">
+        <item name="android:layout_width">16dp</item>
+        <item name="android:layout_height">16dp</item>
+        <item name="tint">@color/YP_black</item>
+        <item name="android:layout_gravity">start|center</item>
     </style>
 </resources>

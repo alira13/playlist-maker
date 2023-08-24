@@ -17,6 +17,7 @@ class MediaActivity : AppCompatActivity() {
         val buttonClickListener = View.OnClickListener {
             val displayIntent = Intent(this, MainActivity::class.java)
             startActivity(displayIntent)
+            finish()
         }
         button.setOnClickListener(buttonClickListener)
     }

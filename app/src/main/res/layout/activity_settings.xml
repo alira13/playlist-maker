@@ -1,107 +1,61 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/YP_white"
-    android:orientation="vertical"
-    android:padding="@dimen/layout_padding">
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    style="@style/SecondaryScreenLayoutStyle">
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/header_height"
-        android:orientation="horizontal">
+    <LinearLayout style="@style/HeaderStyle">
 
         <ImageButton
             android:id="@+id/arrow_back_button"
-            android:layout_width="24dp"
-            android:layout_height="match_parent"
-            android:layout_gravity="start"
-            android:background="@color/YP_white"
+            style="@style/PanelHeaderButton"
             android:src="@drawable/arrow_back" />
 
         <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_margin="@dimen/icon_padding"
-            android:gravity="center"
-            android:text="@string/settings_label"
-            android:textColor="@color/YP_black"
-            android:textSize="@dimen/primary_text_size"
-            android:textStyle="bold" />
+            style="@style/PanelHeaderText"
+            android:text="@string/settings_label" />
     </LinearLayout>
 
-    <Switch
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/string_height"
-        android:layout_marginTop="24dp"
-        android:text="@string/dark_theme_label"
-        android:textSize="@dimen/middle_text_size"
-        />
-
-    <FrameLayout
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/string_height"
-        android:orientation="horizontal">
+    <FrameLayout style="@style/SettingsFrameLayoutStyle">
 
         <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_gravity="start"
-            android:gravity="center"
-            android:text="@string/share_app_label"
-            android:textColor="@color/YP_black"
-            android:textSize="@dimen/middle_text_size" />
+            style="@style/SettingsListText"
+            android:text="@string/dark_theme_label" />
+
+        <Switch style="@style/SettingsToggle" />
+    </FrameLayout>
+
+    <FrameLayout style="@style/SettingsFrameLayoutStyle">
+
+        <TextView
+            style="@style/SettingsListText"
+            android:text="@string/share_app_label" />
 
         <ImageButton
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_gravity="end"
-            android:background="@color/YP_white"
+            android:id="@+id/share_button"
+            style="@style/SettingsListButton"
             android:src="@drawable/share" />
     </FrameLayout>
 
-    <FrameLayout
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/string_height"
-        android:orientation="horizontal">
+    <FrameLayout style="@style/SettingsFrameLayoutStyle">
 
         <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_gravity="start"
-            android:gravity="center"
-            android:text="@string/support_label"
-            android:textColor="@color/YP_black"
-            android:textSize="@dimen/middle_text_size" />
+            style="@style/SettingsListText"
+            android:text="@string/support_label" />
 
         <ImageButton
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_gravity="end"
-            android:background="@color/YP_white"
+            android:id="@+id/support_button"
+            style="@style/SettingsListButton"
             android:src="@drawable/support" />
     </FrameLayout>
 
-    <FrameLayout
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/string_height"
-        android:orientation="horizontal">
+    <FrameLayout style="@style/SettingsFrameLayoutStyle">
 
         <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_gravity="start"
-            android:gravity="center"
-            android:text="@string/user_agreement_label"
-            android:textColor="@color/YP_black"
-            android:textSize="@dimen/middle_text_size" />
+            style="@style/SettingsListText"
+            android:text="@string/user_agreement_label" />
 
         <ImageButton
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_gravity="end"
-            android:background="@color/YP_white"
+            android:id="@+id/agreement_button"
+            style="@style/SettingsListButton"
             android:src="@drawable/arrow_forward" />
     </FrameLayout>
 
