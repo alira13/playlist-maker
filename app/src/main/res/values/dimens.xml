@@ -1,6 +1,7 @@
 <resources>
     <dimen name="medium_text_size">22sp</dimen>
     <dimen name="regular_text_size">16sp</dimen>
+    <dimen name="small_text_size">11sp</dimen>
     <dimen name="big_button_corner_radius">16dp</dimen>
     <dimen name="icon_padding">12dp</dimen>
     <dimen name="layout_padding">16dp</dimen>
