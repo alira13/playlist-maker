@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    android:padding="10dp">
+    android:paddingVertical="10dp">
 
     <ImageView
         android:id="@+id/track_image"
@@ -12,17 +12,16 @@
         android:layout_height="wrap_content"
         android:layout_gravity="start|center"
         android:padding="16dp"
-        android:src="@drawable/arrow_back" />
+        android:src="@drawable/arrow_forward"/>
 
     <TextView
         android:id="@+id/track_name"
+        style="@style/TrackViewEditTextMedium"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="end|top"
         android:layout_marginStart="64dp"
         android:layout_marginEnd="64dp"
-        android:textColor="@color/YP_black"
-        android:textSize="@dimen/medium_text_size"
         tools:text="Название песни" />
 
     <LinearLayout
@@ -35,31 +34,30 @@
 
         <TextView
             android:id="@+id/artist_name"
+            style="@style/TrackViewEditTextSmall"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:textColor="@color/YP_grey"
-            android:textSize="@dimen/small_text_size"
             tools:text="Автор песни" />
 
         <ImageView
             android:layout_width="16dp"
             android:layout_height="16dp"
             android:padding="16dp"
-            android:src="@drawable/arrow_back"/>
+            android:src="@drawable/dot"
+            style="@style/TrackViewDotImage"/>
 
         <TextView
+            style="@style/TrackViewEditTextSmall"
             android:id="@+id/track_time"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:textColor="@color/YP_grey"
-            android:textSize="@dimen/small_text_size"
             tools:text="Время" />
     </LinearLayout>
 
     <ImageView
+        style="@style/TrackViewDotImage"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="end|center"
-        android:padding="16dp"
-        android:src="@drawable/arrow_back"/>
+        android:src="@drawable/arrow_forward"/>
 </FrameLayout>
