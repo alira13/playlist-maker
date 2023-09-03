@@ -8,18 +8,18 @@
 
     <ImageView
         android:id="@+id/track_image"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
         android:layout_gravity="start|center"
         android:padding="16dp"
-        android:src="@drawable/arrow_forward"/>
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:src="@drawable/placeholder"/>
 
     <TextView
         android:id="@+id/track_name"
-        style="@style/TrackViewEditTextMedium"
-        android:layout_width="match_parent"
+        style="@style/TrackViewEditTextRegular"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="end|top"
+        android:layout_gravity="start|center"
         android:layout_marginStart="64dp"
         android:layout_marginEnd="64dp"
         tools:text="Название песни" />
@@ -36,13 +36,12 @@
             android:id="@+id/artist_name"
             style="@style/TrackViewEditTextSmall"
             android:layout_width="wrap_content"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             tools:text="Автор песни" />
 
         <ImageView
-            android:layout_width="16dp"
-            android:layout_height="16dp"
-            android:padding="16dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:src="@drawable/dot"
             style="@style/TrackViewDotImage"/>
 
@@ -50,7 +49,8 @@
             style="@style/TrackViewEditTextSmall"
             android:id="@+id/track_time"
             android:layout_width="wrap_content"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
+
             tools:text="Время" />
     </LinearLayout>
 

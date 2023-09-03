@@ -2,7 +2,6 @@ package com.example.playlistmaker
 
 import android.annotation.SuppressLint
 import android.content.Context
-import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -18,42 +17,37 @@ import androidx.recyclerview.widget.RecyclerView
 class SearchActivity : AppCompatActivity() {
     private var searchValue: String = ""
 
-    companion object {
-        const val SEARCH_VALUE = "SEARCH_VALUE"
-    }
+    private lateinit var inputEditText:EditText
 
     @SuppressLint("MissingInflatedId")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_search)
 
-        val recyclerView = findViewById<RecyclerView>(R.id.track_list)
-        recyclerView.layoutManager = LinearLayoutManager(this) // если мы не определили его в XML
-        val trackList = getTrackList()
-        val trackAdapter = TrackAdapter(trackList)
-        recyclerView.adapter = trackAdapter
-
         val backButton = findViewById<ImageButton>(R.id.arrow_back_button)
-        val inputEditText = findViewById<EditText>(R.id.input_edit_text)
         val clearButton = findViewById<ImageView>(R.id.clear_button)
+        inputEditText = findViewById(R.id.input_edit_text)
+        val recyclerView = findViewById<RecyclerView>(R.id.track_list)
 
-        inputEditText.setText(searchValue)
-
-        val backButtonClickListener = View.OnClickListener {
-            val displayIntent = Intent(this, MainActivity::class.java)
-            startActivity(displayIntent)
+        backButton.setOnClickListener {
             finish()
         }
-        backButton.setOnClickListener(backButtonClickListener)
+
+        clearButton.setOnClickListener {
+            inputEditText.setText("")
+            clearButton.visibility=View.GONE
+        }
 
 
         val simpleTextWatcher = object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
-                // empty
             }
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
                 searchValue=s.toString()
+            }
+
+            override fun afterTextChanged(s: Editable?) {
                 val inputMethodManager =
                     getSystemService(Context.INPUT_METHOD_SERVICE) as? InputMethodManager
                 if (s.isNullOrEmpty()) {
@@ -64,33 +58,29 @@ class SearchActivity : AppCompatActivity() {
                     inputMethodManager?.showSoftInput(inputEditText, 0)
                 }
             }
-
-            override fun afterTextChanged(s: Editable?) {
-                // empty
-            }
         }
         inputEditText.addTextChangedListener(simpleTextWatcher)
 
-        clearButton.setOnClickListener {
-            inputEditText.setText("")
-        }
+        recyclerView.layoutManager = LinearLayoutManager(this)
+        recyclerView.adapter = TrackAdapter(getTrackList())
+    }
 
+    companion object {
+        const val SEARCH_VALUE = "SEARCH_VALUE"
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
-        outState.putString(SEARCH_VALUE, searchValue)
+        outState.putString(SEARCH_VALUE, inputEditText.text.toString())
     }
 
     override fun onRestoreInstanceState(savedInstanceState: Bundle) {
         super.onRestoreInstanceState(savedInstanceState)
-        if (savedInstanceState != null) {
-            searchValue = savedInstanceState.getString(SEARCH_VALUE, "")
-        }
+        searchValue = savedInstanceState.getString(SEARCH_VALUE, "")
+        inputEditText.setText(searchValue)
     }
 
     private fun getTrackList(): List<Track> {
-
         return listOf(
             Track(
                 "Smells Like Teen Spirit",

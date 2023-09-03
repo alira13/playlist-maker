@@ -67,9 +67,9 @@
         <item name="android:layout_gravity">start|center</item>
     </style>
 
-    <style name="TrackViewEditTextMedium">
-        <item name="android:textSize">@dimen/medium_text_size</item>
-        <item name="android:fontFamily">@font/ys_font_family_medium</item>
+    <style name="TrackViewEditTextRegular">
+        <item name="android:textSize">@dimen/regular_text_size</item>
+        <item name="android:fontFamily">@font/ys_font_family_regular</item>
         <item name="android:inputType">text</item>
         <item name="maxLines">1</item>
         <item name="android:textColorHint">@color/YP_white</item>
