@@ -1,63 +1,66 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical"
-    android:paddingVertical="10dp">
+    android:orientation="horizontal">
 
     <ImageView
         android:id="@+id/track_image"
-        android:layout_gravity="start|center"
-        android:padding="16dp"
         android:layout_width="48dp"
         android:layout_height="48dp"
-        android:src="@drawable/placeholder"/>
-
-    <TextView
-        android:id="@+id/track_name"
-        style="@style/TrackViewEditTextRegular"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="start|center"
-        android:layout_marginStart="64dp"
-        android:layout_marginEnd="64dp"
-        tools:text="Название песни" />
+        android:layout_margin="8dp"
+        tools:src="@drawable/placeholder" />
 
     <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom"
-        android:layout_marginStart="64dp"
-        android:layout_marginEnd="64dp"
-        android:orientation="horizontal">
+        style="@style/TrackViewEditTextRegular"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:orientation="vertical"
+        android:gravity="start|center">
 
         <TextView
-            android:id="@+id/artist_name"
-            style="@style/TrackViewEditTextSmall"
-            android:layout_width="wrap_content"
+            android:id="@+id/track_name"
+            style="@style/TrackViewEditTextRegular"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            tools:text="Автор песни" />
+            android:ellipsize="end"
+            android:maxLines="1"
+            tools:text="Название песниНазвание песниНазвание песниНазвание песниНазвание песниНазвание песниНазвание песниНазвание песни" />
 
-        <ImageView
+        <LinearLayout
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/dot"
-            style="@style/TrackViewDotImage"/>
+            android:layout_height="wrap_content">
 
-        <TextView
-            style="@style/TrackViewEditTextSmall"
-            android:id="@+id/track_time"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            <TextView
+                android:id="@+id/artist_name"
+                style="@style/TrackViewEditTextSmall"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_gravity="center_vertical"
+                android:ellipsize="end"
+                android:maxLines="1"
+                app:drawableEndCompat="@drawable/dot"
+                tools:text="Автор песниАвтор песниАвтор песниАвтор песниАвтор песни" />
 
-            tools:text="Время" />
+            <TextView
+                android:id="@+id/track_time"
+                style="@style/TrackViewEditTextSmall"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="0"
+                android:maxLines="1"
+                tools:text="0:00" />
+        </LinearLayout>
     </LinearLayout>
 
     <ImageView
-        style="@style/TrackViewDotImage"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:id="@+id/arrow_forword"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
         android:layout_gravity="end|center"
-        android:src="@drawable/arrow_forward"/>
-</FrameLayout>
+        android:src="@drawable/arrow_forward" />
+</LinearLayout>
