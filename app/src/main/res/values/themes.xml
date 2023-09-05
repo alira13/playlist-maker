@@ -70,14 +70,15 @@
     <style name="TrackViewEditTextRegular">
         <item name="android:textSize">@dimen/regular_text_size</item>
         <item name="android:fontFamily">@font/ys_font_family_regular</item>
-        <item name="android:textColorHint">@color/YP_black</item>
+        <item name="android:textColor">@color/YP_black</item>
     </style>
     <style name="TrackViewEditTextSmall">
         <item name="android:textSize">@dimen/small_text_size</item>
         <item name="android:fontFamily">@font/ys_font_family_regular</item>
-        <item name="android:textColorHint">@color/YP_grey</item>
+        <item name="android:textColor">@color/YP_grey</item>
+        <item name="android:drawableTint">@color/YP_grey</item>
     </style>
-    <style name="TrackViewDotImage">
-        <item name="tint">@color/YP_grey</item>
+    <style name="SearchArrowForward">
+        <item name="tint">@color/YP_light_grey</item>
     </style>
 </resources>

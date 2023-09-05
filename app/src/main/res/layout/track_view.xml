@@ -8,17 +8,17 @@
 
     <ImageView
         android:id="@+id/track_image"
-        android:layout_width="48dp"
-        android:layout_height="48dp"
-        android:layout_margin="8dp"
+        android:layout_width="@dimen/search_track_image_size"
+        android:layout_height="@dimen/search_track_image_size"
+        android:layout_marginVertical="@dimen/search_margin_8"
         tools:src="@drawable/placeholder" />
 
     <LinearLayout
-        style="@style/TrackViewEditTextRegular"
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_weight="1"
         android:orientation="vertical"
+        android:layout_margin="@dimen/search_margin_8"
         android:gravity="start|center">
 
         <TextView
@@ -28,7 +28,7 @@
             android:layout_height="wrap_content"
             android:ellipsize="end"
             android:maxLines="1"
-            tools:text="Название песниНазвание песниНазвание песниНазвание песниНазвание песниНазвание песниНазвание песниНазвание песни" />
+            tools:text="Название песни" />
 
         <LinearLayout
             android:layout_width="wrap_content"
@@ -44,7 +44,7 @@
                 android:ellipsize="end"
                 android:maxLines="1"
                 app:drawableEndCompat="@drawable/dot"
-                tools:text="Автор песниАвтор песниАвтор песниАвтор песниАвтор песни" />
+                tools:text="Автор песни" />
 
             <TextView
                 android:id="@+id/track_time"
@@ -58,9 +58,10 @@
     </LinearLayout>
 
     <ImageView
-        android:id="@+id/arrow_forword"
-        android:layout_width="24dp"
-        android:layout_height="24dp"
+        android:id="@+id/arrow_forward"
+        style="@style/SearchArrowForward"
+        android:layout_width="@dimen/arrow_forward_image_size"
+        android:layout_height="@dimen/arrow_forward_image_size"
         android:layout_gravity="end|center"
         android:src="@drawable/arrow_forward" />
 </LinearLayout>
