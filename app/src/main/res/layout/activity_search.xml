@@ -46,4 +46,12 @@
             style="@style/IconInSearchEditText">
         </ImageView>
     </FrameLayout>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/track_list"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        tools:listitem="@layout/track_view"
+        tools:itemCount="5"/>
 </LinearLayout>
