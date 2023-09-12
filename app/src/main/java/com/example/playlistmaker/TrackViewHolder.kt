@@ -20,12 +20,13 @@ class TrackViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         artistName.text = model.artistName
         trackTime.text = model.trackTime
 
+        val roundedCornersValue=2f
         Glide
             .with(trackImage)
             .load(model.artworkUrl100)
             .fitCenter()
             .placeholder(R.drawable.placeholder)
-            .transform(RoundedCorners(dpToPx(2f, trackImage)))
+            .transform(RoundedCorners(dpToPx(roundedCornersValue, trackImage)))
             .into(trackImage)
     }
 

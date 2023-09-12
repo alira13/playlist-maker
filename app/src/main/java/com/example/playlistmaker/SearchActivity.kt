@@ -65,7 +65,7 @@ class SearchActivity : AppCompatActivity() {
         recyclerView.adapter = TrackAdapter(getTrackList())
     }
 
-    companion object {
+    private companion object {
         const val SEARCH_VALUE = "SEARCH_VALUE"
     }
 
