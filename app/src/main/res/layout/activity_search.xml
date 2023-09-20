@@ -1,23 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context=".SearchActivity"
-    style="@style/SecondaryScreenLayoutStyle">
+    style="@style/SecondaryScreenLayoutStyle"
+    tools:context=".SearchActivity">
 
     <LinearLayout
-        tools:ignore="MissingConstraints"
-        style="@style/HeaderStyle">
+        style="@style/HeaderStyle"
+        tools:ignore="MissingConstraints">
 
         <ImageButton
             android:id="@+id/arrow_back_button"
-            android:src="@drawable/arrow_back"
-            style="@style/PanelHeaderButton" />
+            style="@style/PanelHeaderButton"
+            android:src="@drawable/arrow_back" />
 
         <TextView
-            android:text="@string/search_label"
-            style="@style/PanelHeaderText" />
+            style="@style/PanelHeaderText"
+            android:text="@string/search_label" />
     </LinearLayout>
 
     <FrameLayout
@@ -27,24 +26,26 @@
 
         <EditText
             android:id="@+id/input_edit_text"
+            style="@style/SearchEditText"
+            android:autofillHints="name"
             android:hint="@string/search_label"
-            style="@style/SearchEditText">
-        </EditText>
+            android:imeOptions="actionDone"
+            android:singleLine="true"></EditText>
+
         <ImageView
             android:id="@+id/search_button"
-            android:src="@drawable/search"
-            android:layout_marginStart="12dp"
+            style="@style/IconInSearchEditText"
             android:layout_gravity="start|center"
-            style="@style/IconInSearchEditText">
-        </ImageView>
+            android:layout_marginStart="12dp"
+            android:src="@drawable/search"></ImageView>
+
         <ImageView
             android:id="@+id/clear_button"
-            android:src="@drawable/close"
+            style="@style/IconInSearchEditText"
             android:layout_gravity="end|center"
             android:layout_marginEnd="12dp"
-            android:visibility="gone"
-            style="@style/IconInSearchEditText">
-        </ImageView>
+            android:src="@drawable/close"
+            android:visibility="gone"></ImageView>
     </FrameLayout>
 
     <androidx.recyclerview.widget.RecyclerView
@@ -52,6 +53,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-        tools:listitem="@layout/track_view"
-        tools:itemCount="5"/>
+        tools:itemCount="5"
+        tools:listitem="@layout/track_view" />
 </LinearLayout>

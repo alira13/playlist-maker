@@ -1,4 +1,4 @@
-<resources xmlns:tools="http://schemas.android.com/tools">
+<resources>
     <!-- Base application theme. -->
     <style name="Base.Theme.PlaylistMaker" parent="Theme.Material3.DayNight.NoActionBar">
         <item name="colorPrimary">@color/YP_black</item>
@@ -21,7 +21,7 @@
         <item name="android:layout_weight">1</item>
         <item name="android:backgroundTint">@color/YP_white</item>
         <item name="android:textColor">@color/YP_black</item>
-        <item name="android:textSize">@dimen/medium_text_size</item>
+        <item name="android:textSize">@dimen/medium_text_size_22</item>
         <item name="android:textAllCaps">false</item>
         <item name="cornerRadius">@dimen/big_button_corner_radius</item>
         <item name="iconGravity">textStart</item>
@@ -80,5 +80,48 @@
     </style>
     <style name="SearchArrowForward">
         <item name="tint">@color/YP_white</item>
+    </style>
+
+
+    <style name="search_problem_text">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_gravity">center_horizontal</item>
+        <item name="android:layout_marginTop">16dp</item>
+        <item name="android:fontFamily">@font/ys_text_medium</item>
+        <item name="android:textAlignment">center</item>
+        <item name="android:textSize">@dimen/medium_text_size_19</item>
+        <item name="android:textColor">"@color/YP_white"</item>
+    </style>
+
+    <style name="search_no_internet_problem_image">
+        <item name="android:layout_width">120dp</item>
+        <item name="android:layout_height">120dp</item>
+        <item name="android:layout_gravity">center_horizontal</item>
+        <item name="android:layout_marginTop">80dp</item>
+        <item name="android:src">@drawable/no_internet_dark</item>
+    </style>
+
+    <style name="search_empty_list_problem_image">
+        <item name="android:layout_width">120dp</item>
+        <item name="android:layout_height">120dp</item>
+        <item name="android:layout_gravity">center_horizontal</item>
+        <item name="android:layout_marginTop">80dp</item>
+        <item name="android:src">@drawable/no_search_dark</item>
+    </style>
+
+    <style name="search_no_internet_problem_retry_button">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_gravity">center</item>
+        <item name="android:layout_marginTop">24dp</item>
+        <item name="android:backgroundTint">@color/YP_white</item>
+        <item name="android:enabled">false</item>
+        <item name="android:fontFamily">@font/ys_text_medium</item>
+        <item name="android:text">@string/refresh</item>
+        <item name="android:textColor">"@color/YP_black"</item>
+        <item name="android:textAllCaps">false</item>
+        <item name="android:textSize">@dimen/medium_text_size_14</item>
+        <item name="cornerRadius">54dp</item>
     </style>
 </resources>

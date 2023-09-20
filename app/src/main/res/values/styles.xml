@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+
     <style name="Theme.PlaylistMaker" parent="Base.Theme.PlaylistMaker" />
 
     <style name="PanelHeaderText">
@@ -8,7 +9,7 @@
         <item name="android:layout_margin">@dimen/icon_padding</item>
         <item name="android:gravity">start|center</item>
         <item name="android:textColor">?attr/colorOnPrimary</item>
-        <item name="android:textSize">@dimen/medium_text_size</item>
+        <item name="android:textSize">@dimen/medium_text_size_22</item>
         <item name="android:fontFamily">@font/ys_font_family_medium</item>
         <item name="iconTint">?attr/colorOnPrimary</item>
     </style>
