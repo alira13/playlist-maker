@@ -167,7 +167,7 @@ class SearchActivity : AppCompatActivity(), OnRetryButtonClickListener {
                             else searchResultAdapter.items = mutableListOf(EmptyListProblem())
                         } else {
                             searchResultAdapter.items.clear()
-                            searchResultAdapter.items.add(EmptyListProblem())
+                            searchResultAdapter.items = mutableListOf(EmptyListProblem())
                             searchResultAdapter.notifyDataSetChanged()
                             Log.d("MY_LOG", "**onResponse: ${searchResultAdapter.items}")
                         }
@@ -176,7 +176,7 @@ class SearchActivity : AppCompatActivity(), OnRetryButtonClickListener {
                     override fun onFailure(call: Call<TrackResponse>, t: Throwable)
                     {
                         searchResultAdapter.items.clear()
-                        searchResultAdapter.items.add(NoInternetProblem())
+                        searchResultAdapter.items=mutableListOf(NoInternetProblem())
                         searchResultAdapter.notifyDataSetChanged()
                         Log.d("MY_LOG", "**OnFailure: ${searchResultAdapter.items}")
                     }

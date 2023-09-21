@@ -46,12 +46,11 @@ class SearchResultAdapter(
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         return when (viewType) {
             VIEW_TYPE_TRACK_LIST -> TrackViewHolder(parent)
-            VIEW_TYPE_EMPTY_LIST_PROBLEM_STATE -> EmptyListProblemViewHolder(parent)
             VIEW_TYPE_NO_INTERNET_PROBLEM_STATE -> NoInternetProblemViewHolder(parent)
+            VIEW_TYPE_EMPTY_LIST_PROBLEM_STATE -> EmptyListProblemViewHolder(parent)
             else -> throw IllegalStateException("There is no ViewHolder for viewType=$viewType")
         }
     }
-
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         when (val item = items[position]) {
             is Track -> {
@@ -61,16 +60,14 @@ class SearchResultAdapter(
             is NoInternetProblem -> {
                 (holder as NoInternetProblemViewHolder).apply {
                     bind(item)
-                    retry.setOnClickListener {
+                    retryButton.setOnClickListener {
                         onRetryButtonClickListener.onRetryButtonClick()
                     }
                 }
             }
 
             is EmptyListProblem -> {
-                (holder as EmptyListProblemViewHolder).apply {
-                    bind(item)
-                }
+                (holder as EmptyListProblemViewHolder).bind(item)
             }
 
             else -> {
@@ -78,6 +75,5 @@ class SearchResultAdapter(
             }
         }
     }
-
     override fun getItemCount()= items.size
 }

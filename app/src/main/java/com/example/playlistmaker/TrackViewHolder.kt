@@ -11,11 +11,10 @@ import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import java.text.SimpleDateFormat
 import java.util.Locale
 
-class TrackViewHolder(
-        parent: ViewGroup
-    ) : RecyclerView.ViewHolder(
-        LayoutInflater.from(parent.context)
-            .inflate(R.layout.track_view, parent, false)
+
+class TrackViewHolder(parentView: ViewGroup) : RecyclerView.ViewHolder(
+        LayoutInflater.from(parentView.context)
+            .inflate(R.layout.track_view, parentView, false)
     ) {
 
     private val trackName: TextView = itemView.findViewById(R.id.track_name)
