@@ -57,23 +57,24 @@
         android:layout_height="wrap_content"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         tools:itemCount="5"
-        tools:listitem="@layout/track_view" />
+        tools:listitem="@layout/track_view"
+        android:visibility="gone"/>
+
+    <TextView
+        android:id="@+id/empty_list_problem_text"
+        style="@style/empty_list_problem_text"
+        android:text="@string/tracks_not_found"
+        android:visibility="gone" />
 
     <TextView
         android:id="@+id/search_no_internet_problem_text"
         style="@style/search_no_internet_problem_text"
-        tools:text="@string/no_internet_connection"
-        android:visibility="gone" />
+        android:text="@string/no_internet_connection"
+        android:visibility="gone"/>
 
     <Button
         android:id="@+id/retry_search_button"
         style="@style/search_no_internet_problem_retry_button"
         android:visibility="gone">
     </Button>
-
-    <TextView
-        android:id="@+id/empty_list_problem_text"
-        style="@style/empty_list_problem_text"
-        tools:text="@string/tracks_not_found"
-        android:visibility="gone" />
 </LinearLayout>

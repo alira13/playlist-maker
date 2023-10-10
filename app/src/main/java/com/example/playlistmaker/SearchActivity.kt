@@ -182,6 +182,7 @@ class SearchActivity : AppCompatActivity(), OnRetryButtonClickListener {
                         } else {
                             searchResultAdapter.items.clear()
                             searchResultAdapter.notifyDataSetChanged()
+                            emptyListProblemText.visibility= View.VISIBLE
                         }
                     } else {
                         Log.d("MY_LOG", "notSuccessful: ${searchResultAdapter.items}")
