@@ -8,7 +8,7 @@ interface OnRetryButtonClickListener {
 }
 
 class SearchResultAdapter(
-    val onRetryButtonClickListener: OnRetryButtonClickListener
+    private val onRetryButtonClickListener: OnRetryButtonClickListener
 ) : RecyclerView.Adapter<ViewHolder>() {
 
     var items: MutableList<SearchResult> = mutableListOf()

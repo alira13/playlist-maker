@@ -12,6 +12,6 @@
         tools:text="@string/no_internet_connection" />
 
     <Button
-        android:id="@+id/button_retry"
+        android:id="@+id/retry_search_button"
         style="@style/search_no_internet_problem_retry_button" />
 </LinearLayout>

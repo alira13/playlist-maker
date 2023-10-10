@@ -12,7 +12,7 @@ class NoInternetProblemViewHolder(
         .inflate(R.layout.activity_search_no_internet, parent, false)
 ) {
 
-    val retryButton: Button = itemView.findViewById(R.id.button_retry)
+    val retryButton: Button = itemView.findViewById(R.id.retry_search_button)
 
     fun bind(problemState: NoInternetProblem) {
     }

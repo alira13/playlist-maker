@@ -9,9 +9,11 @@ import android.util.Log
 import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
+import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageButton
 import android.widget.ImageView
+import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -23,20 +25,24 @@ import retrofit2.converter.gson.GsonConverterFactory
 
 class SearchActivity : AppCompatActivity(), OnRetryButtonClickListener {
     private var searchValue: String = ""
+
     private companion object {
         const val SEARCH_VALUE = "SEARCH_VALUE"
     }
 
-    private lateinit var inputEditText:EditText
+    private lateinit var emptyListProblemText: TextView
+    private lateinit var emptyListProblemImage: ImageView
+    private lateinit var searchNoInternetProblemText: TextView
+    private lateinit var searchNoInternetProblemImage: ImageView
+    private lateinit var retrySearchButton: Button
+    private lateinit var inputEditText: EditText
 
-    private val baseUrl:String="https://itunes.apple.com/"
+    private val baseUrl: String = "https://itunes.apple.com/"
     private val trackApiService = Retrofit.Builder()
         .baseUrl(baseUrl)
         .addConverterFactory(GsonConverterFactory.create())
         .build()
         .create(TrackApiService::class.java)
-
-    private lateinit var searchResults:List<SearchResult>
 
     private var searchResultAdapter = SearchResultAdapter(this)
 
@@ -56,7 +62,7 @@ class SearchActivity : AppCompatActivity(), OnRetryButtonClickListener {
         val clearButton = findViewById<ImageView>(R.id.clear_button)
         clearButton.setOnClickListener {
             inputEditText.setText("")
-            clearButton.visibility=View.GONE
+            clearButton.visibility = View.GONE
         }
         //endregion clear button
 
@@ -79,7 +85,7 @@ class SearchActivity : AppCompatActivity(), OnRetryButtonClickListener {
             }
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                searchValue=s.toString()
+                searchValue = s.toString()
             }
 
             override fun afterTextChanged(s: Editable?) {
@@ -104,8 +110,16 @@ class SearchActivity : AppCompatActivity(), OnRetryButtonClickListener {
             false
         }
         // endregion inputEditText
-    }
 
+        //region searchProblems
+        emptyListProblemText = findViewById(R.id.empty_list_problem_text)
+        emptyListProblemImage = findViewById(R.id.empty_list_problem_image)
+        searchNoInternetProblemText = findViewById(R.id.search_no_internet_problem_text)
+        searchNoInternetProblemImage = findViewById(R.id.search_no_internet_problem_image)
+        retrySearchButton = findViewById((R.id.retry_search_button))
+
+        //endregion
+    }
 
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
@@ -154,33 +168,48 @@ class SearchActivity : AppCompatActivity(), OnRetryButtonClickListener {
     }
 
     private fun putRequest() {
+        emptyListProblemText.visibility = View.GONE
+        emptyListProblemImage.visibility = View.GONE
+        searchNoInternetProblemText.visibility = View.GONE
+        searchNoInternetProblemImage.visibility = View.GONE
+        retrySearchButton.visibility = View.GONE
+
         if (inputEditText.text.isNotEmpty()) {
             trackApiService.search(inputEditText.text.toString()).enqueue(object :
                 Callback<TrackResponse> {
 
-                    override fun onResponse(call: Call<TrackResponse>, response: Response<TrackResponse>)
-                    {
-                        if (response.isSuccessful) {
-                            if(response.body()!=(null)) {
-                                searchResultAdapter.items=response.body()!!.results.toMutableList()
-                            }
-                            else searchResultAdapter.items = mutableListOf(EmptyListProblem())
+                override fun onResponse(
+                    call: Call<TrackResponse>,
+                    response: Response<TrackResponse>
+                ) {
+                    if (response.isSuccessful) {
+                        searchResultAdapter.items = response.body()!!.results.toMutableList()
+                        if (searchResultAdapter.items.isNotEmpty()) {
+                            Log.d("MY_LOG", "Successful: ${searchResultAdapter.items}")
                         } else {
                             searchResultAdapter.items.clear()
-                            searchResultAdapter.items = mutableListOf(EmptyListProblem())
                             searchResultAdapter.notifyDataSetChanged()
-                            Log.d("MY_LOG", "**onResponse: ${searchResultAdapter.items}")
                         }
-                    }
-
-                    override fun onFailure(call: Call<TrackResponse>, t: Throwable)
-                    {
+                    } else {
+                        Log.d("MY_LOG", "notSuccessful: ${searchResultAdapter.items}")
                         searchResultAdapter.items.clear()
-                        searchResultAdapter.items=mutableListOf(NoInternetProblem())
                         searchResultAdapter.notifyDataSetChanged()
-                        Log.d("MY_LOG", "**OnFailure: ${searchResultAdapter.items}")
+                        emptyListProblemImage.visibility = View.VISIBLE
+                        emptyListProblemText.visibility= View.VISIBLE
+                        Log.d("MY_LOG", "notSuccessful: done")
                     }
-                })
+                }
+
+                override fun onFailure(call: Call<TrackResponse>, t: Throwable) {
+                    Log.d("MY_LOG", "OnFailure: ${searchResultAdapter.items}")
+                    searchResultAdapter.items.clear()
+                    searchResultAdapter.notifyDataSetChanged()
+                    searchNoInternetProblemImage.visibility = View.VISIBLE
+                    searchNoInternetProblemText.visibility=View.VISIBLE
+                    retrySearchButton.visibility = View.VISIBLE
+                    Log.d("MY_LOG", "OnFailure: done")
+                }
+            })
         }
     }
 
