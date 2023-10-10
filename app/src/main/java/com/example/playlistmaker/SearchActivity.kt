@@ -31,9 +31,7 @@ class SearchActivity : AppCompatActivity(), OnRetryButtonClickListener {
     }
 
     private lateinit var emptyListProblemText: TextView
-    private lateinit var emptyListProblemImage: ImageView
     private lateinit var searchNoInternetProblemText: TextView
-    private lateinit var searchNoInternetProblemImage: ImageView
     private lateinit var retrySearchButton: Button
     private lateinit var inputEditText: EditText
 
@@ -44,7 +42,7 @@ class SearchActivity : AppCompatActivity(), OnRetryButtonClickListener {
         .build()
         .create(TrackApiService::class.java)
 
-    private var searchResultAdapter = SearchResultAdapter(this)
+    private var searchResultAdapter = TrackAdapter(this)
 
     @SuppressLint("MissingInflatedId", "NotifyDataSetChanged")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -113,11 +111,8 @@ class SearchActivity : AppCompatActivity(), OnRetryButtonClickListener {
 
         //region searchProblems
         emptyListProblemText = findViewById(R.id.empty_list_problem_text)
-        emptyListProblemImage = findViewById(R.id.empty_list_problem_image)
         searchNoInternetProblemText = findViewById(R.id.search_no_internet_problem_text)
-        searchNoInternetProblemImage = findViewById(R.id.search_no_internet_problem_image)
         retrySearchButton = findViewById((R.id.retry_search_button))
-
         //endregion
     }
 
@@ -168,11 +163,9 @@ class SearchActivity : AppCompatActivity(), OnRetryButtonClickListener {
     }
 
     private fun putRequest() {
-        emptyListProblemText.visibility = View.GONE
-        emptyListProblemImage.visibility = View.GONE
-        searchNoInternetProblemText.visibility = View.GONE
-        searchNoInternetProblemImage.visibility = View.GONE
-        retrySearchButton.visibility = View.GONE
+        //emptyListProblemText.visibility = View.GONE
+        //searchNoInternetProblemText.visibility = View.GONE
+        //retrySearchButton.visibility = View.GONE
 
         if (inputEditText.text.isNotEmpty()) {
             trackApiService.search(inputEditText.text.toString()).enqueue(object :
@@ -194,7 +187,6 @@ class SearchActivity : AppCompatActivity(), OnRetryButtonClickListener {
                         Log.d("MY_LOG", "notSuccessful: ${searchResultAdapter.items}")
                         searchResultAdapter.items.clear()
                         searchResultAdapter.notifyDataSetChanged()
-                        emptyListProblemImage.visibility = View.VISIBLE
                         emptyListProblemText.visibility= View.VISIBLE
                         Log.d("MY_LOG", "notSuccessful: done")
                     }
@@ -204,7 +196,6 @@ class SearchActivity : AppCompatActivity(), OnRetryButtonClickListener {
                     Log.d("MY_LOG", "OnFailure: ${searchResultAdapter.items}")
                     searchResultAdapter.items.clear()
                     searchResultAdapter.notifyDataSetChanged()
-                    searchNoInternetProblemImage.visibility = View.VISIBLE
                     searchNoInternetProblemText.visibility=View.VISIBLE
                     retrySearchButton.visibility = View.VISIBLE
                     Log.d("MY_LOG", "OnFailure: done")

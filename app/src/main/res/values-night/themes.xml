@@ -83,31 +83,30 @@
     </style>
 
 
-    <style name="search_problem_text">
+    <style name="empty_list_problem_text">
         <item name="android:layout_width">wrap_content</item>
-        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_height">0dp</item>
+        <item name="android:layout_weight">1</item>
         <item name="android:layout_gravity">center_horizontal</item>
         <item name="android:layout_marginTop">16dp</item>
         <item name="android:fontFamily">@font/ys_text_medium</item>
         <item name="android:textAlignment">center</item>
         <item name="android:textSize">@dimen/medium_text_size_19</item>
-        <item name="android:textColor">"@color/YP_white"</item>
+        <item name="android:textColor">"@color/YP_black"</item>
+        <item name="android:drawableTop">@drawable/no_search_dark</item>
     </style>
 
-    <style name="search_no_internet_problem_image">
-        <item name="android:layout_width">120dp</item>
-        <item name="android:layout_height">120dp</item>
+    <style name="search_no_internet_problem_text">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">0dp</item>
+        <item name="android:layout_weight">1</item>
         <item name="android:layout_gravity">center_horizontal</item>
-        <item name="android:layout_marginTop">80dp</item>
-        <item name="android:src">@drawable/no_internet_dark</item>
-    </style>
-
-    <style name="search_empty_list_problem_image">
-        <item name="android:layout_width">120dp</item>
-        <item name="android:layout_height">120dp</item>
-        <item name="android:layout_gravity">center_horizontal</item>
-        <item name="android:layout_marginTop">80dp</item>
-        <item name="android:src">@drawable/no_search_dark</item>
+        <item name="android:layout_marginTop">16dp</item>
+        <item name="android:fontFamily">@font/ys_text_medium</item>
+        <item name="android:textAlignment">center</item>
+        <item name="android:textSize">@dimen/medium_text_size_19</item>
+        <item name="android:textColor">"@color/YP_black"</item>
+        <item name="android:drawableTop">@drawable/no_internet_dark</item>
     </style>
 
     <style name="search_no_internet_problem_retry_button">
