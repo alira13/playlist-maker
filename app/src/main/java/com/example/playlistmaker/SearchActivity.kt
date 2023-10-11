@@ -113,6 +113,10 @@ class SearchActivity : AppCompatActivity(), OnRetryButtonClickListener {
         emptyListProblemText = findViewById(R.id.empty_list_problem_text)
         searchNoInternetProblemText = findViewById(R.id.search_no_internet_problem_text)
         retrySearchButton = findViewById((R.id.retry_search_button))
+
+        retrySearchButton.setOnClickListener {
+            putRequest()
+        }
         //endregion
     }
 
@@ -163,9 +167,9 @@ class SearchActivity : AppCompatActivity(), OnRetryButtonClickListener {
     }
 
     private fun putRequest() {
-        //emptyListProblemText.visibility = View.GONE
-        //searchNoInternetProblemText.visibility = View.GONE
-        //retrySearchButton.visibility = View.GONE
+        emptyListProblemText.visibility = View.GONE
+        searchNoInternetProblemText.visibility = View.GONE
+        retrySearchButton.visibility = View.GONE
 
         if (inputEditText.text.isNotEmpty()) {
             trackApiService.search(inputEditText.text.toString()).enqueue(object :
