@@ -1,22 +1,27 @@
 package com.example.playlistmaker
-
-import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 
+interface OnRetryButtonClickListener {
+    fun onRetryButtonClick()
+}
+
 class TrackAdapter(
-    private val tracks: List<Track>
+    private val onRetryButtonClickListener: OnRetryButtonClickListener
 ) : RecyclerView.Adapter<TrackViewHolder>() {
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TrackViewHolder {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.track_view, parent, false)
-        return TrackViewHolder(view)
-    }
+    var items: MutableList<Track> = mutableListOf()
+        set(value) {
+            field = value
+            notifyDataSetChanged()
+        }
 
+     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TrackViewHolder {
+        return TrackViewHolder(parent)
+    }
+    
     override fun onBindViewHolder(holder: TrackViewHolder, position: Int) {
-        holder.bind(tracks[position])
+        holder.bind(items[position])
     }
-
-    override fun getItemCount()= tracks.size
-
+    override fun getItemCount()= items.size
 }
