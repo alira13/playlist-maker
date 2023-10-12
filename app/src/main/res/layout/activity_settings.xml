@@ -20,7 +20,10 @@
             style="@style/SettingsListText"
             android:text="@string/dark_theme_label" />
 
-        <Switch style="@style/SettingsToggle" />
+        <Switch
+            android:id="@+id/dark_theme_switch"
+            style="@style/SettingsToggle" />
+
     </FrameLayout>
 
     <FrameLayout style="@style/SettingsFrameLayoutStyle">
