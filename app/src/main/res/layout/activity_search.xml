@@ -74,5 +74,28 @@
     <Button
         android:id="@+id/retry_search_button"
         style="@style/search_no_internet_problem_retry_button"
-        android:visibility="gone"></Button>
+        android:text="@string/refresh"
+        android:visibility="gone"/>
+
+    <TextView
+        android:id="@+id/history_text"
+        style="@style/history_text"
+        android:text="@string/search_history_text"
+        android:visibility="visible"/>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/history_track_list"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        tools:itemCount="5"
+        tools:listitem="@layout/track_view"
+        android:visibility="visible"/>
+
+    <Button
+        android:id="@+id/clear_history"
+        style="@style/search_no_internet_problem_retry_button"
+        android:text="@string/clear_history_text"
+        android:visibility="visible">
+    </Button>
 </LinearLayout>
