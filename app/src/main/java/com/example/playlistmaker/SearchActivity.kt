@@ -1,5 +1,6 @@
 package com.example.playlistmaker
 
+import SearchHistory
 import android.annotation.SuppressLint
 import android.content.Context
 import android.os.Bundle
@@ -23,7 +24,8 @@ import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
-class SearchActivity : AppCompatActivity(), OnRetryButtonClickListener {
+
+class SearchActivity : AppCompatActivity(), ItemClickListener {
     private var searchValue: String = ""
 
     private lateinit var emptyListProblemText: TextView
@@ -39,66 +41,115 @@ class SearchActivity : AppCompatActivity(), OnRetryButtonClickListener {
         .create(TrackApiService::class.java)
 
     private val trackAdapter = TrackAdapter(this)
+    private val historyTrackAdapter = TrackAdapter(this)
+    private lateinit var searchHistory: SearchHistory
 
     @SuppressLint("MissingInflatedId", "NotifyDataSetChanged")
     override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_search)
+        try {
+            super.onCreate(savedInstanceState)
+            setContentView(R.layout.activity_search)
 
-        val backButton = findViewById<ImageButton>(R.id.arrow_back_button)
-        backButton.setOnClickListener {
-            finish()
-        }
-
-        val clearButton = findViewById<ImageView>(R.id.clear_button)
-        clearButton.setOnClickListener {
-            inputEditText.setText("")
-            clearButton.visibility = View.GONE
-        }
-
-        val trackListRecyclerView: RecyclerView = findViewById(R.id.track_list)
-        trackListRecyclerView.apply {
-            layoutManager = LinearLayoutManager(this@SearchActivity)
-            adapter = trackAdapter
-        }
-
-        inputEditText = findViewById(R.id.input_edit_text)
-        val simpleTextWatcher = object : TextWatcher {
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+            val backButton = findViewById<ImageButton>(R.id.arrow_back_button)
+            backButton.setOnClickListener {
+                finish()
             }
 
-            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                searchValue = s.toString()
+            val clearButton = findViewById<ImageView>(R.id.clear_button)
+            clearButton.setOnClickListener {
+                inputEditText.setText("")
+                clearButton.visibility = View.GONE
             }
 
-            override fun afterTextChanged(s: Editable?) {
-                val inputMethodManager =
-                    getSystemService(Context.INPUT_METHOD_SERVICE) as? InputMethodManager
-                if (s.isNullOrEmpty()) {
-                    clearButton.visibility = View.GONE
-                    inputMethodManager?.hideSoftInputFromWindow(inputEditText.windowToken, 0)
-                } else {
-                    clearButton.visibility = View.VISIBLE
-                    inputMethodManager?.showSoftInput(inputEditText, 0)
+            val trackListRecyclerView: RecyclerView = findViewById(R.id.track_list)
+            trackListRecyclerView.apply {
+                layoutManager = LinearLayoutManager(this@SearchActivity)
+                adapter = trackAdapter
+            }
+
+            inputEditText = findViewById(R.id.input_edit_text)
+            val simpleTextWatcher = object : TextWatcher {
+                override fun beforeTextChanged(
+                    s: CharSequence?,
+                    start: Int,
+                    count: Int,
+                    after: Int
+                ) {
+                }
+
+                override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                    searchValue = s.toString()
+                }
+
+                override fun afterTextChanged(s: Editable?) {
+                    val inputMethodManager =
+                        getSystemService(Context.INPUT_METHOD_SERVICE) as? InputMethodManager
+                    if (s.isNullOrEmpty()) {
+                        clearButton.visibility = View.GONE
+                        inputMethodManager?.hideSoftInputFromWindow(inputEditText.windowToken, 0)
+                    } else {
+                        clearButton.visibility = View.VISIBLE
+                        inputMethodManager?.showSoftInput(inputEditText, 0)
+                    }
                 }
             }
-        }
 
-        inputEditText.addTextChangedListener(simpleTextWatcher)
+            inputEditText.addTextChangedListener(simpleTextWatcher)
 
-        inputEditText.setOnEditorActionListener { _, actionId, _ ->
-            if (actionId == EditorInfo.IME_ACTION_DONE) {
+            inputEditText.setOnEditorActionListener { _, actionId, _ ->
+                if (actionId == EditorInfo.IME_ACTION_DONE) {
+                    putRequest()
+                }
+                false
+            }
+
+            emptyListProblemText = findViewById(R.id.empty_list_problem_text)
+            searchNoInternetProblemText = findViewById(R.id.search_no_internet_problem_text)
+            retrySearchButton = findViewById((R.id.retry_search_button))
+
+            retrySearchButton.setOnClickListener {
                 putRequest()
             }
-            false
-        }
 
-        emptyListProblemText = findViewById(R.id.empty_list_problem_text)
-        searchNoInternetProblemText = findViewById(R.id.search_no_internet_problem_text)
-        retrySearchButton = findViewById((R.id.retry_search_button))
+            val historyTrackListRecyclerView: RecyclerView = findViewById(R.id.history_track_list)
+            historyTrackListRecyclerView.apply {
+                layoutManager = LinearLayoutManager(this@SearchActivity)
+                adapter = historyTrackAdapter
+            }
 
-        retrySearchButton.setOnClickListener {
-            putRequest()
+            searchHistory = SearchHistory(applicationContext as AppSharedPreferences)
+            historyTrackAdapter.items = searchHistory.getTracks()
+
+            val historyText = findViewById<TextView>(R.id.history_text)
+            val clearHistoryButton = findViewById<Button>(R.id.clear_history)
+
+            clearHistoryButton.setOnClickListener {
+                historyTrackAdapter.items.clear()
+                historyTrackAdapter.notifyDataSetChanged()
+                searchHistory.clear()
+                historyText.visibility = View.GONE
+                clearHistoryButton.visibility = View.GONE
+                historyTrackListRecyclerView.visibility = View.GONE
+            }
+
+            inputEditText.setOnFocusChangeListener { _, hasFocus ->
+                if (hasFocus
+                    && inputEditText.text.isEmpty()
+                    && historyTrackAdapter.items.isNotEmpty()
+                ) {
+                    historyText.visibility = View.VISIBLE
+                    clearHistoryButton.visibility = View.VISIBLE
+                    historyTrackListRecyclerView.visibility = View.VISIBLE
+                    historyTrackAdapter.items = searchHistory.getTracks()
+                    historyTrackAdapter.notifyDataSetChanged()
+                } else {
+                    historyText.visibility = View.GONE
+                    clearHistoryButton.visibility = View.GONE
+                    historyTrackListRecyclerView.visibility = View.GONE
+                }
+            }
+        } catch (ex: Exception) {
+            Log.d("MY", ex.message.toString(), ex.fillInStackTrace())
         }
     }
 
@@ -133,13 +184,14 @@ class SearchActivity : AppCompatActivity(), OnRetryButtonClickListener {
                         } else {
                             trackAdapter.items.clear()
                             trackAdapter.notifyDataSetChanged()
-                            emptyListProblemText.visibility= View.VISIBLE
+                            emptyListProblemText.visibility = View.VISIBLE
+
                         }
                     } else {
                         Log.d("MY_LOG", "notSuccessful: ${trackAdapter.items}")
                         trackAdapter.items.clear()
                         trackAdapter.notifyDataSetChanged()
-                        emptyListProblemText.visibility= View.VISIBLE
+                        emptyListProblemText.visibility = View.VISIBLE
                         Log.d("MY_LOG", "notSuccessful: done")
                     }
                 }
@@ -148,7 +200,7 @@ class SearchActivity : AppCompatActivity(), OnRetryButtonClickListener {
                     Log.d("MY_LOG", "OnFailure: ${trackAdapter.items}")
                     trackAdapter.items.clear()
                     trackAdapter.notifyDataSetChanged()
-                    searchNoInternetProblemText.visibility=View.VISIBLE
+                    searchNoInternetProblemText.visibility = View.VISIBLE
                     retrySearchButton.visibility = View.VISIBLE
                     Log.d("MY_LOG", "OnFailure: done")
                 }
@@ -156,8 +208,9 @@ class SearchActivity : AppCompatActivity(), OnRetryButtonClickListener {
         }
     }
 
-    override fun onRetryButtonClick() {
-        putRequest()
+    override fun onClick(track: Track) {
+        searchHistory.addTrack(track)
+        historyTrackAdapter.notifyDataSetChanged()
     }
 
     private companion object {

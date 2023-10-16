@@ -13,9 +13,9 @@ import java.util.Locale
 
 
 class TrackViewHolder(parentView: ViewGroup) : RecyclerView.ViewHolder(
-        LayoutInflater.from(parentView.context)
-            .inflate(R.layout.track_view, parentView, false)
-    ) {
+    LayoutInflater.from(parentView.context)
+        .inflate(R.layout.track_view, parentView, false)
+) {
 
     private val trackName: TextView = itemView.findViewById(R.id.track_name)
     private val artistName: TextView = itemView.findViewById(R.id.artist_name)
@@ -25,9 +25,9 @@ class TrackViewHolder(parentView: ViewGroup) : RecyclerView.ViewHolder(
     fun bind(model: Track) {
         trackName.text = model.trackName
         artistName.text = model.artistName
-        trackTime.text =  SimpleDateFormat("mm:ss", Locale.getDefault()).format(293000L).format(model.trackTime)
+        trackTime.text = SimpleDateFormat("mm:ss", Locale.getDefault()).format(293000L).format(model.trackTime)
 
-        val roundedCornersValue=2f
+        val roundedCornersValue = 2f
         Glide
             .with(trackImage)
             .load(model.artworkUrl100)
@@ -41,6 +41,7 @@ class TrackViewHolder(parentView: ViewGroup) : RecyclerView.ViewHolder(
         return TypedValue.applyDimension(
             TypedValue.COMPLEX_UNIT_DIP,
             dp,
-            context.resources.displayMetrics).toInt()
+            context.resources.displayMetrics
+        ).toInt()
     }
 }
