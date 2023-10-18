@@ -1,7 +1,6 @@
 package com.example.playlistmaker
 
 import android.annotation.SuppressLint
-import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.widget.ImageButton
@@ -15,8 +14,6 @@ class MediaActivity : AppCompatActivity() {
 
         val button = findViewById<ImageButton>(R.id.arrow_back_button)
         val buttonClickListener = View.OnClickListener {
-            val displayIntent = Intent(this, MainActivity::class.java)
-            startActivity(displayIntent)
             finish()
         }
         button.setOnClickListener(buttonClickListener)

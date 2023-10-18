@@ -11,11 +11,7 @@ class SearchHistory(private val appSharedPreferences: AppSharedPreferences) {
 
     fun addTrack(track: Track) {
         if (tracks.isNotEmpty()) {
-            for (item in tracks) {
-                if (item.trackId == track.trackId) {
-                    tracks.remove(item)
-                }
-            }
+            tracks.removeIf { item-> item.trackId == track.trackId }
         }
         if (tracks.size >= TRACK_HISTORY_SIZE) {
             tracks.removeLast()

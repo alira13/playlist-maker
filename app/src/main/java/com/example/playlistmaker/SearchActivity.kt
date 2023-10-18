@@ -33,6 +33,10 @@ class SearchActivity : AppCompatActivity(), ItemClickListener {
     private lateinit var retrySearchButton: Button
     private lateinit var inputEditText: EditText
 
+    private lateinit var historyText: TextView
+    private lateinit var clearHistoryButton: Button
+    private lateinit var historyTrackListRecyclerView: RecyclerView
+
     private val baseUrl: String = "https://itunes.apple.com/"
     private val trackApiService = Retrofit.Builder()
         .baseUrl(baseUrl)
@@ -111,7 +115,7 @@ class SearchActivity : AppCompatActivity(), ItemClickListener {
                 putRequest()
             }
 
-            val historyTrackListRecyclerView: RecyclerView = findViewById(R.id.history_track_list)
+            historyTrackListRecyclerView = findViewById(R.id.history_track_list)
             historyTrackListRecyclerView.apply {
                 layoutManager = LinearLayoutManager(this@SearchActivity)
                 adapter = historyTrackAdapter
@@ -120,8 +124,8 @@ class SearchActivity : AppCompatActivity(), ItemClickListener {
             searchHistory = SearchHistory(applicationContext as AppSharedPreferences)
             historyTrackAdapter.items = searchHistory.getTracks()
 
-            val historyText = findViewById<TextView>(R.id.history_text)
-            val clearHistoryButton = findViewById<Button>(R.id.clear_history)
+            historyText = findViewById<TextView>(R.id.history_text)
+            clearHistoryButton = findViewById<Button>(R.id.clear_history)
 
             clearHistoryButton.setOnClickListener {
                 historyTrackAdapter.items.clear()
@@ -182,6 +186,9 @@ class SearchActivity : AppCompatActivity(), ItemClickListener {
                         if (trackAdapter.items.isNotEmpty()) {
                             Log.d("MY_LOG", "Successful: ${trackAdapter.items}")
                         } else {
+                            historyText.visibility = View.GONE
+                            clearHistoryButton.visibility = View.GONE
+                            historyTrackListRecyclerView.visibility = View.GONE
                             trackAdapter.items.clear()
                             trackAdapter.notifyDataSetChanged()
                             emptyListProblemText.visibility = View.VISIBLE
@@ -189,6 +196,9 @@ class SearchActivity : AppCompatActivity(), ItemClickListener {
                         }
                     } else {
                         Log.d("MY_LOG", "notSuccessful: ${trackAdapter.items}")
+                        historyText.visibility = View.GONE
+                        clearHistoryButton.visibility = View.GONE
+                        historyTrackListRecyclerView.visibility = View.GONE
                         trackAdapter.items.clear()
                         trackAdapter.notifyDataSetChanged()
                         emptyListProblemText.visibility = View.VISIBLE
@@ -198,6 +208,9 @@ class SearchActivity : AppCompatActivity(), ItemClickListener {
 
                 override fun onFailure(call: Call<TrackResponse>, t: Throwable) {
                     Log.d("MY_LOG", "OnFailure: ${trackAdapter.items}")
+                    historyText.visibility = View.GONE
+                    clearHistoryButton.visibility = View.GONE
+                    historyTrackListRecyclerView.visibility = View.GONE
                     trackAdapter.items.clear()
                     trackAdapter.notifyDataSetChanged()
                     searchNoInternetProblemText.visibility = View.VISIBLE

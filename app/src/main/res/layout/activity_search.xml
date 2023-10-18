@@ -74,8 +74,16 @@
     <Button
         android:id="@+id/retry_search_button"
         style="@style/search_no_internet_problem_retry_button"
-        android:text="@string/refresh"
-        android:visibility="gone"/>
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:layout_gravity="top|center"
+        android:layout_marginTop="24dp"
+        android:enabled="true"
+        android:fontFamily="@font/ys_font_family_medium"
+        android:textSize="@dimen/medium_text_size_14"
+        android:textAllCaps="false"
+        android:visibility="gone"
+        android:text="@string/refresh" />
 
     <TextView
         android:id="@+id/history_text"
@@ -95,7 +103,16 @@
     <Button
         android:id="@+id/clear_history"
         style="@style/search_no_internet_problem_retry_button"
-        android:text="@string/clear_history_text"
-        android:visibility="gone">
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:layout_gravity="top|center"
+        android:layout_marginTop="24dp"
+        android:enabled="true"
+        android:fontFamily="@font/ys_font_family_medium"
+        android:textSize="@dimen/medium_text_size_14"
+        android:textAllCaps="false"
+        android:visibility="gone"
+        app:cornerRadius="@dimen/retry_button_corner_radius"
+        android:text="@string/clear_history_text">
     </Button>
 </LinearLayout>
