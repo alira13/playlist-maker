@@ -91,14 +91,20 @@
         android:text="@string/search_history_text"
         android:visibility="gone" />
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/history_track_list"
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-        tools:itemCount="5"
-        tools:listitem="@layout/track_view"
-        android:visibility="gone"/>
+        android:layout_height="0dp"
+        android:layout_weight="1">
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/history_track_list"
+            android:layout_width="match_parent"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            tools:itemCount="10"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            tools:listitem="@layout/track_view"
+            android:visibility="gone"/>
+    </ScrollView>
 
     <Button
         android:id="@+id/clear_history"
@@ -107,6 +113,7 @@
         android:layout_width="wrap_content"
         android:layout_gravity="top|center"
         android:layout_marginTop="24dp"
+        android:layout_marginBottom="24dp"
         android:enabled="true"
         android:fontFamily="@font/ys_font_family_medium"
         android:textSize="@dimen/medium_text_size_14"
