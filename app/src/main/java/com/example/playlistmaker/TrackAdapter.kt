@@ -17,6 +17,10 @@ class TrackAdapter(
             notifyDataSetChanged()
         }
 
+    fun clearItems(){
+        items.clear()
+        notifyDataSetChanged()
+    }
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TrackViewHolder {
         return TrackViewHolder(parent)
     }
