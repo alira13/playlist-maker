@@ -92,8 +92,11 @@ class SearchActivity : AppCompatActivity(), ItemClickListener {
                     if (s.isNullOrEmpty()) {
                         clearTrackSearchButton.visibility = View.GONE
                         inputMethodManager?.hideSoftInputFromWindow(searchTrackView.windowToken, 0)
+                        //при пустом поле поиска показываем историю, если она не пустая
                         showTrackHistory()
                     } else {
+                        //скрываем историю треков как только начинаем печатать что-то в поиске
+                        hideTrackHistory()
                         clearTrackSearchButton.visibility = View.VISIBLE
                         inputMethodManager?.showSoftInput(searchTrackView, 0)
                     }
