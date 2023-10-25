@@ -17,4 +17,11 @@
     <string name="no_internet_connection">Проблемы со связью \n\nЗагрузка не удалась. Проверьте подключение к интернету</string>
     <string name="search_history_text">Вы искали</string>
     <string name="clear_history_text">Очистить историю</string>
+    <string name="player_track_author">Автор песни</string>
+    <string name="player_track_name">Название песни</string>
+    <string name="track_time">Длительность</string>
+    <string name="track_album">Альбом</string>
+    <string name="track_year">Год</string>
+    <string name="track_style">Жанр</string>
+    <string name="track_country">Страна</string>
 </resources>
