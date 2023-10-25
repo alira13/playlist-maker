@@ -54,4 +54,20 @@
         <item name="android:layout_height">@dimen/header_height</item>
         <item name="android:orientation">horizontal</item>
     </style>
+
+    <style name="PlayerTrackHeaderStyle">
+        <item name="android:textColor">?attr/colorOnPrimary</item>
+    </style>
+
+    <style name="PlayerInfoStyle">
+        <item name="android:textColor">@color/YP_grey</item>
+        <item name="android:textSize">@dimen/medium_text_size_14</item>
+        <item name="android:fontFamily">@font/ys_font_family_regular</item>
+    </style>
+
+    <style name="PlayerInfoValueStyle">
+        <item name="android:textColor">?attr/colorOnPrimary</item>
+        <item name="android:textSize">@dimen/medium_text_size_14</item>
+        <item name="android:fontFamily">@font/ys_font_family_regular</item>
+    </style>
 </resources>
