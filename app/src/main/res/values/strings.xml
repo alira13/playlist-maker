@@ -15,4 +15,6 @@
     <string name="refresh">Обновить</string>
     <string name="tracks_not_found">Ничего не нашлось</string>
     <string name="no_internet_connection">Проблемы со связью \n\nЗагрузка не удалась. Проверьте подключение к интернету</string>
+    <string name="search_history_text">Вы искали</string>
+    <string name="clear_history_text">Очистить историю</string>
 </resources>

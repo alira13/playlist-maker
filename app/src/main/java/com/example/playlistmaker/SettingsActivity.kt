@@ -6,6 +6,7 @@ import android.net.Uri
 import android.os.Bundle
 import android.view.View
 import android.widget.ImageButton
+import android.widget.Switch
 import androidx.appcompat.app.AppCompatActivity
 
 class SettingsActivity : AppCompatActivity() {
@@ -14,10 +15,15 @@ class SettingsActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_settings)
 
-        val button = findViewById<ImageButton>(R.id.arrow_back_button)
-        button.setOnClickListener{
-            val displayIntent = Intent(this, MainActivity::class.java)
-            startActivity(displayIntent)
+        val nightModeSwitch = findViewById<Switch>(R.id.night_mode_switch)
+        nightModeSwitch.isChecked = (applicationContext as AppSharedPreferences).getNightTheme()
+        nightModeSwitch.setOnCheckedChangeListener { _, checked ->
+            (applicationContext as AppSharedPreferences).putNightMode(checked)
+            (applicationContext as AppSharedPreferences).switchTheme(checked)
+        }
+
+        val backButton = findViewById<ImageButton>(R.id.arrow_back_button)
+        backButton.setOnClickListener {
             finish()
         }
 
@@ -28,16 +34,16 @@ class SettingsActivity : AppCompatActivity() {
                 putExtra(Intent.EXTRA_TEXT, getString(R.string.practicum_link))
                 type = "text/plain"
             }
-            val shareIntent=Intent.createChooser(sendIntent, null)
+            val shareIntent = Intent.createChooser(sendIntent, null)
             startActivity(shareIntent)
         }
 
         val supportButton = findViewById<ImageButton>(R.id.support_button)
         supportButton.setOnClickListener {
             val supportIntent = Intent(Intent.ACTION_SENDTO)
-            val email=getString(R.string.support_email)
-            val emailSubject=getString(R.string.support_email_subject)
-            val message =getString(R.string.support_email_message)
+            val email = getString(R.string.support_email)
+            val emailSubject = getString(R.string.support_email_subject)
+            val message = getString(R.string.support_email_message)
             supportIntent.data = Uri.parse("mailto:")
             supportIntent.putExtra(Intent.EXTRA_EMAIL, arrayOf(email))
             supportIntent.putExtra(Intent.EXTRA_SUBJECT, emailSubject)
@@ -48,7 +54,7 @@ class SettingsActivity : AppCompatActivity() {
         val agreementButton = findViewById<ImageButton>(R.id.agreement_button)
         val agreementButtonClickListener = View.OnClickListener {
             val web = getString(R.string.agreement_link)
-            val agreementIntent=Intent((Intent.ACTION_VIEW), Uri.parse(web))
+            val agreementIntent = Intent((Intent.ACTION_VIEW), Uri.parse(web))
             startActivity(agreementIntent)
         }
         agreementButton.setOnClickListener(agreementButtonClickListener)

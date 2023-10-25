@@ -8,6 +8,7 @@ interface TrackApiService {
     @GET("/search?entity=song")
     fun search(@Query("term") text: String): Call<TrackResponse>
 }
+
 class TrackResponse(
     val resultCount: Int,
     val results: List<Track>
