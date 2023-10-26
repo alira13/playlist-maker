@@ -201,7 +201,7 @@ class SearchActivity : AppCompatActivity(), ItemClickListener {
         searchHistory.addTrack(track)
         historyTrackAdapter.notifyDataSetChanged()
         Intent(this, PlayerActivity::class.java).apply {
-            putExtra("track", track)
+            putExtra(TRACK_VALUE, track)
             startActivity(this)
         }
     }
@@ -254,7 +254,8 @@ class SearchActivity : AppCompatActivity(), ItemClickListener {
         trackListRecyclerView.visibility=View.GONE
     }
 
-    private companion object {
+    companion object {
         const val SEARCH_VALUE = "SEARCH_VALUE"
+        const val TRACK_VALUE = "TRACK_VALUE"
     }
 }

@@ -8,6 +8,7 @@ import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
+import com.example.playlistmaker.SearchActivity.Companion.TRACK_VALUE
 import java.text.SimpleDateFormat
 import java.util.Locale
 
@@ -22,9 +23,9 @@ class PlayerActivity : AppCompatActivity() {
         }
 
         val track = if (SDK_INT >= 33) {
-            intent.getParcelableExtra("track", Track::class.java)!!
+            intent.getParcelableExtra(TRACK_VALUE, Track::class.java)!!
         } else {
-            intent.getParcelableExtra<Track>("track")!!
+            intent.getParcelableExtra<Track>(TRACK_VALUE)!!
         }
 
         val trackImage:ImageView = findViewById(R.id.player_track_image)
@@ -40,21 +41,21 @@ class PlayerActivity : AppCompatActivity() {
         playerArtistName.text = track.artistName
         playerTrackTime.text =
             SimpleDateFormat("mm:ss", Locale.getDefault()).format(track.trackTime)
-        collectionName.text = if (track.collectionName!!.isNotEmpty()) track.collectionName else ""
-        releaseDate.text = if (track.releaseDate!!.isNotEmpty()) track.releaseDate?.substring(
+        collectionName.text = track.collectionName
+        releaseDate.text = if (track.releaseDate.isNotEmpty()) track.releaseDate.substring(
             0,
             4
         ) else "Not found"
         primaryGenreName.text = track.primaryGenreName
         country.text = track.country
 
-        val artworkUrl512 = track.artworkUrl100?.replaceAfterLast('/', "512x512bb.jpg")
+        val artworkUrl512 = track.artworkUrl100.replaceAfterLast('/', "512x512bb.jpg")
         Glide
             .with(trackImage)
             .load(artworkUrl512)
             .fitCenter()
             .placeholder(R.drawable.placeholder)
-            .transform(RoundedCorners(trackImage.resources.getDimensionPixelSize(R.dimen.track_image_corner_radius)))
+            .transform(RoundedCorners(trackImage.resources.getDimensionPixelSize(R.dimen.player_track_image_corner_radius)))
             .into(trackImage)
     }
 }
