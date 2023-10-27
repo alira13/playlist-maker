@@ -3,6 +3,7 @@ package com.example.playlistmaker
 import SearchHistory
 import android.annotation.SuppressLint
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -199,6 +200,10 @@ class SearchActivity : AppCompatActivity(), ItemClickListener {
     override fun onClick(track: Track) {
         searchHistory.addTrack(track)
         historyTrackAdapter.notifyDataSetChanged()
+        Intent(this, PlayerActivity::class.java).apply {
+            putExtra(TRACK_VALUE, track)
+            startActivity(this)
+        }
     }
 
     private fun showTrackHistory(){
@@ -249,7 +254,8 @@ class SearchActivity : AppCompatActivity(), ItemClickListener {
         trackListRecyclerView.visibility=View.GONE
     }
 
-    private companion object {
+    companion object {
         const val SEARCH_VALUE = "SEARCH_VALUE"
+        const val TRACK_VALUE = "TRACK_VALUE"
     }
 }
