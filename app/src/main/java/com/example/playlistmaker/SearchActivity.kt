@@ -5,11 +5,12 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
 import android.view.View
-import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import android.widget.Button
 import android.widget.EditText
@@ -50,6 +51,8 @@ class SearchActivity : AppCompatActivity(), ItemClickListener {
     private val historyTrackAdapter = TrackAdapter(this)
     private lateinit var searchHistory: SearchHistory
 
+    private val handler:Handler=Handler(Looper.getMainLooper())
+
     @SuppressLint("MissingInflatedId", "NotifyDataSetChanged")
     override fun onCreate(savedInstanceState: Bundle?) {
         try {
@@ -85,6 +88,7 @@ class SearchActivity : AppCompatActivity(), ItemClickListener {
 
                 override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
                     searchValue = s.toString()
+                    searchDebounce()
                 }
 
                 override fun afterTextChanged(s: Editable?) {
@@ -105,13 +109,6 @@ class SearchActivity : AppCompatActivity(), ItemClickListener {
             }
 
             searchTrackView.addTextChangedListener(simpleTextWatcher)
-
-            searchTrackView.setOnEditorActionListener { _, actionId, _ ->
-                if (actionId == EditorInfo.IME_ACTION_DONE) {
-                    putRequest()
-                }
-                false
-            }
 
             searchTrackView.setOnFocusChangeListener { _, hasFocus ->
                 if (hasFocus
@@ -254,8 +251,16 @@ class SearchActivity : AppCompatActivity(), ItemClickListener {
         trackListRecyclerView.visibility=View.GONE
     }
 
+    private val searchRunnable = Runnable { putRequest() }
+
+    private fun searchDebounce() {
+        handler.removeCallbacks(searchRunnable)
+        handler.postDelayed(searchRunnable, SEARCH_DEBOUNCE_DELAY)
+    }
+
     companion object {
         const val SEARCH_VALUE = "SEARCH_VALUE"
         const val TRACK_VALUE = "TRACK_VALUE"
+        private const val SEARCH_DEBOUNCE_DELAY = 2000L
     }
 }

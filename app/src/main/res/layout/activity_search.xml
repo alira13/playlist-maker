@@ -29,7 +29,6 @@
             style="@style/SearchEditText"
             android:autofillHints="name"
             android:hint="@string/search_label"
-            android:imeOptions="actionDone"
             android:singleLine="true">
         </EditText>
 
