@@ -51,7 +51,8 @@ class SearchActivity : AppCompatActivity(), ItemClickListener {
     private val historyTrackAdapter = TrackAdapter(this)
     private lateinit var searchHistory: SearchHistory
 
-    private val handler:Handler=Handler(Looper.getMainLooper())
+    private val handler: Handler = Handler(Looper.getMainLooper())
+    private var isClickAllowed = true
 
     @SuppressLint("MissingInflatedId", "NotifyDataSetChanged")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -172,8 +173,10 @@ class SearchActivity : AppCompatActivity(), ItemClickListener {
             trackApiService.search(searchTrackView.text.toString()).enqueue(object :
                 Callback<TrackResponse> {
 
-                override fun onResponse(call: Call<TrackResponse>, response: Response<TrackResponse>)
-                {
+                override fun onResponse(
+                    call: Call<TrackResponse>,
+                    response: Response<TrackResponse>
+                ) {
                     if (response.isSuccessful) {
                         trackAdapter.items = response.body()!!.results.toMutableList()
                         if (trackAdapter.items.isNotEmpty()) {
@@ -195,31 +198,33 @@ class SearchActivity : AppCompatActivity(), ItemClickListener {
     }
 
     override fun onClick(track: Track) {
-        searchHistory.addTrack(track)
-        historyTrackAdapter.notifyDataSetChanged()
-        Intent(this, PlayerActivity::class.java).apply {
-            putExtra(TRACK_VALUE, track)
-            startActivity(this)
+        if(clickDebounce()) {
+            searchHistory.addTrack(track)
+            historyTrackAdapter.notifyDataSetChanged()
+            Intent(this, PlayerActivity::class.java).apply {
+                putExtra(TRACK_VALUE, track)
+                startActivity(this)
+            }
         }
     }
 
-    private fun showTrackHistory(){
+    private fun showTrackHistory() {
         hideTrackList()
         hideErrors()
-        if(historyTrackAdapter.items.isNotEmpty()) {
+        if (historyTrackAdapter.items.isNotEmpty()) {
             historyText.visibility = View.VISIBLE
             clearHistoryButton.visibility = View.VISIBLE
             historyTrackListRecyclerView.visibility = View.VISIBLE
         }
     }
 
-    private fun hideTrackHistory(){
+    private fun hideTrackHistory() {
         historyText.visibility = View.GONE
         clearHistoryButton.visibility = View.GONE
         historyTrackListRecyclerView.visibility = View.GONE
     }
 
-    private fun showConnectionError(){
+    private fun showConnectionError() {
         trackAdapter.clearItems()
         hideTrackHistory()
         hideTrackList()
@@ -227,28 +232,28 @@ class SearchActivity : AppCompatActivity(), ItemClickListener {
         retrySearchButton.visibility = View.VISIBLE
     }
 
-    private fun showEmptyTrackListError(){
+    private fun showEmptyTrackListError() {
         trackAdapter.clearItems()
         hideTrackHistory()
         hideTrackList()
-        trackListRecyclerView.visibility=View.GONE
+        trackListRecyclerView.visibility = View.GONE
         emptyListProblemText.visibility = View.VISIBLE
     }
 
-    private fun hideErrors(){
+    private fun hideErrors() {
         emptyListProblemText.visibility = View.GONE
         searchNoInternetProblemText.visibility = View.GONE
         retrySearchButton.visibility = View.GONE
     }
 
-    private fun showTrackList(){
+    private fun showTrackList() {
         hideTrackHistory()
         hideErrors()
-        trackListRecyclerView.visibility=View.VISIBLE
+        trackListRecyclerView.visibility = View.VISIBLE
     }
 
-    private fun hideTrackList(){
-        trackListRecyclerView.visibility=View.GONE
+    private fun hideTrackList() {
+        trackListRecyclerView.visibility = View.GONE
     }
 
     private val searchRunnable = Runnable { putRequest() }
@@ -258,9 +263,19 @@ class SearchActivity : AppCompatActivity(), ItemClickListener {
         handler.postDelayed(searchRunnable, SEARCH_DEBOUNCE_DELAY)
     }
 
+    private fun clickDebounce(): Boolean {
+        val current = isClickAllowed
+        if (isClickAllowed) {
+            isClickAllowed = false
+            handler.postDelayed({ isClickAllowed = true }, CLICK_DEBOUNCE_DELAY)
+        }
+        return current
+    }
+
     companion object {
         const val SEARCH_VALUE = "SEARCH_VALUE"
         const val TRACK_VALUE = "TRACK_VALUE"
         private const val SEARCH_DEBOUNCE_DELAY = 2000L
+        private const val CLICK_DEBOUNCE_DELAY = 1000L
     }
 }
