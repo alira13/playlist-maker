@@ -3,6 +3,8 @@ package com.example.playlistmaker
 import android.media.MediaPlayer
 import android.os.Build.VERSION.SDK_INT
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
@@ -18,14 +20,19 @@ class PlayerActivity : AppCompatActivity() {
     private val mediaPlayer = MediaPlayer()
     private var playerState = STATE_DEFAULT
 
+    val handler = Handler(Looper.getMainLooper())
+
     private lateinit var playControlButton: ImageButton
+    private lateinit var currentTrackTime: TextView
 
     companion object {
         private const val STATE_DEFAULT = 0
         private const val STATE_PREPARED = 1
         private const val STATE_PLAYING = 2
         private const val STATE_PAUSED = 3
+        private const val UPDATE_TIMER_DELAY = 2000L
     }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_player)
@@ -41,7 +48,7 @@ class PlayerActivity : AppCompatActivity() {
             intent.getParcelableExtra<Track>(TRACK_VALUE)!!
         }
 
-        val trackImage:ImageView = findViewById(R.id.player_track_image)
+        val trackImage: ImageView = findViewById(R.id.player_track_image)
         val playerTrackName: TextView = findViewById(R.id.player_track_name)
         val playerArtistName: TextView = findViewById(R.id.player_track_author)
         val playerTrackTime: TextView = findViewById(R.id.track_time_value)
@@ -50,6 +57,7 @@ class PlayerActivity : AppCompatActivity() {
         val primaryGenreName: TextView = findViewById(R.id.track_style_value)
         val country: TextView = findViewById(R.id.track_country_value)
         playControlButton = findViewById(R.id.play_control_button)
+        currentTrackTime = findViewById(R.id.current_track_time)
 
         playerTrackName.text = track.trackName
         playerArtistName.text = track.artistName
@@ -84,6 +92,7 @@ class PlayerActivity : AppCompatActivity() {
     override fun onDestroy() {
         super.onDestroy()
         mediaPlayer.release()
+        stopTimer()
     }
 
     private fun playerButtonControl() {
@@ -108,6 +117,8 @@ class PlayerActivity : AppCompatActivity() {
         mediaPlayer.setOnCompletionListener {
             playControlButton.setImageResource(R.drawable.play_button);
             playerState = STATE_PREPARED
+            currentTrackTime.text = "00.00"
+            stopTimer()
         }
     }
 
@@ -115,11 +126,33 @@ class PlayerActivity : AppCompatActivity() {
         mediaPlayer.start()
         playerState = STATE_PLAYING
         playControlButton.setImageResource(R.drawable.pause_button);
+        startTimer()
     }
 
     private fun pausePlayer() {
         mediaPlayer.pause()
         playerState = STATE_PAUSED
         playControlButton.setImageResource(R.drawable.play_button);
+        stopTimer()
+    }
+
+    private fun startTimer() {
+        handler.post(createUpdateTimerTask())
+    }
+
+    private fun createUpdateTimerTask(): Runnable {
+        return object : Runnable {
+            override fun run() {
+                currentTrackTime.text = SimpleDateFormat(
+                    "mm:ss",
+                    Locale.getDefault()
+                ).format(mediaPlayer.currentPosition)
+                handler.postDelayed(this, UPDATE_TIMER_DELAY)
+            }
+        }
+    }
+
+    private fun stopTimer() {
+        handler.removeCallbacks(createUpdateTimerTask())
     }
 }
