@@ -16,6 +16,7 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageButton
 import android.widget.ImageView
+import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -39,6 +40,7 @@ class SearchActivity : AppCompatActivity(), ItemClickListener {
     private lateinit var historyText: TextView
     private lateinit var clearHistoryButton: Button
     private lateinit var historyTrackListRecyclerView: RecyclerView
+    private lateinit var progressBar: ProgressBar
 
     private val baseUrl: String = "https://itunes.apple.com/"
     private val trackApiService = Retrofit.Builder()
@@ -149,6 +151,7 @@ class SearchActivity : AppCompatActivity(), ItemClickListener {
                 searchHistory.clear()
                 hideTrackHistory()
             }
+            progressBar = findViewById(R.id.progressBar)
 
         } catch (ex: Exception) {
             Log.d("MY", ex.message.toString(), ex.fillInStackTrace())
@@ -167,9 +170,10 @@ class SearchActivity : AppCompatActivity(), ItemClickListener {
     }
 
     private fun putRequest() {
-        hideErrors()
-
         if (searchTrackView.text.isNotEmpty()) {
+            hideErrors()
+            progressBar.visibility = View.VISIBLE
+
             trackApiService.search(searchTrackView.text.toString()).enqueue(object :
                 Callback<TrackResponse> {
 
@@ -177,6 +181,7 @@ class SearchActivity : AppCompatActivity(), ItemClickListener {
                     call: Call<TrackResponse>,
                     response: Response<TrackResponse>
                 ) {
+                    progressBar.visibility = View.GONE
                     if (response.isSuccessful) {
                         trackAdapter.items = response.body()!!.results.toMutableList()
                         if (trackAdapter.items.isNotEmpty()) {
@@ -191,6 +196,7 @@ class SearchActivity : AppCompatActivity(), ItemClickListener {
                 }
 
                 override fun onFailure(call: Call<TrackResponse>, t: Throwable) {
+                    progressBar.visibility = View.GONE
                     showConnectionError()
                 }
             })
@@ -198,7 +204,7 @@ class SearchActivity : AppCompatActivity(), ItemClickListener {
     }
 
     override fun onClick(track: Track) {
-        if(clickDebounce()) {
+        if (clickDebounce()) {
             searchHistory.addTrack(track)
             historyTrackAdapter.notifyDataSetChanged()
             Intent(this, PlayerActivity::class.java).apply {
