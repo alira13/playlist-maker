@@ -17,4 +17,5 @@
     <dimen name="retry_button_corner_radius">54dp</dimen>
     <dimen name="track_image_corner_radius">2dp</dimen>
     <dimen name="player_track_image_corner_radius">8dp</dimen>
+    <dimen name="progressbar_size">44dp</dimen>
 </resources>

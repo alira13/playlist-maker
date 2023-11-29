@@ -56,6 +56,8 @@ class SearchActivity : AppCompatActivity(), ItemClickListener {
     private val handler: Handler = Handler(Looper.getMainLooper())
     private var isClickAllowed = true
 
+    private val searchRunnable = Runnable { putRequest() }
+
     @SuppressLint("MissingInflatedId", "NotifyDataSetChanged")
     override fun onCreate(savedInstanceState: Bundle?) {
         try {
@@ -261,8 +263,6 @@ class SearchActivity : AppCompatActivity(), ItemClickListener {
     private fun hideTrackList() {
         trackListRecyclerView.visibility = View.GONE
     }
-
-    private val searchRunnable = Runnable { putRequest() }
 
     private fun searchDebounce() {
         handler.removeCallbacks(searchRunnable)

@@ -18,47 +18,71 @@ import java.util.Locale
 class PlayerActivity : AppCompatActivity() {
 
     private val mediaPlayer = MediaPlayer()
-    private var playerState = STATE_DEFAULT
-
-    val handler = Handler(Looper.getMainLooper())
+    private var playerState = PlayerState.STATE_DEFAULT
+    private val handler = Handler(Looper.getMainLooper())
 
     private lateinit var playControlButton: ImageButton
     private lateinit var currentTrackTime: TextView
-
-    companion object {
-        private const val STATE_DEFAULT = 0
-        private const val STATE_PREPARED = 1
-        private const val STATE_PLAYING = 2
-        private const val STATE_PAUSED = 3
-        private const val UPDATE_TIMER_DELAY = 2000L
-    }
+    private lateinit var trackImage: ImageView
+    private lateinit var playerTrackName: TextView
+    private lateinit var playerArtistName: TextView
+    private lateinit var playerTrackTime: TextView
+    private lateinit var collectionName: TextView
+    private lateinit var releaseDate: TextView
+    private lateinit var primaryGenreName: TextView
+    private lateinit var country: TextView
+    private lateinit var backButton: ImageButton
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_player)
 
-        val backButton = findViewById<ImageButton>(R.id.back_button)
-        backButton.setOnClickListener {
-            finish()
-        }
+        getViews()
 
         val track = if (SDK_INT >= 33) {
             intent.getParcelableExtra(TRACK_VALUE, Track::class.java)!!
         } else {
             intent.getParcelableExtra<Track>(TRACK_VALUE)!!
         }
+        setTrackInfo(track)
 
-        val trackImage: ImageView = findViewById(R.id.player_track_image)
-        val playerTrackName: TextView = findViewById(R.id.player_track_name)
-        val playerArtistName: TextView = findViewById(R.id.player_track_author)
-        val playerTrackTime: TextView = findViewById(R.id.track_time_value)
-        val collectionName: TextView = findViewById(R.id.track_album_value)
-        val releaseDate: TextView = findViewById(R.id.track_year_value)
-        val primaryGenreName: TextView = findViewById(R.id.track_style_value)
-        val country: TextView = findViewById(R.id.track_country_value)
+        preparePlayer(track)
+
+        playControlButton.setOnClickListener {
+            playerButtonControl()
+        }
+
+        backButton.setOnClickListener {
+            finish()
+        }
+    }
+
+    override fun onPause() {
+        super.onPause()
+        pausePlayer()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        mediaPlayer.release()
+        stopTimer()
+    }
+
+    private fun getViews() {
+        backButton = findViewById<ImageButton>(R.id.back_button)
+        trackImage = findViewById(R.id.player_track_image)
+        playerTrackName = findViewById(R.id.player_track_name)
+        playerArtistName = findViewById(R.id.player_track_author)
+        playerTrackTime = findViewById(R.id.track_time_value)
+        collectionName = findViewById(R.id.track_album_value)
+        releaseDate = findViewById(R.id.track_year_value)
+        primaryGenreName = findViewById(R.id.track_style_value)
+        country = findViewById(R.id.track_country_value)
         playControlButton = findViewById(R.id.play_control_button)
         currentTrackTime = findViewById(R.id.current_track_time)
+    }
 
+    private fun setTrackInfo(track: Track) {
         playerTrackName.text = track.trackName
         playerArtistName.text = track.artistName
         playerTrackTime.text =
@@ -79,31 +103,19 @@ class PlayerActivity : AppCompatActivity() {
             .placeholder(R.drawable.placeholder)
             .transform(RoundedCorners(trackImage.resources.getDimensionPixelSize(R.dimen.player_track_image_corner_radius)))
             .into(trackImage)
-
-        preparePlayer(track)
-        playControlButton.setOnClickListener { playerButtonControl() }
-    }
-
-    override fun onPause() {
-        super.onPause()
-        pausePlayer()
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        mediaPlayer.release()
-        stopTimer()
     }
 
     private fun playerButtonControl() {
         when (playerState) {
-            STATE_PLAYING -> {
+            PlayerState.STATE_PLAYING -> {
                 pausePlayer()
             }
 
-            STATE_PAUSED, STATE_PREPARED -> {
+            PlayerState.STATE_PAUSED, PlayerState.STATE_PREPARED -> {
                 startPlayer()
             }
+
+            else -> {}
         }
     }
 
@@ -112,11 +124,11 @@ class PlayerActivity : AppCompatActivity() {
         mediaPlayer.prepareAsync()
         mediaPlayer.setOnPreparedListener {
             playControlButton.isEnabled = true
-            playerState = STATE_PREPARED
+            playerState = PlayerState.STATE_PREPARED
         }
         mediaPlayer.setOnCompletionListener {
-            playControlButton.setImageResource(R.drawable.play_button);
-            playerState = STATE_PREPARED
+            playControlButton.setImageResource(R.drawable.play_button)
+            playerState = PlayerState.STATE_PREPARED
             currentTrackTime.text = "00.00"
             stopTimer()
         }
@@ -124,15 +136,15 @@ class PlayerActivity : AppCompatActivity() {
 
     private fun startPlayer() {
         mediaPlayer.start()
-        playerState = STATE_PLAYING
-        playControlButton.setImageResource(R.drawable.pause_button);
+        playerState = PlayerState.STATE_PLAYING
+        playControlButton.setImageResource(R.drawable.pause_button)
         startTimer()
     }
 
     private fun pausePlayer() {
         mediaPlayer.pause()
-        playerState = STATE_PAUSED
-        playControlButton.setImageResource(R.drawable.play_button);
+        playerState = PlayerState.STATE_PAUSED
+        playControlButton.setImageResource(R.drawable.play_button)
         stopTimer()
     }
 
@@ -154,5 +166,15 @@ class PlayerActivity : AppCompatActivity() {
 
     private fun stopTimer() {
         handler.removeCallbacks(createUpdateTimerTask())
+    }
+
+    enum class PlayerState {
+        STATE_DEFAULT,
+        STATE_PREPARED,
+        STATE_PLAYING,
+        STATE_PAUSED
+    }
+    companion object {
+        private const val UPDATE_TIMER_DELAY = 1000L
     }
 }
