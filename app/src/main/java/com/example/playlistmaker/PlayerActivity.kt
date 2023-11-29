@@ -155,10 +155,20 @@ class PlayerActivity : AppCompatActivity() {
     private fun createUpdateTimerTask(): Runnable {
         return object : Runnable {
             override fun run() {
-                currentTrackTime.text = SimpleDateFormat(
-                    "mm:ss",
-                    Locale.getDefault()
-                ).format(mediaPlayer.currentPosition)
+                when (playerState) {
+                    PlayerState.STATE_PLAYING -> {
+                        currentTrackTime.text = SimpleDateFormat(
+                            "mm:ss",
+                            Locale.getDefault()
+                        ).format(mediaPlayer.currentPosition)
+                    }
+
+                    PlayerState.STATE_PREPARED -> {
+                        currentTrackTime.text = "00:00"
+                    }
+
+                    else -> {}
+                }
                 handler.postDelayed(this, UPDATE_TIMER_DELAY)
             }
         }
