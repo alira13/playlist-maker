@@ -20,6 +20,7 @@ class PlayerActivity : AppCompatActivity() {
     private val mediaPlayer = MediaPlayer()
     private var playerState = PlayerState.STATE_DEFAULT
     private val handler = Handler(Looper.getMainLooper())
+    private var isClickAllowed = true
 
     private lateinit var playControlButton: ImageButton
     private lateinit var currentTrackTime: TextView
@@ -49,7 +50,7 @@ class PlayerActivity : AppCompatActivity() {
         preparePlayer(track)
 
         playControlButton.setOnClickListener {
-            playerButtonControl()
+            if (clickDebounce()) playerButtonControl()
         }
 
         backButton.setOnClickListener {
@@ -178,13 +179,24 @@ class PlayerActivity : AppCompatActivity() {
         handler.removeCallbacks(createUpdateTimerTask())
     }
 
+    private fun clickDebounce(): Boolean {
+        val current = isClickAllowed
+        if (isClickAllowed) {
+            isClickAllowed = false
+            handler.postDelayed({ isClickAllowed = true }, CLICK_DEBOUNCE_DELAY)
+        }
+        return current
+    }
+
     enum class PlayerState {
         STATE_DEFAULT,
         STATE_PREPARED,
         STATE_PLAYING,
         STATE_PAUSED
     }
+
     companion object {
         private const val UPDATE_TIMER_DELAY = 1000L
+        private const val CLICK_DEBOUNCE_DELAY = 1000L
     }
 }
