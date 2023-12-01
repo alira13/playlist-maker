@@ -5,16 +5,18 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
 import android.view.View
-import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageButton
 import android.widget.ImageView
+import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -38,6 +40,7 @@ class SearchActivity : AppCompatActivity(), ItemClickListener {
     private lateinit var historyText: TextView
     private lateinit var clearHistoryButton: Button
     private lateinit var historyTrackListRecyclerView: RecyclerView
+    private lateinit var progressBar: ProgressBar
 
     private val baseUrl: String = "https://itunes.apple.com/"
     private val trackApiService = Retrofit.Builder()
@@ -49,6 +52,11 @@ class SearchActivity : AppCompatActivity(), ItemClickListener {
     private val trackAdapter = TrackAdapter(this)
     private val historyTrackAdapter = TrackAdapter(this)
     private lateinit var searchHistory: SearchHistory
+
+    private val handler: Handler = Handler(Looper.getMainLooper())
+    private var isClickAllowed = true
+
+    private val searchRunnable = Runnable { putRequest() }
 
     @SuppressLint("MissingInflatedId", "NotifyDataSetChanged")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -85,6 +93,7 @@ class SearchActivity : AppCompatActivity(), ItemClickListener {
 
                 override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
                     searchValue = s.toString()
+                    searchDebounce()
                 }
 
                 override fun afterTextChanged(s: Editable?) {
@@ -105,13 +114,6 @@ class SearchActivity : AppCompatActivity(), ItemClickListener {
             }
 
             searchTrackView.addTextChangedListener(simpleTextWatcher)
-
-            searchTrackView.setOnEditorActionListener { _, actionId, _ ->
-                if (actionId == EditorInfo.IME_ACTION_DONE) {
-                    putRequest()
-                }
-                false
-            }
 
             searchTrackView.setOnFocusChangeListener { _, hasFocus ->
                 if (hasFocus
@@ -151,6 +153,7 @@ class SearchActivity : AppCompatActivity(), ItemClickListener {
                 searchHistory.clear()
                 hideTrackHistory()
             }
+            progressBar = findViewById(R.id.progressBar)
 
         } catch (ex: Exception) {
             Log.d("MY", ex.message.toString(), ex.fillInStackTrace())
@@ -169,14 +172,18 @@ class SearchActivity : AppCompatActivity(), ItemClickListener {
     }
 
     private fun putRequest() {
-        hideErrors()
-
         if (searchTrackView.text.isNotEmpty()) {
+            hideErrors()
+            progressBar.visibility = View.VISIBLE
+
             trackApiService.search(searchTrackView.text.toString()).enqueue(object :
                 Callback<TrackResponse> {
 
-                override fun onResponse(call: Call<TrackResponse>, response: Response<TrackResponse>)
-                {
+                override fun onResponse(
+                    call: Call<TrackResponse>,
+                    response: Response<TrackResponse>
+                ) {
+                    progressBar.visibility = View.GONE
                     if (response.isSuccessful) {
                         trackAdapter.items = response.body()!!.results.toMutableList()
                         if (trackAdapter.items.isNotEmpty()) {
@@ -191,6 +198,7 @@ class SearchActivity : AppCompatActivity(), ItemClickListener {
                 }
 
                 override fun onFailure(call: Call<TrackResponse>, t: Throwable) {
+                    progressBar.visibility = View.GONE
                     showConnectionError()
                 }
             })
@@ -198,31 +206,33 @@ class SearchActivity : AppCompatActivity(), ItemClickListener {
     }
 
     override fun onClick(track: Track) {
-        searchHistory.addTrack(track)
-        historyTrackAdapter.notifyDataSetChanged()
-        Intent(this, PlayerActivity::class.java).apply {
-            putExtra(TRACK_VALUE, track)
-            startActivity(this)
+        if (clickDebounce()) {
+            searchHistory.addTrack(track)
+            historyTrackAdapter.notifyDataSetChanged()
+            Intent(this, PlayerActivity::class.java).apply {
+                putExtra(TRACK_VALUE, track)
+                startActivity(this)
+            }
         }
     }
 
-    private fun showTrackHistory(){
+    private fun showTrackHistory() {
         hideTrackList()
         hideErrors()
-        if(historyTrackAdapter.items.isNotEmpty()) {
+        if (historyTrackAdapter.items.isNotEmpty()) {
             historyText.visibility = View.VISIBLE
             clearHistoryButton.visibility = View.VISIBLE
             historyTrackListRecyclerView.visibility = View.VISIBLE
         }
     }
 
-    private fun hideTrackHistory(){
+    private fun hideTrackHistory() {
         historyText.visibility = View.GONE
         clearHistoryButton.visibility = View.GONE
         historyTrackListRecyclerView.visibility = View.GONE
     }
 
-    private fun showConnectionError(){
+    private fun showConnectionError() {
         trackAdapter.clearItems()
         hideTrackHistory()
         hideTrackList()
@@ -230,32 +240,48 @@ class SearchActivity : AppCompatActivity(), ItemClickListener {
         retrySearchButton.visibility = View.VISIBLE
     }
 
-    private fun showEmptyTrackListError(){
+    private fun showEmptyTrackListError() {
         trackAdapter.clearItems()
         hideTrackHistory()
         hideTrackList()
-        trackListRecyclerView.visibility=View.GONE
+        trackListRecyclerView.visibility = View.GONE
         emptyListProblemText.visibility = View.VISIBLE
     }
 
-    private fun hideErrors(){
+    private fun hideErrors() {
         emptyListProblemText.visibility = View.GONE
         searchNoInternetProblemText.visibility = View.GONE
         retrySearchButton.visibility = View.GONE
     }
 
-    private fun showTrackList(){
+    private fun showTrackList() {
         hideTrackHistory()
         hideErrors()
-        trackListRecyclerView.visibility=View.VISIBLE
+        trackListRecyclerView.visibility = View.VISIBLE
     }
 
-    private fun hideTrackList(){
-        trackListRecyclerView.visibility=View.GONE
+    private fun hideTrackList() {
+        trackListRecyclerView.visibility = View.GONE
+    }
+
+    private fun searchDebounce() {
+        handler.removeCallbacks(searchRunnable)
+        handler.postDelayed(searchRunnable, SEARCH_DEBOUNCE_DELAY)
+    }
+
+    private fun clickDebounce(): Boolean {
+        val current = isClickAllowed
+        if (isClickAllowed) {
+            isClickAllowed = false
+            handler.postDelayed({ isClickAllowed = true }, CLICK_DEBOUNCE_DELAY)
+        }
+        return current
     }
 
     companion object {
         const val SEARCH_VALUE = "SEARCH_VALUE"
         const val TRACK_VALUE = "TRACK_VALUE"
+        private const val SEARCH_DEBOUNCE_DELAY = 2000L
+        private const val CLICK_DEBOUNCE_DELAY = 1000L
     }
 }

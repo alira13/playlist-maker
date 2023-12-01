@@ -29,17 +29,14 @@
             style="@style/SearchEditText"
             android:autofillHints="name"
             android:hint="@string/search_label"
-            android:imeOptions="actionDone"
-            android:singleLine="true">
-        </EditText>
+            android:singleLine="true" />
 
         <ImageView
             android:id="@+id/search_button"
             style="@style/IconInSearchEditText"
             android:layout_gravity="start|center"
             android:layout_marginStart="12dp"
-            android:src="@drawable/search">
-        </ImageView>
+            android:src="@drawable/search" />
 
         <ImageView
             android:id="@+id/clear_button"
@@ -47,9 +44,17 @@
             android:layout_gravity="end|center"
             android:layout_marginEnd="12dp"
             android:src="@drawable/close"
-            android:visibility="gone">
-        </ImageView>
+            android:visibility="gone" />
     </FrameLayout>
+
+    <ProgressBar
+        android:id="@+id/progressBar"
+        android:layout_width="@dimen/progressbar_size"
+        android:layout_height="@dimen/progressbar_size"
+        android:layout_gravity="center"
+        android:indeterminateTint="@color/YP_blue"
+        android:visibility="gone"
+        android:layout_marginTop="160dp"/>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/track_list"
@@ -69,21 +74,21 @@
         android:id="@+id/search_no_internet_problem_text"
         style="@style/search_no_internet_problem_text"
         android:text="@string/no_internet_connection"
-        android:visibility="gone"/>
+        android:visibility="gone" />
 
     <Button
         android:id="@+id/retry_search_button"
         style="@style/search_no_internet_problem_retry_button"
-        android:layout_height="wrap_content"
         android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_gravity="top|center"
         android:layout_marginTop="24dp"
         android:enabled="true"
         android:fontFamily="@font/ys_font_family_medium"
-        android:textSize="@dimen/medium_text_size_14"
+        android:text="@string/refresh"
         android:textAllCaps="false"
-        android:visibility="gone"
-        android:text="@string/refresh" />
+        android:textSize="@dimen/medium_text_size_14"
+        android:visibility="gone" />
 
     <TextView
         android:id="@+id/history_text"
@@ -95,31 +100,31 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1">
+
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/history_track_list"
             android:layout_width="match_parent"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-            tools:itemCount="10"
             android:layout_height="0dp"
             android:layout_weight="1"
-            tools:listitem="@layout/track_view"
-            android:visibility="gone"/>
+            android:visibility="gone"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            tools:itemCount="10"
+            tools:listitem="@layout/track_view" />
     </ScrollView>
 
     <Button
         android:id="@+id/clear_history"
         style="@style/search_no_internet_problem_retry_button"
-        android:layout_height="wrap_content"
         android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_gravity="top|center"
         android:layout_marginTop="24dp"
         android:layout_marginBottom="24dp"
         android:enabled="true"
         android:fontFamily="@font/ys_font_family_medium"
-        android:textSize="@dimen/medium_text_size_14"
+        android:text="@string/clear_history_text"
         android:textAllCaps="false"
+        android:textSize="@dimen/medium_text_size_14"
         android:visibility="gone"
-        app:cornerRadius="@dimen/retry_button_corner_radius"
-        android:text="@string/clear_history_text">
-    </Button>
+        app:cornerRadius="@dimen/retry_button_corner_radius" />
 </LinearLayout>
