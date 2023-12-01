@@ -1,6 +1,7 @@
 package com.example.playlistmaker
 
 import android.media.MediaPlayer
+import android.os.Build
 import android.os.Build.VERSION.SDK_INT
 import android.os.Bundle
 import android.os.Handler
@@ -40,7 +41,7 @@ class PlayerActivity : AppCompatActivity() {
 
         getViews()
 
-        val track = if (SDK_INT >= 33) {
+        val track = if (SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             intent.getParcelableExtra(TRACK_VALUE, Track::class.java)!!
         } else {
             intent.getParcelableExtra<Track>(TRACK_VALUE)!!
@@ -90,33 +91,22 @@ class PlayerActivity : AppCompatActivity() {
             SimpleDateFormat("mm:ss", Locale.getDefault()).format(track.trackTime)
         collectionName.text = track.collectionName
         releaseDate.text = if (track.releaseDate.isNotEmpty()) track.releaseDate.substring(
-            0,
-            4
+            0, 4
         ) else "Not found"
         primaryGenreName.text = track.primaryGenreName
         country.text = track.country
 
         val artworkUrl512 = track.artworkUrl100.replaceAfterLast('/', "512x512bb.jpg")
-        Glide
-            .with(trackImage)
-            .load(artworkUrl512)
-            .fitCenter()
-            .placeholder(R.drawable.placeholder)
+        Glide.with(trackImage).load(artworkUrl512).fitCenter().placeholder(R.drawable.placeholder)
             .transform(RoundedCorners(trackImage.resources.getDimensionPixelSize(R.dimen.player_track_image_corner_radius)))
             .into(trackImage)
     }
 
     private fun playerButtonControl() {
         when (playerState) {
-            PlayerState.STATE_PLAYING -> {
-                pausePlayer()
-            }
-
-            PlayerState.STATE_PAUSED, PlayerState.STATE_PREPARED -> {
-                startPlayer()
-            }
-
-            else -> {}
+            PlayerState.STATE_PLAYING -> pausePlayer()
+            PlayerState.STATE_PAUSED, PlayerState.STATE_PREPARED -> startPlayer()
+            else -> Unit
         }
     }
 
@@ -159,8 +149,7 @@ class PlayerActivity : AppCompatActivity() {
                 when (playerState) {
                     PlayerState.STATE_PLAYING -> {
                         currentTrackTime.text = SimpleDateFormat(
-                            "mm:ss",
-                            Locale.getDefault()
+                            "mm:ss", Locale.getDefault()
                         ).format(mediaPlayer.currentPosition)
                     }
 
@@ -189,10 +178,7 @@ class PlayerActivity : AppCompatActivity() {
     }
 
     enum class PlayerState {
-        STATE_DEFAULT,
-        STATE_PREPARED,
-        STATE_PLAYING,
-        STATE_PAUSED
+        STATE_DEFAULT, STATE_PREPARED, STATE_PLAYING, STATE_PAUSED
     }
 
     companion object {
