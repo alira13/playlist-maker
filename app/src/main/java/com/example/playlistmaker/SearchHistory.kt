@@ -1,5 +1,5 @@
-import com.example.playlistmaker.AppSharedPreferences
-import com.example.playlistmaker.Track
+import com.example.playlistmaker.data.sharedPreferences.AppSharedPreferences
+import com.example.playlistmaker.domain.models.Track
 
 class SearchHistory(private val appSharedPreferences: AppSharedPreferences) {
 

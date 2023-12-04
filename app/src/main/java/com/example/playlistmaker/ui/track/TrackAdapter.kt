@@ -1,7 +1,8 @@
-package com.example.playlistmaker
+package com.example.playlistmaker.ui.track
 
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.example.playlistmaker.domain.models.Track
 
 interface ItemClickListener {
     fun onClick(track: Track)
