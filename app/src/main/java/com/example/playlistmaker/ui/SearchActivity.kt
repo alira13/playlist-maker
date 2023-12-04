@@ -22,7 +22,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.playlistmaker.R
-import com.example.playlistmaker.data.dto.TrackResponse
+import com.example.playlistmaker.data.dto.TrackSearchResponse
 import com.example.playlistmaker.data.network.TrackApiService
 import com.example.playlistmaker.data.sharedPreferences.AppSharedPreferences
 import com.example.playlistmaker.domain.models.Track
@@ -184,15 +184,28 @@ class SearchActivity : AppCompatActivity(), ItemClickListener {
             progressBar.visibility = View.VISIBLE
 
             trackApiService.search(searchTrackView.text.toString()).enqueue(object :
-                Callback<TrackResponse> {
+                Callback<TrackSearchResponse> {
 
                 override fun onResponse(
-                    call: Call<TrackResponse>,
-                    response: Response<TrackResponse>
+                    call: Call<TrackSearchResponse>,
+                    response: Response<TrackSearchResponse>
                 ) {
                     progressBar.visibility = View.GONE
                     if (response.isSuccessful) {
-                        trackAdapter.items = response.body()!!.results.toMutableList()
+                        trackAdapter.items =response.body()!!.results.map {
+                            Track(
+                                it.trackName,
+                                it.artistName,
+                                it.trackTime,
+                                it.artworkUrl100,
+                                it.trackId,
+                                it.collectionName,
+                                it.releaseDate,
+                                it.primaryGenreName,
+                                it.country,
+                                it.previewUrl )
+                        }.toMutableList()
+
                         if (trackAdapter.items.isNotEmpty()) {
                             showTrackList()
                             Log.d("MY_LOG", "Successful: ${trackAdapter.items}")
@@ -204,7 +217,7 @@ class SearchActivity : AppCompatActivity(), ItemClickListener {
                     }
                 }
 
-                override fun onFailure(call: Call<TrackResponse>, t: Throwable) {
+                override fun onFailure(call: Call<TrackSearchResponse>, t: Throwable) {
                     progressBar.visibility = View.GONE
                     showConnectionError()
                 }
