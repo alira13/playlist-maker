@@ -3,9 +3,9 @@ package com.example.playlistmaker.domain.api
 import com.example.playlistmaker.domain.models.Track
 
 interface TracksInteractor {
-    fun searchTracks(expression: String, consumer: MoviesConsumer)
+    fun searchTracks(expression: String, consumer: TrackConsumer)
 
-    interface MoviesConsumer {
-        fun consume(foundMovies: List<Track>)
+    interface TrackConsumer {
+        fun consume(foundTracks: List<Track>)
     }
 }

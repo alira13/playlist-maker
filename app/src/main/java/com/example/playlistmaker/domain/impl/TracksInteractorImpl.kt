@@ -4,7 +4,7 @@ import com.example.playlistmaker.domain.api.TracksInteractor
 import com.example.playlistmaker.domain.api.TracksRepository
 
 class TracksInteractorImpl(private val repository: TracksRepository) : TracksInteractor {
-    override fun searchTracks(expression: String, consumer: TracksInteractor.MoviesConsumer) {
+    override fun searchTracks(expression: String, consumer: TracksInteractor.TrackConsumer) {
         val t = Thread {
             consumer.consume(repository.searchTracks(expression))
         }
