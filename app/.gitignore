@@ -299,9 +299,9 @@ bin/
 /build/tmp/kotlin-classes/debug/com/example/playlistmaker/SearchActivity$onCreate$simpleTextWatcher$1.class
 /build/tmp/kotlin-classes/debug/com/example/playlistmaker/SearchActivity$putRequest$1.class
 /build/tmp/kotlin-classes/debug/com/example/playlistmaker/SearchActivity.class
-/build/tmp/kotlin-classes/debug/SearchHistory$addTrack$1.class
-/build/tmp/kotlin-classes/debug/SearchHistory$Companion.class
-/build/tmp/kotlin-classes/debug/SearchHistory.class
+/build/tmp/kotlin-classes/debug/com.example.playlistmaker.SearchHistory$addTrack$1.class
+/build/tmp/kotlin-classes/debug/com.example.playlistmaker.SearchHistory$Companion.class
+/build/tmp/kotlin-classes/debug/com.example.playlistmaker.SearchHistory.class
 /build/intermediates/packaged_res/debug/drawable/settings.xml
 /build/tmp/kotlin-classes/debug/com/example/playlistmaker/SettingsActivity.class
 /build/intermediates/packaged_res/debug/drawable/share.xml

@@ -1,5 +1,6 @@
-import com.example.playlistmaker.AppSharedPreferences
-import com.example.playlistmaker.Track
+package com.example.playlistmaker
+
+import com.example.playlistmaker.domain.models.Track
 
 class SearchHistory(private val appSharedPreferences: AppSharedPreferences) {
 
@@ -11,7 +12,7 @@ class SearchHistory(private val appSharedPreferences: AppSharedPreferences) {
 
     fun addTrack(track: Track) {
         if (tracks.isNotEmpty()) {
-            tracks.removeIf { item-> item.trackId == track.trackId }
+            tracks.removeIf { item -> item.trackId == track.trackId }
         }
         if (tracks.size >= TRACK_HISTORY_SIZE) {
             tracks.removeLast()

@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.View
 import android.widget.ImageButton
 import androidx.appcompat.app.AppCompatActivity
+import com.example.playlistmaker.R
 
 class MediaActivity : AppCompatActivity() {
     @SuppressLint("MissingInflatedId")

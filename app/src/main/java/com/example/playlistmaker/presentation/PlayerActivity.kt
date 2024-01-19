@@ -1,6 +1,6 @@
-package com.example.playlistmaker
+package com.example.playlistmaker.presentation
 
-import android.media.MediaPlayer
+import android.content.Intent
 import android.os.Build
 import android.os.Build.VERSION.SDK_INT
 import android.os.Bundle
@@ -12,13 +12,18 @@ import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
+import com.example.playlistmaker.Creator
+import com.example.playlistmaker.R
 import com.example.playlistmaker.SearchActivity.Companion.TRACK_VALUE
+import com.example.playlistmaker.domain.usecases.PlayerInteractor
+import com.example.playlistmaker.domain.models.Track
 import java.text.SimpleDateFormat
 import java.util.Locale
 
 class PlayerActivity : AppCompatActivity() {
 
-    private val mediaPlayer = MediaPlayer()
+    private val playerIteractor: PlayerInteractor = Creator.provideTrackInteractor()
+
     private var playerState = PlayerState.STATE_DEFAULT
     private val handler = Handler(Looper.getMainLooper())
     private var isClickAllowed = true
@@ -41,11 +46,7 @@ class PlayerActivity : AppCompatActivity() {
 
         getViews()
 
-        val track = if (SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            intent.getParcelableExtra(TRACK_VALUE, Track::class.java)!!
-        } else {
-            intent.getParcelableExtra<Track>(TRACK_VALUE)!!
-        }
+        val track = getTrack(intent)
         setTrackInfo(track)
 
         preparePlayer(track)
@@ -66,12 +67,12 @@ class PlayerActivity : AppCompatActivity() {
 
     override fun onDestroy() {
         super.onDestroy()
-        mediaPlayer.release()
+        playerIteractor.quit()
         stopTimer()
     }
 
     private fun getViews() {
-        backButton = findViewById<ImageButton>(R.id.back_button)
+        backButton = findViewById(R.id.back_button)
         trackImage = findViewById(R.id.player_track_image)
         playerTrackName = findViewById(R.id.player_track_name)
         playerArtistName = findViewById(R.id.player_track_author)
@@ -82,6 +83,15 @@ class PlayerActivity : AppCompatActivity() {
         country = findViewById(R.id.track_country_value)
         playControlButton = findViewById(R.id.play_control_button)
         currentTrackTime = findViewById(R.id.current_track_time)
+    }
+
+    private fun getTrack(intent: Intent): Track {
+        val track = if (SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            intent.getParcelableExtra(TRACK_VALUE, Track::class.java)!!
+        } else {
+            intent.getParcelableExtra<Track>(TRACK_VALUE)!!
+        }
+        return track
     }
 
     private fun setTrackInfo(track: Track) {
@@ -111,13 +121,12 @@ class PlayerActivity : AppCompatActivity() {
     }
 
     private fun preparePlayer(track: Track) {
-        mediaPlayer.setDataSource(track.previewUrl)
-        mediaPlayer.prepareAsync()
-        mediaPlayer.setOnPreparedListener {
+        playerIteractor.prepare(track.previewUrl)
+        playerIteractor.setOnPreparedListener {
             playControlButton.isEnabled = true
             playerState = PlayerState.STATE_PREPARED
         }
-        mediaPlayer.setOnCompletionListener {
+        playerIteractor.setOnCompletionListener {
             playControlButton.setImageResource(R.drawable.play_button)
             playerState = PlayerState.STATE_PREPARED
             currentTrackTime.text = "00.00"
@@ -126,14 +135,14 @@ class PlayerActivity : AppCompatActivity() {
     }
 
     private fun startPlayer() {
-        mediaPlayer.start()
+        playerIteractor.play()
         playerState = PlayerState.STATE_PLAYING
         playControlButton.setImageResource(R.drawable.pause_button)
         startTimer()
     }
 
     private fun pausePlayer() {
-        mediaPlayer.pause()
+        playerIteractor.pause()
         playerState = PlayerState.STATE_PAUSED
         playControlButton.setImageResource(R.drawable.play_button)
         stopTimer()
@@ -148,9 +157,7 @@ class PlayerActivity : AppCompatActivity() {
             override fun run() {
                 when (playerState) {
                     PlayerState.STATE_PLAYING -> {
-                        currentTrackTime.text = SimpleDateFormat(
-                            "mm:ss", Locale.getDefault()
-                        ).format(mediaPlayer.currentPosition)
+                        currentTrackTime.text = playerIteractor.getCurrentTime()
                     }
 
                     PlayerState.STATE_PREPARED -> {

@@ -16,7 +16,10 @@ class MainActivity : AppCompatActivity() {
         setButtonOnClickListener(R.id.settings_button, SettingsActivity::class.java)
     }
 
-    private fun <T : AppCompatActivity> setButtonOnClickListener(buttonId: Int, activity: Class<T>) {
+    private fun <T : AppCompatActivity> setButtonOnClickListener(
+        buttonId: Int,
+        activity: Class<T>
+    ) {
         val button = findViewById<Button>(buttonId)
         val buttonClickListener = View.OnClickListener {
             val displayIntent = Intent(this, activity)
