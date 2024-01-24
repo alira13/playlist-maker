@@ -2,8 +2,7 @@ package com.example.playlistmaker.domain.usecases
 
 import android.media.MediaPlayer.OnCompletionListener
 import android.media.MediaPlayer.OnPreparedListener
-import com.example.playlistmaker.data.TrackPlayer
-import com.example.playlistmaker.domain.usecases.PlayerInteractor
+import com.example.playlistmaker.domain.player.TrackPlayer
 
 class PlayerInteractorImpl(private val trackPlayer: TrackPlayer) : PlayerInteractor {
 

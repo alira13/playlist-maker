@@ -1,7 +1,7 @@
-package com.example.playlistmaker
+package com.example.playlistmaker.creator
 
-import com.example.playlistmaker.data.TrackPlayer
-import com.example.playlistmaker.data.TrackPlayerImpl
+import com.example.playlistmaker.domain.player.TrackPlayer
+import com.example.playlistmaker.data.player.TrackPlayerImpl
 import com.example.playlistmaker.domain.usecases.PlayerInteractor
 import com.example.playlistmaker.domain.usecases.PlayerInteractorImpl
 
