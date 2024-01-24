@@ -15,8 +15,10 @@ import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.example.playlistmaker.creator.Creator
 import com.example.playlistmaker.R
 import com.example.playlistmaker.SearchActivity.Companion.TRACK_VALUE
+import com.example.playlistmaker.domain.models.PlayerState
 import com.example.playlistmaker.domain.usecases.PlayerInteractor
 import com.example.playlistmaker.domain.models.Track
+import com.example.playlistmaker.domain.player.PlayerListener
 import com.example.playlistmaker.presentation.mapper.TrackMapper
 
 class PlayerActivity : AppCompatActivity() {
@@ -117,17 +119,21 @@ class PlayerActivity : AppCompatActivity() {
     }
 
     private fun preparePlayer(track: Track) {
+        val playerListener = object : PlayerListener {
+            override fun onPrepare() {
+                playControlButton.isEnabled = true
+                playerState = PlayerState.STATE_PREPARED
+            }
+
+            override fun onCompletion() {
+                playControlButton.setImageResource(R.drawable.play_button)
+                playerState = PlayerState.STATE_PREPARED
+                currentTrackTime.text = "00.00"
+                stopTimer()
+            }
+        }
+        playerIteractor.setListener(playerListener)
         playerIteractor.prepare(track.previewUrl)
-        playerIteractor.setOnPreparedListener {
-            playControlButton.isEnabled = true
-            playerState = PlayerState.STATE_PREPARED
-        }
-        playerIteractor.setOnCompletionListener {
-            playControlButton.setImageResource(R.drawable.play_button)
-            playerState = PlayerState.STATE_PREPARED
-            currentTrackTime.text = "00.00"
-            stopTimer()
-        }
     }
 
     private fun startPlayer() {
@@ -180,9 +186,6 @@ class PlayerActivity : AppCompatActivity() {
         return current
     }
 
-    enum class PlayerState {
-        STATE_DEFAULT, STATE_PREPARED, STATE_PLAYING, STATE_PAUSED
-    }
 
     companion object {
         private const val UPDATE_TIMER_DELAY = 1000L

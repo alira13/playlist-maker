@@ -1,10 +1,13 @@
 package com.example.playlistmaker.domain.usecases
 
-import android.media.MediaPlayer.OnCompletionListener
-import android.media.MediaPlayer.OnPreparedListener
+import com.example.playlistmaker.domain.player.PlayerListener
 import com.example.playlistmaker.domain.player.TrackPlayer
 
 class PlayerInteractorImpl(private val trackPlayer: TrackPlayer) : PlayerInteractor {
+
+    override fun setListener(listener: PlayerListener) {
+        trackPlayer.setListener(listener)
+    }
 
     override fun prepare(trackSource: String) {
         trackPlayer.prepare(trackSource)
@@ -24,13 +27,5 @@ class PlayerInteractorImpl(private val trackPlayer: TrackPlayer) : PlayerInterac
 
     override fun quit() {
         trackPlayer.quit()
-    }
-
-    override fun setOnCompletionListener(listener: OnCompletionListener) {
-        trackPlayer.setOnCompletionListener(listener)
-    }
-
-    override fun setOnPreparedListener(listener: OnPreparedListener) {
-        trackPlayer.setOnPreparedListener(listener)
     }
 }
