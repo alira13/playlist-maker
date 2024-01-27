@@ -20,7 +20,9 @@ import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.playlistmaker.creator.Creator
 import com.example.playlistmaker.domain.models.Track
+import com.example.playlistmaker.domain.usecases.SearchHistoryInteractor
 import com.example.playlistmaker.presentation.ui.PlayerActivity
 import retrofit2.Call
 import retrofit2.Callback
@@ -52,7 +54,7 @@ class SearchActivity : AppCompatActivity(), ItemClickListener {
 
     private val trackAdapter = TrackAdapter(this)
     private val historyTrackAdapter = TrackAdapter(this)
-    private lateinit var searchHistory: SearchHistory
+    private lateinit var searchHistoryInteractor: SearchHistoryInteractor
 
     private val handler: Handler = Handler(Looper.getMainLooper())
     private var isClickAllowed = true
@@ -121,7 +123,7 @@ class SearchActivity : AppCompatActivity(), ItemClickListener {
                     && searchTrackView.text.isEmpty()
                     && historyTrackAdapter.items.isNotEmpty()
                 ) {
-                    historyTrackAdapter.items = searchHistory.getTracks()
+                    historyTrackAdapter.items = searchHistoryInteractor.getHistory()
                     historyTrackAdapter.notifyDataSetChanged()
                     showTrackHistory()
                 } else {
@@ -143,15 +145,15 @@ class SearchActivity : AppCompatActivity(), ItemClickListener {
                 adapter = historyTrackAdapter
             }
 
-            searchHistory = SearchHistory(applicationContext as AppSharedPreferences)
-            historyTrackAdapter.items = searchHistory.getTracks()
+            searchHistoryInteractor = Creator.provideSearchHistoryInteractor(applicationContext)
+            historyTrackAdapter.items = searchHistoryInteractor.getHistory()
 
             historyText = findViewById(R.id.history_text)
             clearHistoryButton = findViewById(R.id.clear_history)
 
             clearHistoryButton.setOnClickListener {
                 historyTrackAdapter.clearItems()
-                searchHistory.clear()
+                searchHistoryInteractor.clearHistory()
                 hideTrackHistory()
             }
             progressBar = findViewById(R.id.progressBar)
@@ -208,7 +210,7 @@ class SearchActivity : AppCompatActivity(), ItemClickListener {
 
     override fun onClick(track: Track) {
         if (clickDebounce()) {
-            searchHistory.addTrack(track)
+            searchHistoryInteractor.addToHistory(track)
             historyTrackAdapter.notifyDataSetChanged()
             Intent(this, PlayerActivity::class.java).apply {
                 putExtra(TRACK_VALUE, track)

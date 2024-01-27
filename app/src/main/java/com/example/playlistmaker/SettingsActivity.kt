@@ -8,6 +8,7 @@ import android.view.View
 import android.widget.ImageButton
 import android.widget.Switch
 import androidx.appcompat.app.AppCompatActivity
+import com.example.playlistmaker.data.sharedPreferences.AppSharedPreferencesImpl
 
 class SettingsActivity : AppCompatActivity() {
     @SuppressLint("MissingInflatedId")
@@ -16,10 +17,10 @@ class SettingsActivity : AppCompatActivity() {
         setContentView(R.layout.activity_settings)
 
         val nightModeSwitch = findViewById<Switch>(R.id.night_mode_switch)
-        nightModeSwitch.isChecked = (applicationContext as AppSharedPreferences).getNightTheme()
+        nightModeSwitch.isChecked = (applicationContext as AppSharedPreferencesImpl).getNightTheme()
         nightModeSwitch.setOnCheckedChangeListener { _, checked ->
-            (applicationContext as AppSharedPreferences).putNightMode(checked)
-            (applicationContext as AppSharedPreferences).switchTheme(checked)
+            (applicationContext as AppSharedPreferencesImpl).putNightMode(checked)
+            (applicationContext as AppSharedPreferencesImpl).switchTheme(checked)
         }
 
         val backButton = findViewById<ImageButton>(R.id.arrow_back_button)
