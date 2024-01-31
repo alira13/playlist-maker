@@ -1,4 +1,4 @@
-package com.example.playlistmaker
+package com.example.playlistmaker.presentation.ui
 
 import android.annotation.SuppressLint
 import android.content.Intent
@@ -8,6 +8,7 @@ import android.view.View
 import android.widget.ImageButton
 import android.widget.Switch
 import androidx.appcompat.app.AppCompatActivity
+import com.example.playlistmaker.R
 import com.example.playlistmaker.data.sharedPreferences.AppSharedPreferencesImpl
 
 class SettingsActivity : AppCompatActivity() {

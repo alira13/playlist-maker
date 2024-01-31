@@ -1,4 +1,4 @@
-package com.example.playlistmaker
+package com.example.playlistmaker.presentation.ui
 
 import android.annotation.SuppressLint
 import android.content.Context
@@ -20,16 +20,12 @@ import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.playlistmaker.R
 import com.example.playlistmaker.creator.Creator
+import com.example.playlistmaker.domain.consumer.Consumer
+import com.example.playlistmaker.domain.consumer.ConsumerData
 import com.example.playlistmaker.domain.models.Track
 import com.example.playlistmaker.domain.usecases.SearchHistoryInteractor
-import com.example.playlistmaker.presentation.ui.PlayerActivity
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
-import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
-
 
 class SearchActivity : AppCompatActivity(), ItemClickListener {
     private var searchValue: String = ""
@@ -45,12 +41,7 @@ class SearchActivity : AppCompatActivity(), ItemClickListener {
     private lateinit var historyTrackListRecyclerView: RecyclerView
     private lateinit var progressBar: ProgressBar
 
-    private val baseUrl: String = "https://itunes.apple.com/"
-    private val trackApiService = Retrofit.Builder()
-        .baseUrl(baseUrl)
-        .addConverterFactory(GsonConverterFactory.create())
-        .build()
-        .create(TrackApiService::class.java)
+    private val searchInteractor = Creator.provideSearchInteractor()
 
     private val trackAdapter = TrackAdapter(this)
     private val historyTrackAdapter = TrackAdapter(this)
@@ -59,7 +50,7 @@ class SearchActivity : AppCompatActivity(), ItemClickListener {
     private val handler: Handler = Handler(Looper.getMainLooper())
     private var isClickAllowed = true
 
-    private val searchRunnable = Runnable { putRequest() }
+    private var searchRunnable = Runnable { search() }
 
     @SuppressLint("MissingInflatedId", "NotifyDataSetChanged")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -127,7 +118,7 @@ class SearchActivity : AppCompatActivity(), ItemClickListener {
                     historyTrackAdapter.notifyDataSetChanged()
                     showTrackHistory()
                 } else {
-                    showTrackList()
+                    showTrackList(historyTrackAdapter.items)
                 }
             }
 
@@ -136,7 +127,7 @@ class SearchActivity : AppCompatActivity(), ItemClickListener {
             retrySearchButton = findViewById((R.id.retry_search_button))
 
             retrySearchButton.setOnClickListener {
-                putRequest()
+                search()
             }
 
             historyTrackListRecyclerView = findViewById(R.id.history_track_list)
@@ -174,37 +165,44 @@ class SearchActivity : AppCompatActivity(), ItemClickListener {
         searchTrackView.setText(searchValue)
     }
 
-    private fun putRequest() {
+    private fun search() {
         if (searchTrackView.text.isNotEmpty()) {
             hideErrors()
             progressBar.visibility = View.VISIBLE
 
-            trackApiService.search(searchTrackView.text.toString()).enqueue(object :
-                Callback<TrackResponse> {
-
-                override fun onResponse(
-                    call: Call<TrackResponse>,
-                    response: Response<TrackResponse>
-                ) {
-                    progressBar.visibility = View.GONE
-                    if (response.isSuccessful) {
-                        trackAdapter.items = response.body()!!.results.toMutableList()
-                        if (trackAdapter.items.isNotEmpty()) {
-                            showTrackList()
-                            Log.d("MY_LOG", "Successful: ${trackAdapter.items}")
-                        } else {
-                            showEmptyTrackListError()
+            searchInteractor.execute(
+                text = searchTrackView.text.toString(),
+                consumer = object : Consumer<Track> {
+                    override fun consume(data: ConsumerData<Track>) {
+                        val currentRunnable = searchRunnable
+                        if (currentRunnable != null) {
+                            handler.removeCallbacks(currentRunnable)
                         }
-                    } else {
-                        showEmptyTrackListError()
+
+                        val newDetailsRunnable = Runnable {
+                            when (data) {
+                                is ConsumerData.NetworkError -> {
+                                    showConnectionError()
+                                    Log.d("MY_LOG", "CONNECTION ERROR}")
+                                }
+
+                                is ConsumerData.EmptyListError -> {
+                                    showEmptyTrackListError()
+                                    Log.d("MY_LOG", "EMPTY LIST ERROR}")
+                                }
+
+                                is ConsumerData.Data -> {
+                                    val tracks = data.value
+                                    showTrackList(tracks)
+                                    Log.d("MY_LOG", "SUCCESS: ${trackAdapter.items}")
+                                }
+                            }
+                        }
+                        searchRunnable = newDetailsRunnable
+                        handler.post(newDetailsRunnable)
                     }
                 }
-
-                override fun onFailure(call: Call<TrackResponse>, t: Throwable) {
-                    progressBar.visibility = View.GONE
-                    showConnectionError()
-                }
-            })
+            )
         }
     }
 
@@ -236,6 +234,7 @@ class SearchActivity : AppCompatActivity(), ItemClickListener {
     }
 
     private fun showConnectionError() {
+        progressBar.visibility = View.GONE
         trackAdapter.clearItems()
         hideTrackHistory()
         hideTrackList()
@@ -244,6 +243,7 @@ class SearchActivity : AppCompatActivity(), ItemClickListener {
     }
 
     private fun showEmptyTrackListError() {
+        progressBar.visibility = View.GONE
         trackAdapter.clearItems()
         hideTrackHistory()
         hideTrackList()
@@ -257,10 +257,13 @@ class SearchActivity : AppCompatActivity(), ItemClickListener {
         retrySearchButton.visibility = View.GONE
     }
 
-    private fun showTrackList() {
+    private fun showTrackList(tracks: List<Track>) {
+        progressBar.visibility = View.GONE
         hideTrackHistory()
         hideErrors()
         trackListRecyclerView.visibility = View.VISIBLE
+        trackAdapter.items = tracks.toMutableList()
+
     }
 
     private fun hideTrackList() {
