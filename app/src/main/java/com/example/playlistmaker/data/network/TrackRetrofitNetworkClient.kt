@@ -5,10 +5,10 @@ import com.example.playlistmaker.data.dto.TrackNetworkResponse
 import com.example.playlistmaker.data.repository.TrackNetworkClient
 
 class TrackRetrofitNetworkClient: TrackNetworkClient {
-    override fun search(currency: String): NetworkResponse {
+    override fun search(track: String): NetworkResponse {
         val trackResponse:NetworkResponse
         try {
-            val response = RetrofitClient.api.search(currency).execute()
+            val response = RetrofitClient.api.search(track).execute()
             if (response.isSuccessful) {
                 if (response.body()!!.results.isEmpty()) {
                     trackResponse = NetworkResponse()

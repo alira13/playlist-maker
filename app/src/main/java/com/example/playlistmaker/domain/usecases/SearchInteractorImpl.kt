@@ -7,13 +7,13 @@ import com.example.playlistmaker.domain.models.Track
 import com.example.playlistmaker.domain.repository.SearchRepository
 import java.util.concurrent.Executors
 
-class SearchInteractorImpl(private val currencyRepository: SearchRepository):SearchInteractor {
+class SearchInteractorImpl(private val trackRepository: SearchRepository):SearchInteractor {
     private val executor = Executors.newCachedThreadPool()
     override fun execute(text: String, consumer: Consumer<Track>) {
         executor.execute {
-            when (val currencyResponse = currencyRepository.search(text)) {
+            when (val trackResponse = trackRepository.search(text)) {
                 is Resource.Success -> {
-                    val productDetails = currencyResponse.data
+                    val productDetails = trackResponse.data
                     consumer.consume(ConsumerData.Data(productDetails))
                 }
                 is Resource.NetworkError -> {
