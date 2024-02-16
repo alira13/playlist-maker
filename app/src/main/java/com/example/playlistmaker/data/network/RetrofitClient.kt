@@ -4,14 +4,16 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
 object RetrofitClient {
+    private const val TRACK_SEARCH_URL = "https://itunes.apple.com/"
+
     private val client: Retrofit by lazy {
         Retrofit.Builder()
-            .baseUrl("https://itunes.apple.com/")
+            .baseUrl(TRACK_SEARCH_URL)
             .addConverterFactory(GsonConverterFactory.create())
             .build()
     }
 
-    val api: RetrofitApi by lazy {
-        client.create(RetrofitApi::class.java)
+    val api: TrackSearchApi by lazy {
+        client.create(TrackSearchApi::class.java)
     }
 }

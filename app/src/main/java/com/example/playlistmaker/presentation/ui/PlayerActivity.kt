@@ -168,7 +168,7 @@ class PlayerActivity : AppCompatActivity() {
 
                     else -> {}
                 }
-                handler.postDelayed(this, UPDATE_TIMER_DELAY)
+                handler.postDelayed(this, UPDATE_TIMER_DELAY_MILLIS)
             }
         }
     }
@@ -181,14 +181,14 @@ class PlayerActivity : AppCompatActivity() {
         val current = isClickAllowed
         if (isClickAllowed) {
             isClickAllowed = false
-            handler.postDelayed({ isClickAllowed = true }, CLICK_DEBOUNCE_DELAY)
+            handler.postDelayed({ isClickAllowed = true }, CLICK_DEBOUNCE_DELAY_MILLIS)
         }
         return current
     }
 
 
     companion object {
-        private const val UPDATE_TIMER_DELAY = 1000L
-        private const val CLICK_DEBOUNCE_DELAY = 1000L
+        private const val UPDATE_TIMER_DELAY_MILLIS = 1000L
+        private const val CLICK_DEBOUNCE_DELAY_MILLIS = 1000L
     }
 }
