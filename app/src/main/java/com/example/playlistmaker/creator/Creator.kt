@@ -1,6 +1,5 @@
 package com.example.playlistmaker.creator
 
-import android.app.Activity
 import android.content.Context
 import com.example.playlistmaker.data.network.TrackRetrofitNetworkClient
 import com.example.playlistmaker.data.player.TrackPlayerImpl
@@ -16,8 +15,8 @@ import com.example.playlistmaker.domain.usecases.SearchHistoryInteractor
 import com.example.playlistmaker.domain.usecases.SearchHistoryInteractorImpl
 import com.example.playlistmaker.domain.usecases.SearchInteractor
 import com.example.playlistmaker.domain.usecases.SearchInteractorImpl
-import com.example.playlistmaker.presentation.SearchController
-import com.example.playlistmaker.presentation.ui.TrackAdapter
+import com.example.playlistmaker.presentation.SearchPresenter
+import com.example.playlistmaker.presentation.SearchView
 
 object Creator {
     private fun getTrackPlayer(): TrackPlayer {
@@ -49,12 +48,10 @@ object Creator {
         return SearchInteractorImpl(provideSearchRepository())
     }
 
-    fun provideSearchController(
+    fun provideSearchPresenter(
         applicationContext: Context,
-        activity: Activity,
-        trackAdapter: TrackAdapter,
-        historyTrackAdapter: TrackAdapter
-    ): SearchController {
-        return SearchController(applicationContext, activity, trackAdapter, historyTrackAdapter)
+        view: SearchView,
+    ): SearchPresenter {
+        return SearchPresenter(applicationContext, view)
     }
 }
