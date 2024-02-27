@@ -23,6 +23,7 @@ import com.example.playlistmaker.R
 import com.example.playlistmaker.creator.Creator
 import com.example.playlistmaker.domain.models.Track
 import com.example.playlistmaker.presentation.SearchPresenter
+import com.example.playlistmaker.presentation.SearchState
 import com.example.playlistmaker.presentation.SearchView
 
 class SearchActivity : AppCompatActivity(), ItemClickListener, SearchView {
@@ -60,7 +61,6 @@ class SearchActivity : AppCompatActivity(), ItemClickListener, SearchView {
             searchPresenter = Creator.provideSearchPresenter(
                 applicationContext, this
             )
-            //searchPresenter.onCreate()
 
             emptyListProblemText = findViewById(R.id.empty_list_problem_text)
             searchNoInternetProblemText = findViewById(R.id.search_no_internet_problem_text)
@@ -74,6 +74,7 @@ class SearchActivity : AppCompatActivity(), ItemClickListener, SearchView {
             clearTrackSearchButton.setOnClickListener {
                 setSearchText("")
                 clearTrackSearchButton.visibility = View.GONE
+                showTrackHistory()
             }
 
             trackListRecyclerView = findViewById(R.id.track_list)
@@ -87,23 +88,25 @@ class SearchActivity : AppCompatActivity(), ItemClickListener, SearchView {
                 override fun beforeTextChanged(
                     s: CharSequence?, start: Int, count: Int, after: Int
                 ) {
+                    Log.d("MY_LOG", "beforeTextChanged}")
                 }
 
                 override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                    Log.d("MY_LOG", "onTextChanged}")
                     searchPresenter.searchDebounce(changedText = s?.toString() ?: "")
                 }
 
                 override fun afterTextChanged(s: Editable?) {
+                    Log.d("MY_LOG", "afterTextChanged}")
                     val inputMethodManager =
                         getSystemService(Context.INPUT_METHOD_SERVICE) as? InputMethodManager
                     if (s.isNullOrEmpty()) {
-                        clearTrackSearchButton.visibility = View.GONE
                         inputMethodManager?.hideSoftInputFromWindow(searchTrackView.windowToken, 0)
                         //при пустом поле поиска показываем историю, если она не пустая
-                        searchPresenter.showTrackHistory()
+                        showTrackHistory()
                     } else {
                         //скрываем историю треков как только начинаем печатать что-то в поиске
-                        searchPresenter.hideTrackHistory()
+                        showEmpty()
                         clearTrackSearchButton.visibility = View.VISIBLE
                         inputMethodManager?.showSoftInput(searchTrackView, 0)
                     }
@@ -116,9 +119,9 @@ class SearchActivity : AppCompatActivity(), ItemClickListener, SearchView {
                 if (hasFocus && searchTrackView.text.isEmpty() && historyTrackAdapter.items.isNotEmpty()) {
                     historyTrackAdapter.items = searchPresenter.getHistory()
                     historyTrackAdapter.notifyDataSetChanged()
-                    searchPresenter.showTrackHistory()
+                    showTrackHistory()
                 } else {
-                    searchPresenter.showTrackList(historyTrackAdapter.items)
+                    showTrackList(historyTrackAdapter.items)
                 }
             }
 
@@ -160,9 +163,11 @@ class SearchActivity : AppCompatActivity(), ItemClickListener, SearchView {
         setSearchText(searchValue)
     }
 
+
     override fun onClick(track: Track) {
         if (clickDebounce()) {
             searchPresenter.addToHistory(track)
+            historyTrackAdapter.notifyDataSetChanged()
             Intent(this, PlayerActivity::class.java).apply {
                 putExtra(TRACK_VALUE, track)
                 startActivity(this)
@@ -179,81 +184,118 @@ class SearchActivity : AppCompatActivity(), ItemClickListener, SearchView {
         return current
     }
 
-    companion object {
-        const val SEARCH_VALUE = "SEARCH_VALUE"
-        const val TRACK_VALUE = "TRACK_VALUE"
-        private const val CLICK_DEBOUNCE_DELAY = 1000L
-    }
 
     override fun onDestroy() {
         super.onDestroy()
         simpleTextWatcher?.let { searchTrackView.removeTextChangedListener(it) }
     }
 
-    override fun showHistoryText(isVisible: Boolean) {
-        if (isVisible && historyTrackAdapter.items.isNotEmpty()) historyText.visibility =
-            View.VISIBLE
-        else historyText.visibility = View.GONE
-    }
-
-    override fun showClearHistoryButton(isVisible: Boolean) {
-        if (isVisible && historyTrackAdapter.items.isNotEmpty()) clearHistoryButton.visibility =
-            View.VISIBLE
-        else clearHistoryButton.visibility = View.GONE
-    }
-
-    override fun showHistoryTrackListRecyclerView(isVisible: Boolean) {
-        if (isVisible && historyTrackAdapter.items.isNotEmpty()) historyTrackListRecyclerView.visibility =
-            View.VISIBLE
-        else historyTrackListRecyclerView.visibility = View.GONE
-    }
-
-    override fun showProgressBar(isVisible: Boolean) {
-        if (isVisible) progressBar.visibility = View.VISIBLE
-        else progressBar.visibility = View.GONE
-    }
-
-    override fun showSearchNoInternetProblemText(isVisible: Boolean) {
-        if (isVisible) searchNoInternetProblemText.visibility = View.VISIBLE
-        else searchNoInternetProblemText.visibility = View.GONE
-    }
-
-    override fun showRetrySearchButton(isVisible: Boolean) {
-        if (isVisible) retrySearchButton.visibility = View.VISIBLE
-        else retrySearchButton.visibility = View.GONE
-    }
-
-    override fun showEmptyListProblemText(isVisible: Boolean) {
-        if (isVisible) emptyListProblemText.visibility = View.VISIBLE
-        else emptyListProblemText.visibility = View.GONE
-    }
-
-    override fun showTrackListRecyclerView(isVisible: Boolean) {
-        if (isVisible) trackListRecyclerView.visibility = View.VISIBLE
-        else trackListRecyclerView.visibility = View.GONE
-    }
-
-    override fun getSearchText(): String {
+    private fun getSearchText(): String {
         return searchTrackView.text.toString()
     }
 
-    override fun setSearchText(searchValue: String) {
+    private fun setSearchText(searchValue: String) {
         searchTrackView.setText(searchValue)
     }
 
-    override fun updateTrackList(tracks: List<Track>) {
+
+    private fun showConnectionError() {
+        progressBar.visibility = View.GONE
+        trackAdapter.clearItems()
+
+        historyText.visibility = View.GONE
+        clearHistoryButton.visibility = View.GONE
+        historyTrackListRecyclerView.visibility = View.GONE
+
+        trackListRecyclerView.visibility = View.GONE
+        searchNoInternetProblemText.visibility = View.VISIBLE
+        retrySearchButton.visibility = View.VISIBLE
+    }
+
+    private fun showEmptyTrackListError() {
+        trackAdapter.clearItems()
+
+        historyText.visibility = View.GONE
+        clearHistoryButton.visibility = View.GONE
+        historyTrackListRecyclerView.visibility = View.GONE
+
+        progressBar.visibility = View.GONE
+        trackListRecyclerView.visibility = View.GONE
+        emptyListProblemText.visibility = View.VISIBLE
+    }
+
+    private fun showTrackHistory() {
+        Log.d("MY_LOG", "showTrackHistory")
+        emptyListProblemText.visibility = View.GONE
+        searchNoInternetProblemText.visibility = View.GONE
+        retrySearchButton.visibility = View.GONE
+
+        trackListRecyclerView.visibility = View.GONE
+        historyText.visibility = View.GONE
+
+        historyText.visibility=View.VISIBLE
+        clearHistoryButton.visibility = View.VISIBLE
+        historyTrackListRecyclerView.visibility = View.VISIBLE
+    }
+
+    private fun showTrackList(tracks: List<Track>) {
+        Log.d("MY_LOG", "showTrackList")
+        historyText.visibility = View.GONE
+        clearHistoryButton.visibility = View.GONE
+        historyTrackListRecyclerView.visibility = View.GONE
+
+
+        emptyListProblemText.visibility = View.GONE
+        searchNoInternetProblemText.visibility = View.GONE
+        retrySearchButton.visibility = View.GONE
+
+        progressBar.visibility = View.GONE
+        trackListRecyclerView.visibility = View.VISIBLE
         trackAdapter.items = tracks.toMutableList()
     }
 
-    override fun clearTrackList() {
-        trackAdapter.clearItems()
+    private fun showLoading() {
+        Log.d("MY_LOG", "showLoading")
+        emptyListProblemText.visibility = View.GONE
+        searchNoInternetProblemText.visibility = View.GONE
+        retrySearchButton.visibility = View.GONE
+
+        historyText.visibility=View.GONE
+        clearHistoryButton.visibility = View.GONE
+        historyTrackListRecyclerView.visibility = View.GONE
+
+        progressBar.visibility = View.VISIBLE
     }
 
-    override fun updateHistoryTrackList() {
-        historyTrackAdapter.notifyDataSetChanged()
-    }
-
-    override fun clearHistoryTrackList() {
+    private fun showEmptyTrackHistory() {
+        Log.d("MY_LOG", "showEmptyTrackHistory")
         historyTrackAdapter.clearItems()
+        historyText.visibility = View.GONE
+        clearHistoryButton.visibility = View.GONE
+        historyTrackListRecyclerView.visibility = View.GONE
+    }
+
+    private fun showEmpty() {
+        Log.d("MY_LOG", "showEmpty")
+        historyText.visibility = View.GONE
+        clearHistoryButton.visibility = View.GONE
+        historyTrackListRecyclerView.visibility = View.GONE
+    }
+
+    override fun render(state: SearchState) {
+        when (state) {
+            is SearchState.Loading -> showLoading()
+            is SearchState.TrackList -> showTrackList(state.tracks)
+            is SearchState.TrackHistory -> showTrackHistory()
+            is SearchState.EmptyTrackHistory -> showEmptyTrackHistory()
+            is SearchState.ConnectionError -> showConnectionError()
+            is SearchState.EmptyTrackListError -> showEmptyTrackListError()
+        }
+    }
+
+    companion object {
+        const val SEARCH_VALUE = "SEARCH_VALUE"
+        const val TRACK_VALUE = "TRACK_VALUE"
+        private const val CLICK_DEBOUNCE_DELAY = 1000L
     }
 }
