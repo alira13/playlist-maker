@@ -49,9 +49,8 @@ object Creator {
     }
 
     fun provideSearchPresenter(
-        applicationContext: Context,
-        view: SearchView,
+        applicationContext: Context
     ): SearchPresenter {
-        return SearchPresenter(applicationContext, view)
+        return SearchPresenter(applicationContext)
     }
 }

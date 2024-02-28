@@ -9,8 +9,9 @@ import com.example.playlistmaker.domain.consumer.Consumer
 import com.example.playlistmaker.domain.consumer.ConsumerData
 import com.example.playlistmaker.domain.models.Track
 import com.example.playlistmaker.domain.usecases.SearchHistoryInteractor
+import moxy.MvpPresenter
 
-class SearchPresenter(context: Context, private val view: SearchView) {
+class SearchPresenter(context: Context): MvpPresenter<SearchView>() {
 
     private val searchInteractor = Creator.provideSearchInteractor()
     private var searchHistoryInteractor: SearchHistoryInteractor =
@@ -36,7 +37,7 @@ class SearchPresenter(context: Context, private val view: SearchView) {
         if (newSearchText.isNotEmpty()) {
             Log.d("MY_LOG", "Start search: $newSearchText")
 
-            view.render(SearchState.Loading)
+            viewState.render(SearchState.Loading)
 
             searchInteractor.execute(newSearchText,
                 consumer = object : Consumer<Track> {
@@ -47,18 +48,18 @@ class SearchPresenter(context: Context, private val view: SearchView) {
                         val newDetailsRunnable = Runnable {
                             when (data) {
                                 is ConsumerData.NetworkError -> {
-                                    view.render(SearchState.ConnectionError)
+                                    viewState.render(SearchState.ConnectionError)
                                     Log.d("MY_LOG", "CONNECTION ERROR}")
                                 }
 
                                 is ConsumerData.EmptyListError -> {
-                                    view.render(SearchState.EmptyTrackListError)
+                                    viewState.render(SearchState.EmptyTrackListError)
                                     Log.d("MY_LOG", "EMPTY LIST ERROR}")
                                 }
 
                                 is ConsumerData.Data -> {
                                     val tracks = data.value
-                                    view.render(SearchState.TrackList(tracks))
+                                    viewState.render(SearchState.TrackList(tracks))
                                     Log.d("MY_LOG", "SUCCESS: $tracks")
                                 }
                             }
@@ -78,7 +79,7 @@ class SearchPresenter(context: Context, private val view: SearchView) {
 
     fun clearHistory() {
         searchHistoryInteractor.clearHistory()
-        view.render(SearchState.EmptyTrackHistory)
+        viewState.render(SearchState.EmptyTrackHistory)
     }
 
     companion object {

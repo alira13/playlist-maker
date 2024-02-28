@@ -17,7 +17,6 @@ import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.ProgressBar
 import android.widget.TextView
-import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.RecyclerView
 import com.example.playlistmaker.R
 import com.example.playlistmaker.creator.Creator
@@ -25,14 +24,25 @@ import com.example.playlistmaker.domain.models.Track
 import com.example.playlistmaker.presentation.SearchPresenter
 import com.example.playlistmaker.presentation.SearchState
 import com.example.playlistmaker.presentation.SearchView
+import moxy.MvpAppCompatActivity
+import moxy.presenter.InjectPresenter
+import moxy.presenter.ProvidePresenter
 
-class SearchActivity : AppCompatActivity(), ItemClickListener, SearchView {
+class SearchActivity :  MvpAppCompatActivity(), ItemClickListener, SearchView  {
     private var searchValue: String = ""
 
     private val trackAdapter = TrackAdapter(this)
     private val historyTrackAdapter = TrackAdapter(this)
 
-    private lateinit var searchPresenter: SearchPresenter
+    @InjectPresenter
+    lateinit var searchPresenter: SearchPresenter
+
+    @ProvidePresenter
+    fun providePresenter(): SearchPresenter {
+        return Creator.provideSearchPresenter(
+            applicationContext = this.applicationContext
+        )
+    }
 
     private var isClickAllowed = true
 
@@ -57,10 +67,6 @@ class SearchActivity : AppCompatActivity(), ItemClickListener, SearchView {
         try {
             super.onCreate(savedInstanceState)
             setContentView(R.layout.activity_search)
-
-            searchPresenter = Creator.provideSearchPresenter(
-                applicationContext, this
-            )
 
             emptyListProblemText = findViewById(R.id.empty_list_problem_text)
             searchNoInternetProblemText = findViewById(R.id.search_no_internet_problem_text)
@@ -88,16 +94,16 @@ class SearchActivity : AppCompatActivity(), ItemClickListener, SearchView {
                 override fun beforeTextChanged(
                     s: CharSequence?, start: Int, count: Int, after: Int
                 ) {
-                    Log.d("MY_LOG", "beforeTextChanged}")
+                    Log.d("MY_LOG", "beforeTextChanged")
                 }
 
                 override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                    Log.d("MY_LOG", "onTextChanged}")
+                    Log.d("MY_LOG", "onTextChanged")
                     searchPresenter.searchDebounce(changedText = s?.toString() ?: "")
                 }
 
                 override fun afterTextChanged(s: Editable?) {
-                    Log.d("MY_LOG", "afterTextChanged}")
+                    Log.d("MY_LOG", "afterTextChanged")
                     val inputMethodManager =
                         getSystemService(Context.INPUT_METHOD_SERVICE) as? InputMethodManager
                     if (s.isNullOrEmpty()) {
