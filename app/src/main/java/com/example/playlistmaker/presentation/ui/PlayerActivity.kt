@@ -6,57 +6,50 @@ import android.os.Build.VERSION.SDK_INT
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
-import android.widget.ImageButton
-import android.widget.ImageView
-import android.widget.TextView
+import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
-import com.example.playlistmaker.creator.Creator
 import com.example.playlistmaker.R
-import com.example.playlistmaker.presentation.ui.SearchActivity.Companion.TRACK_VALUE
-import com.example.playlistmaker.domain.models.PlayerState
-import com.example.playlistmaker.domain.usecases.PlayerInteractor
+import com.example.playlistmaker.databinding.ActivityPlayerBinding
+import com.example.playlistmaker.presentation.PlayerState
 import com.example.playlistmaker.domain.models.Track
 import com.example.playlistmaker.domain.player.PlayerListener
+import com.example.playlistmaker.presentation.PlayerViewModel
+import com.example.playlistmaker.presentation.PlayerViewModel.Companion.getViewModelFactory
 import com.example.playlistmaker.presentation.mapper.TrackMapper
+import com.example.playlistmaker.presentation.ui.SearchActivity.Companion.TRACK_VALUE
 
 class PlayerActivity : AppCompatActivity() {
-
-    private val playerIteractor: PlayerInteractor = Creator.provideTrackInteractor()
-
     private var playerState = PlayerState.STATE_DEFAULT
     private val handler = Handler(Looper.getMainLooper())
     private var isClickAllowed = true
 
-    private lateinit var playControlButton: ImageButton
-    private lateinit var currentTrackTime: TextView
-    private lateinit var trackImage: ImageView
-    private lateinit var playerTrackName: TextView
-    private lateinit var playerArtistName: TextView
-    private lateinit var playerTrackTime: TextView
-    private lateinit var collectionName: TextView
-    private lateinit var releaseDate: TextView
-    private lateinit var primaryGenreName: TextView
-    private lateinit var country: TextView
-    private lateinit var backButton: ImageButton
+    private var playerViewModel: PlayerViewModel? = null
+    private lateinit var binding: ActivityPlayerBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_player)
 
-        getViews()
+        binding = ActivityPlayerBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
         val track = getTrack(intent)
-        setTrackInfo(track)
+        playerViewModel =
+            ViewModelProvider(this, getViewModelFactory(track))[PlayerViewModel::class.java]
 
-        preparePlayer(track)
+        //prepare
+        preparePlayer()
+        setTrackInfo()
 
-        playControlButton.setOnClickListener {
+        //play, pause, stop
+        binding.playControlButton.setOnClickListener {
             if (clickDebounce()) playerButtonControl()
         }
 
-        backButton.setOnClickListener {
+        //quit player
+        binding.backButton.setOnClickListener {
             finish()
         }
     }
@@ -68,22 +61,8 @@ class PlayerActivity : AppCompatActivity() {
 
     override fun onDestroy() {
         super.onDestroy()
-        playerIteractor.quit()
+        playerViewModel?.quit()
         stopTimer()
-    }
-
-    private fun getViews() {
-        backButton = findViewById(R.id.back_button)
-        trackImage = findViewById(R.id.player_track_image)
-        playerTrackName = findViewById(R.id.player_track_name)
-        playerArtistName = findViewById(R.id.player_track_author)
-        playerTrackTime = findViewById(R.id.track_time_value)
-        collectionName = findViewById(R.id.track_album_value)
-        releaseDate = findViewById(R.id.track_year_value)
-        primaryGenreName = findViewById(R.id.track_style_value)
-        country = findViewById(R.id.track_country_value)
-        playControlButton = findViewById(R.id.play_control_button)
-        currentTrackTime = findViewById(R.id.current_track_time)
     }
 
     private fun getTrack(intent: Intent): Track {
@@ -95,58 +74,65 @@ class PlayerActivity : AppCompatActivity() {
         return track
     }
 
-    private fun setTrackInfo(track: Track) {
-        val playerTrackInfo = TrackMapper.map(track)
-        playerTrackName.text = playerTrackInfo.trackName
-        playerArtistName.text = playerTrackInfo.artistName
-        playerTrackTime.text = playerTrackInfo.trackTime
-        collectionName.text = playerTrackInfo.collectionName
-        releaseDate.text = playerTrackInfo.releaseDate
-        primaryGenreName.text = playerTrackInfo.primaryGenreName
-        country.text = playerTrackInfo.country
+    private fun setTrackInfo() {
+        val playerTrackInfo = TrackMapper.map(playerViewModel?.getScreenStateLiveData()?.value!!)
 
-        Glide.with(trackImage).load(playerTrackInfo.artworkUrl512).fitCenter().placeholder(R.drawable.placeholder)
-            .transform(RoundedCorners(trackImage.resources.getDimensionPixelSize(R.dimen.player_track_image_corner_radius)))
-            .into(trackImage)
+        binding.playerTrackName.text = playerTrackInfo.trackName
+        binding.playerTrackAuthor.text = playerTrackInfo.artistName
+        binding.trackTimeValue.text = playerTrackInfo.trackTime
+        binding.trackAlbumValue.text = playerTrackInfo.collectionName
+        binding.trackYearValue.text = playerTrackInfo.releaseDate
+        binding.trackStyleValue.text = playerTrackInfo.primaryGenreName
+        binding.trackCountryValue.text = playerTrackInfo.country
+
+        Glide.with(binding.playerTrackImage).load(playerTrackInfo.artworkUrl512).fitCenter()
+            .placeholder(R.drawable.placeholder)
+            .transform(RoundedCorners(binding.playerTrackImage.resources.getDimensionPixelSize(R.dimen.player_track_image_corner_radius)))
+            .into(binding.playerTrackImage)
     }
 
     private fun playerButtonControl() {
         when (playerState) {
-            PlayerState.STATE_PLAYING -> pausePlayer()
-            PlayerState.STATE_PAUSED, PlayerState.STATE_PREPARED -> startPlayer()
+            PlayerState.STATE_PLAYING -> {
+                Log.d("MY_LOG", "51")
+                pausePlayer()
+            }
+            PlayerState.STATE_PAUSED, PlayerState.STATE_PREPARED -> {
+                Log.d("MY_LOG", "52")
+                startPlayer()
+            }
             else -> Unit
         }
     }
 
-    private fun preparePlayer(track: Track) {
+    private fun preparePlayer() {
         val playerListener = object : PlayerListener {
             override fun onPrepare() {
-                playControlButton.isEnabled = true
+                binding.playControlButton.isEnabled = true
                 playerState = PlayerState.STATE_PREPARED
             }
 
             override fun onCompletion() {
-                playControlButton.setImageResource(R.drawable.play_button)
+                binding.playControlButton.setImageResource(R.drawable.play_button)
                 playerState = PlayerState.STATE_PREPARED
-                currentTrackTime.text = "00.00"
+                binding.currentTrackTime.text = "00.00"
                 stopTimer()
             }
         }
-        playerIteractor.setListener(playerListener)
-        playerIteractor.prepare(track.previewUrl)
+        playerViewModel?.preparePlayer(playerListener)
     }
 
     private fun startPlayer() {
-        playerIteractor.play()
+        playerViewModel?.play()
         playerState = PlayerState.STATE_PLAYING
-        playControlButton.setImageResource(R.drawable.pause_button)
+        binding.playControlButton.setImageResource(R.drawable.pause_button)
         startTimer()
     }
 
     private fun pausePlayer() {
-        playerIteractor.pause()
+        playerViewModel?.pause()
         playerState = PlayerState.STATE_PAUSED
-        playControlButton.setImageResource(R.drawable.play_button)
+        binding.playControlButton.setImageResource(R.drawable.play_button)
         stopTimer()
     }
 
@@ -159,11 +145,11 @@ class PlayerActivity : AppCompatActivity() {
             override fun run() {
                 when (playerState) {
                     PlayerState.STATE_PLAYING -> {
-                        currentTrackTime.text = playerIteractor.getCurrentTime()
+                        binding.currentTrackTime.text = playerViewModel?.getCurrentTime()
                     }
 
                     PlayerState.STATE_PREPARED -> {
-                        currentTrackTime.text = "00:00"
+                        binding.currentTrackTime.text = "00:00"
                     }
 
                     else -> {}
@@ -185,7 +171,6 @@ class PlayerActivity : AppCompatActivity() {
         }
         return current
     }
-
 
     companion object {
         private const val UPDATE_TIMER_DELAY_MILLIS = 1000L
