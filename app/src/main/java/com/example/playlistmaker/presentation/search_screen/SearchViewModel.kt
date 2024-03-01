@@ -1,26 +1,37 @@
-package com.example.playlistmaker.presentation
+package com.example.playlistmaker.presentation.search_screen
 
-import android.content.Context
+import android.app.Application
 import android.os.Handler
 import android.os.Looper
 import android.util.Log
+import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.ViewModelProvider.AndroidViewModelFactory.Companion.APPLICATION_KEY
+import androidx.lifecycle.viewmodel.initializer
+import androidx.lifecycle.viewmodel.viewModelFactory
 import com.example.playlistmaker.creator.Creator
 import com.example.playlistmaker.domain.consumer.Consumer
 import com.example.playlistmaker.domain.consumer.ConsumerData
 import com.example.playlistmaker.domain.models.Track
 import com.example.playlistmaker.domain.usecases.SearchHistoryInteractor
-import moxy.MvpPresenter
 
-class SearchPresenter(context: Context): MvpPresenter<SearchView>() {
+class SearchViewModel(application: Application) : AndroidViewModel(application) {
 
     private val searchInteractor = Creator.provideSearchInteractor()
     private var searchHistoryInteractor: SearchHistoryInteractor =
-        Creator.provideSearchHistoryInteractor(context)
+        Creator.provideSearchHistoryInteractor(getApplication<Application>())
 
     private val handler: Handler = Handler(Looper.getMainLooper())
 
     private var lastSearchText: String? = null
 
+    private val stateLiveData = MutableLiveData<SearchState>()
+    fun observeState(): LiveData<SearchState> = stateLiveData
+    private fun renderState(state: SearchState) {
+        stateLiveData.postValue(state)
+    }
 
     private var searchRunnable = Runnable {
         val newSearchText = lastSearchText ?: ""
@@ -37,7 +48,7 @@ class SearchPresenter(context: Context): MvpPresenter<SearchView>() {
         if (newSearchText.isNotEmpty()) {
             Log.d("MY_LOG", "Start search: $newSearchText")
 
-            viewState.render(SearchState.Loading)
+            renderState(SearchState.Loading)
 
             searchInteractor.execute(newSearchText,
                 consumer = object : Consumer<Track> {
@@ -48,18 +59,17 @@ class SearchPresenter(context: Context): MvpPresenter<SearchView>() {
                         val newDetailsRunnable = Runnable {
                             when (data) {
                                 is ConsumerData.NetworkError -> {
-                                    viewState.render(SearchState.ConnectionError)
-                                    Log.d("MY_LOG", "CONNECTION ERROR}")
+                                    renderState(SearchState.ConnectionError)
                                 }
 
                                 is ConsumerData.EmptyListError -> {
-                                    viewState.render(SearchState.EmptyTrackListError)
+                                    renderState(SearchState.EmptyTrackListError)
                                     Log.d("MY_LOG", "EMPTY LIST ERROR}")
                                 }
 
                                 is ConsumerData.Data -> {
                                     val tracks = data.value
-                                    viewState.render(SearchState.TrackList(tracks))
+                                    renderState(SearchState.TrackList(tracks))
                                     Log.d("MY_LOG", "SUCCESS: $tracks")
                                 }
                             }
@@ -71,6 +81,7 @@ class SearchPresenter(context: Context): MvpPresenter<SearchView>() {
         }
     }
 
+
     fun addToHistory(track: Track) {
         searchHistoryInteractor.addToHistory(track)
     }
@@ -79,10 +90,22 @@ class SearchPresenter(context: Context): MvpPresenter<SearchView>() {
 
     fun clearHistory() {
         searchHistoryInteractor.clearHistory()
-        viewState.render(SearchState.EmptyTrackHistory)
+        renderState(SearchState.EmptyTrackHistory)
     }
+
 
     companion object {
         private const val SEARCH_DEBOUNCE_DELAY = 2000L
+        private val SEARCH_REQUEST_TOKEN = Any()
+
+        fun getViewModelFactory(): ViewModelProvider.Factory = viewModelFactory {
+            initializer {
+                SearchViewModel(this[APPLICATION_KEY] as Application)
+            }
+        }
+    }
+
+    override fun onCleared() {
+        handler.removeCallbacksAndMessages(SEARCH_REQUEST_TOKEN)
     }
 }

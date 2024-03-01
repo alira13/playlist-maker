@@ -15,8 +15,6 @@ import com.example.playlistmaker.domain.usecases.SearchHistoryInteractor
 import com.example.playlistmaker.domain.usecases.SearchHistoryInteractorImpl
 import com.example.playlistmaker.domain.usecases.SearchInteractor
 import com.example.playlistmaker.domain.usecases.SearchInteractorImpl
-import com.example.playlistmaker.presentation.SearchPresenter
-import com.example.playlistmaker.presentation.SearchView
 
 object Creator {
     private fun getTrackPlayer(): TrackPlayer {
@@ -46,11 +44,5 @@ object Creator {
 
     fun provideSearchInteractor(): SearchInteractor {
         return SearchInteractorImpl(provideSearchRepository())
-    }
-
-    fun provideSearchPresenter(
-        applicationContext: Context
-    ): SearchPresenter {
-        return SearchPresenter(applicationContext)
     }
 }
