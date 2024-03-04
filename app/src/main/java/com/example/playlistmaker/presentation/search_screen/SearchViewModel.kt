@@ -64,7 +64,7 @@ class SearchViewModel(application: Application) : AndroidViewModel(application) 
 
                                 is ConsumerData.EmptyListError -> {
                                     renderState(SearchState.EmptyTrackListError)
-                                    Log.d("MY_LOG", "EMPTY LIST ERROR}")
+                                    Log.d("MY_LOG", "EMPTY LIST ERROR")
                                 }
 
                                 is ConsumerData.Data -> {
@@ -81,7 +81,6 @@ class SearchViewModel(application: Application) : AndroidViewModel(application) 
         }
     }
 
-
     fun addToHistory(track: Track) {
         searchHistoryInteractor.addToHistory(track)
     }
@@ -92,7 +91,6 @@ class SearchViewModel(application: Application) : AndroidViewModel(application) 
         searchHistoryInteractor.clearHistory()
         renderState(SearchState.EmptyTrackHistory)
     }
-
 
     companion object {
         private const val SEARCH_DEBOUNCE_DELAY = 2000L

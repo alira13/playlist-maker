@@ -9,12 +9,12 @@
         tools:ignore="MissingConstraints">
 
         <ImageButton
-            android:id="@+id/arrow_back_button"
-            style="@style/PanelHeaderButton"
+            android:id="@+id/back_btn"
+            style="@style/BackBtn"
             android:src="@drawable/arrow_back" />
 
         <TextView
-            style="@style/PanelHeaderText"
+            style="@style/header_tv"
             android:text="@string/media_label" />
     </LinearLayout>
 

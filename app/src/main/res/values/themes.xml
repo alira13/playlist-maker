@@ -45,7 +45,7 @@
         <item name="android:checked">false</item>
     </style>
 
-    <style name="SearchEditText">
+    <style name="SearchRequestEt">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">match_parent</item>
         <item name="android:paddingLeft">36dp</item>
@@ -61,7 +61,7 @@
         <item name="maxLines">1</item>
     </style>
 
-    <style name="IconInSearchEditText">
+    <style name="ClearSearchRequestIv">
         <item name="android:layout_width">16dp</item>
         <item name="android:layout_height">16dp</item>
         <item name="tint">@color/YP_grey</item>
@@ -85,7 +85,7 @@
         <item name="tint">@color/YP_grey</item>
     </style>
 
-    <style name="empty_list_problem_text">
+    <style name="EmptyListErrorTv">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_gravity">center</item>
@@ -97,7 +97,7 @@
         <item name="android:textColor">"@color/YP_black"</item>
     </style>
 
-    <style name="search_no_internet_problem_text">
+    <style name="ConnectionErrorTv">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_gravity">center</item>
@@ -109,12 +109,12 @@
         <item name="android:layout_marginTop">@dimen/search_problem_image_margin</item>
     </style>
 
-    <style name="search_no_internet_problem_retry_button">
+    <style name="SearchBtn">
         <item name="android:backgroundTint">?colorOnPrimary</item>
         <item name="android:textColor">?attr/colorPrimary</item>
     </style>
 
-    <style name="history_text">
+    <style name="TrackHistoryTv">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_gravity">center</item>

@@ -1,7 +1,6 @@
 package com.example.playlistmaker.presentation.search_screen
 
 import android.annotation.SuppressLint
-import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
@@ -17,17 +16,15 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.playlistmaker.R
 import com.example.playlistmaker.databinding.ActivitySearchBinding
 import com.example.playlistmaker.domain.models.Track
-import com.example.playlistmaker.presentation.ui.ItemClickListener
 import com.example.playlistmaker.presentation.player_screen.PlayerActivity
+import com.example.playlistmaker.presentation.ui.ItemClickListener
 import com.example.playlistmaker.presentation.ui.TrackAdapter
 
 class SearchActivity : AppCompatActivity(), ItemClickListener, SearchView {
 
     private lateinit var binding: ActivitySearchBinding
-    lateinit var searchViewModel: SearchViewModel
+    private lateinit var searchViewModel: SearchViewModel
 
-
-    private var searchValue: String = ""
     private var isClickAllowed = true
 
     private val trackAdapter = TrackAdapter(this)
@@ -37,12 +34,13 @@ class SearchActivity : AppCompatActivity(), ItemClickListener, SearchView {
 
     private var simpleTextWatcher: TextWatcher? = null
 
-    private lateinit var trackListRecyclerView: RecyclerView
-    private lateinit var historyTrackListRecyclerView: RecyclerView
+    private lateinit var trackListRv: RecyclerView
+    private lateinit var historyTrackListRv: RecyclerView
 
     @SuppressLint("MissingInflatedId", "NotifyDataSetChanged")
     override fun onCreate(savedInstanceState: Bundle?) {
         try {
+            Log.d("MY_LOG", "view: onCreate")
             super.onCreate(savedInstanceState)
 
             binding = ActivitySearchBinding.inflate(layoutInflater)
@@ -57,39 +55,44 @@ class SearchActivity : AppCompatActivity(), ItemClickListener, SearchView {
                 render(it)
             }
 
-            binding.arrowBackButton.setOnClickListener {
+            binding.backBtn.setOnClickListener {
                 finish()
             }
 
-            binding.clearButton.setOnClickListener {
-                setSearchText("")
-                binding.clearButton.visibility = View.GONE
+            binding.clearSearchRequestIv.setOnClickListener {
+                binding.searchRequestEt.setText("")
+                binding.clearSearchRequestIv.visibility = View.GONE
                 showTrackHistory()
             }
 
-            trackListRecyclerView = findViewById(R.id.track_list)
-            trackListRecyclerView.apply {
+            trackListRv = findViewById(R.id.track_list_rv)
+            trackListRv.apply {
                 adapter = trackAdapter
             }
 
             simpleTextWatcher = object : TextWatcher {
 
-                override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
-                    Log.d("MY_LOG", "beforeTextChanged")
+                override fun beforeTextChanged(
+                    s: CharSequence?,
+                    start: Int,
+                    count: Int,
+                    after: Int
+                ) {
+                    Log.d("MY_LOG", "view: beforeTextChanged")
                 }
 
                 override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                    Log.d("MY_LOG", "onTextChanged")
+                    Log.d("MY_LOG", "view: onTextChanged")
                     searchViewModel.searchDebounce(changedText = s?.toString() ?: "")
                 }
 
                 override fun afterTextChanged(s: Editable?) {
-                    Log.d("MY_LOG", "afterTextChanged")
+                    Log.d("MY_LOG", "view: afterTextChanged")
                     val inputMethodManager =
-                        getSystemService(Context.INPUT_METHOD_SERVICE) as? InputMethodManager
+                        getSystemService(INPUT_METHOD_SERVICE) as? InputMethodManager
                     if (s.isNullOrEmpty()) {
                         inputMethodManager?.hideSoftInputFromWindow(
-                            binding.inputEditText.windowToken,
+                            binding.searchRequestEt.windowToken,
                             0
                         )
                         //при пустом поле поиска показываем историю, если она не пустая
@@ -97,16 +100,16 @@ class SearchActivity : AppCompatActivity(), ItemClickListener, SearchView {
                     } else {
                         //скрываем историю треков как только начинаем печатать что-то в поиске
                         showEmpty()
-                        binding.clearButton.visibility = View.VISIBLE
-                        inputMethodManager?.showSoftInput(binding.inputEditText, 0)
+                        binding.clearSearchRequestIv.visibility = View.VISIBLE
+                        inputMethodManager?.showSoftInput(binding.searchRequestEt, 0)
                     }
                 }
             }
 
-            binding.inputEditText.addTextChangedListener(simpleTextWatcher)
+            binding.searchRequestEt.addTextChangedListener(simpleTextWatcher)
 
-            binding.inputEditText.setOnFocusChangeListener { _, hasFocus ->
-                if (hasFocus && binding.inputEditText.text.isEmpty() && historyTrackAdapter.items.isNotEmpty()) {
+            binding.searchRequestEt.setOnFocusChangeListener { _, hasFocus ->
+                if (hasFocus && binding.searchRequestEt.text.isEmpty() && historyTrackAdapter.items.isNotEmpty()) {
                     historyTrackAdapter.items = searchViewModel.getHistory()
                     historyTrackAdapter.notifyDataSetChanged()
                     showTrackHistory()
@@ -115,39 +118,44 @@ class SearchActivity : AppCompatActivity(), ItemClickListener, SearchView {
                 }
             }
 
-            binding.retrySearchButton.setOnClickListener {
-                searchViewModel.search(getSearchText())
+            binding.retrySearchBtn.setOnClickListener {
+                searchViewModel.search(binding.searchRequestEt.text.toString())
             }
 
-            historyTrackListRecyclerView = findViewById(R.id.history_track_list)
-            historyTrackListRecyclerView.apply {
+            historyTrackListRv = findViewById(R.id.history_track_list_rv)
+
+            historyTrackListRv.apply {
                 adapter = historyTrackAdapter
             }
 
             historyTrackAdapter.items = searchViewModel.getHistory()
 
-            binding.clearHistory.setOnClickListener {
+            binding.clearHistoryBtn.setOnClickListener {
                 searchViewModel.clearHistory()
             }
 
         } catch (ex: Exception) {
-            Log.d("MY", ex.message.toString(), ex.fillInStackTrace())
+            Log.d("MY_LOG", ex.message.toString(), ex.fillInStackTrace())
         }
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
+        Log.d("MY_LOG", "view: onSaveInstanceState")
         super.onSaveInstanceState(outState)
-        outState.putString(SEARCH_VALUE, getSearchText())
+        outState.putString(SEARCH_VALUE, binding.searchRequestEt.text.toString())
     }
 
     override fun onRestoreInstanceState(savedInstanceState: Bundle) {
+        Log.d("MY_LOG", "view: onRestoreInstanceState")
         super.onRestoreInstanceState(savedInstanceState)
-        searchValue = savedInstanceState.getString(SEARCH_VALUE, "")
-        setSearchText(searchValue)
+        val searchValue = savedInstanceState.getString(SEARCH_VALUE, "")
+        binding.searchRequestEt.setText(searchValue)
     }
 
 
+    @SuppressLint("NotifyDataSetChanged")
     override fun onClick(track: Track) {
+        Log.d("MY_LOG", "view: onClick")
         if (clickDebounce()) {
             searchViewModel.addToHistory(track)
             historyTrackAdapter.notifyDataSetChanged()
@@ -159,6 +167,7 @@ class SearchActivity : AppCompatActivity(), ItemClickListener, SearchView {
     }
 
     private fun clickDebounce(): Boolean {
+        Log.d("MY_LOG", "view: clickDebounce")
         val current = isClickAllowed
         if (isClickAllowed) {
             isClickAllowed = false
@@ -168,110 +177,107 @@ class SearchActivity : AppCompatActivity(), ItemClickListener, SearchView {
     }
 
     override fun onDestroy() {
+        Log.d("MY_LOG", "view: onDestroy")
         super.onDestroy()
-        simpleTextWatcher?.let { binding.inputEditText.removeTextChangedListener(it) }
-    }
-
-    private fun getSearchText(): String {
-        return binding.inputEditText.text.toString()
-    }
-
-    private fun setSearchText(searchValue: String) {
-        binding.inputEditText.setText(searchValue)
-    }
-
-
-    private fun showConnectionError() {
-        binding.progressBar.visibility = View.GONE
-        trackAdapter.clearItems()
-
-        binding.historyText.visibility = View.GONE
-        binding.clearHistory.visibility = View.GONE
-        historyTrackListRecyclerView.visibility = View.GONE
-
-        trackListRecyclerView.visibility = View.GONE
-        binding.searchNoInternetProblemText.visibility = View.VISIBLE
-        binding.retrySearchButton.visibility = View.VISIBLE
-    }
-
-    private fun showEmptyTrackListError() {
-        trackAdapter.clearItems()
-
-        binding.historyText.visibility = View.GONE
-        binding.clearHistory.visibility = View.GONE
-        historyTrackListRecyclerView.visibility = View.GONE
-
-        binding.progressBar.visibility = View.GONE
-        trackListRecyclerView.visibility = View.GONE
-        binding.emptyListProblemText.visibility = View.VISIBLE
-    }
-
-    private fun showTrackHistory() {
-        Log.d("MY_LOG", "showTrackHistory")
-        binding.emptyListProblemText.visibility = View.GONE
-        binding.searchNoInternetProblemText.visibility = View.GONE
-        binding.retrySearchButton.visibility = View.GONE
-
-        trackListRecyclerView.visibility = View.GONE
-
-        binding.historyText.visibility = View.VISIBLE
-        binding.clearHistory.visibility = View.VISIBLE
-        historyTrackListRecyclerView.visibility = View.VISIBLE
-    }
-
-    private fun showTrackList(tracks: List<Track>) {
-        Log.d("MY_LOG", "showTrackList")
-        binding.historyText.visibility = View.GONE
-        binding.clearHistory.visibility = View.GONE
-        historyTrackListRecyclerView.visibility = View.GONE
-
-
-        binding.emptyListProblemText.visibility = View.GONE
-        binding.searchNoInternetProblemText.visibility = View.GONE
-        binding.retrySearchButton.visibility = View.GONE
-
-        binding.progressBar.visibility = View.GONE
-        trackListRecyclerView.visibility = View.VISIBLE
-        trackAdapter.items = tracks.toMutableList()
-    }
-
-    private fun showLoading() {
-        Log.d("MY_LOG", "showLoading")
-        binding.emptyListProblemText.visibility = View.GONE
-        binding.searchNoInternetProblemText.visibility = View.GONE
-        binding.retrySearchButton.visibility = View.GONE
-
-        binding.historyText.visibility = View.GONE
-        binding.clearHistory.visibility = View.GONE
-        historyTrackListRecyclerView.visibility = View.GONE
-
-        binding.progressBar.visibility = View.VISIBLE
-    }
-
-    private fun showEmptyTrackHistory() {
-        Log.d("MY_LOG", "showEmptyTrackHistory")
-        historyTrackAdapter.clearItems()
-        binding.historyText.visibility = View.GONE
-        binding.clearHistory.visibility = View.GONE
-        historyTrackListRecyclerView.visibility = View.GONE
-    }
-
-    private fun showEmpty() {
-        Log.d("MY_LOG", "showEmpty")
-        binding.historyText.visibility = View.GONE
-        binding.clearHistory.visibility = View.GONE
-        historyTrackListRecyclerView.visibility = View.GONE
+        simpleTextWatcher?.let { binding.searchRequestEt.removeTextChangedListener(it) }
     }
 
     override fun render(state: SearchState) {
+        Log.d("MY_LOG", "view: render")
         when (state) {
-            is SearchState.Loading -> showLoading()
+            SearchState.Loading -> showLoading()
             is SearchState.TrackList -> showTrackList(state.tracks)
-            is SearchState.TrackHistory -> showTrackHistory()
-            is SearchState.EmptyTrackHistory -> showEmptyTrackHistory()
-            is SearchState.ConnectionError -> showConnectionError()
-            is SearchState.EmptyTrackListError -> showEmptyTrackListError()
+            SearchState.TrackHistory -> showTrackHistory()
+            SearchState.EmptyTrackHistory -> showEmptyTrackHistory()
+            SearchState.ConnectionError -> showConnectionError()
+            SearchState.EmptyTrackListError -> showEmptyTrackListError()
         }
+    }
+
+    private fun showLoading() {
+        Log.d("MY_LOG", "view: showLoading")
+        binding.emptyListErrorTv.visibility = View.GONE
+        binding.connectionErrorTv.visibility = View.GONE
+        binding.retrySearchBtn.visibility = View.GONE
+
+        binding.trackHistoryTv.visibility = View.GONE
+        binding.clearHistoryBtn.visibility = View.GONE
+        historyTrackListRv.visibility = View.GONE
+
+        binding.searchPbr.visibility = View.VISIBLE
+    }
+
+    private fun showTrackList(tracks: List<Track>) {
+        Log.d("MY_LOG", "view: showTrackList")
+        binding.trackHistoryTv.visibility = View.GONE
+        binding.clearHistoryBtn.visibility = View.GONE
+        historyTrackListRv.visibility = View.GONE
+
+
+        binding.emptyListErrorTv.visibility = View.GONE
+        binding.connectionErrorTv.visibility = View.GONE
+        binding.retrySearchBtn.visibility = View.GONE
+
+        binding.searchPbr.visibility = View.GONE
+        trackListRv.visibility = View.VISIBLE
+        trackAdapter.items = tracks.toMutableList()
+    }
+
+    private fun showTrackHistory() {
+        Log.d("MY_LOG", "view: showTrackHistory")
+        binding.emptyListErrorTv.visibility = View.GONE
+        binding.connectionErrorTv.visibility = View.GONE
+        binding.retrySearchBtn.visibility = View.GONE
+
+        trackListRv.visibility = View.GONE
+
+        if (historyTrackAdapter.items.isNotEmpty()) {
+            binding.trackHistoryTv.visibility = View.VISIBLE
+            binding.clearHistoryBtn.visibility = View.VISIBLE
+            historyTrackListRv.visibility = View.VISIBLE
+        }
+    }
+
+    private fun showEmptyTrackHistory() {
+        Log.d("MY_LOG", "view: showEmptyTrackHistory")
+        historyTrackAdapter.clearItems()
+        binding.trackHistoryTv.visibility = View.GONE
+        binding.clearHistoryBtn.visibility = View.GONE
+        historyTrackListRv.visibility = View.GONE
+    }
+
+    private fun showConnectionError() {
+        Log.d("MY_LOG", "view: showConnectionError")
+        binding.searchPbr.visibility = View.GONE
+        trackAdapter.clearItems()
+
+        binding.trackHistoryTv.visibility = View.GONE
+        binding.clearHistoryBtn.visibility = View.GONE
+        historyTrackListRv.visibility = View.GONE
+
+        trackListRv.visibility = View.GONE
+        binding.connectionErrorTv.visibility = View.VISIBLE
+        binding.retrySearchBtn.visibility = View.VISIBLE
+    }
+
+    private fun showEmptyTrackListError() {
+        Log.d("MY_LOG", "view: showEmptyTrackListError")
+        trackAdapter.clearItems()
+
+        binding.trackHistoryTv.visibility = View.GONE
+        binding.clearHistoryBtn.visibility = View.GONE
+        historyTrackListRv.visibility = View.GONE
+
+        binding.searchPbr.visibility = View.GONE
+        trackListRv.visibility = View.GONE
+        binding.emptyListErrorTv.visibility = View.VISIBLE
+    }
+
+    private fun showEmpty() {
+        Log.d("MY_LOG", "view: showEmpty")
+        binding.trackHistoryTv.visibility = View.GONE
+        binding.clearHistoryBtn.visibility = View.GONE
+        historyTrackListRv.visibility = View.GONE
     }
 
     companion object {

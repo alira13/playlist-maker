@@ -24,7 +24,7 @@ class SettingsActivity : AppCompatActivity() {
             (applicationContext as AppSharedPreferencesImpl).switchTheme(checked)
         }
 
-        val backButton = findViewById<ImageButton>(R.id.arrow_back_button)
+        val backButton = findViewById<ImageButton>(R.id.back_btn)
         backButton.setOnClickListener {
             finish()
         }

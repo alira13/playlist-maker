@@ -13,7 +13,7 @@
         android:textSize="@dimen/medium_text_size_22" />
 
     <Button
-        android:id="@+id/search_button"
+        android:id="@+id/search_request_iv"
         style="@style/ButtonBig"
         android:text="@string/search_label"
         app:icon="@drawable/search" />
