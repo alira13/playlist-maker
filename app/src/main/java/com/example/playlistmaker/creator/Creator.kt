@@ -9,12 +9,12 @@ import com.example.playlistmaker.data.repository.TrackNetworkClient
 import com.example.playlistmaker.domain.player.TrackPlayer
 import com.example.playlistmaker.domain.repository.SearchHistoryRepository
 import com.example.playlistmaker.domain.repository.SearchRepository
-import com.example.playlistmaker.domain.usecases.PlayerInteractor
-import com.example.playlistmaker.domain.usecases.PlayerInteractorImpl
-import com.example.playlistmaker.domain.usecases.SearchHistoryInteractor
-import com.example.playlistmaker.domain.usecases.SearchHistoryInteractorImpl
-import com.example.playlistmaker.domain.usecases.SearchInteractor
-import com.example.playlistmaker.domain.usecases.SearchInteractorImpl
+import com.example.playlistmaker.domain.usecases.player.PlayerInteractor
+import com.example.playlistmaker.domain.usecases.player.PlayerInteractorImpl
+import com.example.playlistmaker.domain.usecases.search.SearchHistoryInteractor
+import com.example.playlistmaker.domain.usecases.search.SearchHistoryInteractorImpl
+import com.example.playlistmaker.domain.usecases.search.SearchInteractor
+import com.example.playlistmaker.domain.usecases.search.SearchInteractorImpl
 
 object Creator {
     private fun getTrackPlayer(): TrackPlayer {

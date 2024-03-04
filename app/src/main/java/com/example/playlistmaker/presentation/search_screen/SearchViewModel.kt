@@ -15,7 +15,7 @@ import com.example.playlistmaker.creator.Creator
 import com.example.playlistmaker.domain.consumer.Consumer
 import com.example.playlistmaker.domain.consumer.ConsumerData
 import com.example.playlistmaker.domain.models.Track
-import com.example.playlistmaker.domain.usecases.SearchHistoryInteractor
+import com.example.playlistmaker.domain.usecases.search.SearchHistoryInteractor
 
 class SearchViewModel(application: Application) : AndroidViewModel(application) {
 

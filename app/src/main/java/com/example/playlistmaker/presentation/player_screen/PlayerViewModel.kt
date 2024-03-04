@@ -9,7 +9,7 @@ import androidx.lifecycle.viewmodel.viewModelFactory
 import com.example.playlistmaker.creator.Creator
 import com.example.playlistmaker.domain.models.Track
 import com.example.playlistmaker.domain.player.PlayerListener
-import com.example.playlistmaker.domain.usecases.PlayerInteractor
+import com.example.playlistmaker.domain.usecases.player.PlayerInteractor
 
 class PlayerViewModel(
     private val track: Track,

@@ -33,7 +33,7 @@
             android:text="@string/share_app_label" />
 
         <ImageButton
-            android:id="@+id/share_button"
+            android:id="@+id/share_btn"
             style="@style/SettingsListButton"
             android:src="@drawable/share" />
     </FrameLayout>
@@ -45,7 +45,7 @@
             android:text="@string/support_label" />
 
         <ImageButton
-            android:id="@+id/support_button"
+            android:id="@+id/support_btn"
             style="@style/SettingsListButton"
             android:src="@drawable/support" />
     </FrameLayout>
@@ -57,7 +57,7 @@
             android:text="@string/user_agreement_label" />
 
         <ImageButton
-            android:id="@+id/agreement_button"
+            android:id="@+id/agreement_btn"
             style="@style/SettingsListButton"
             android:src="@drawable/arrow_forward" />
     </FrameLayout>

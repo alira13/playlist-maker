@@ -5,32 +5,38 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.view.View
-import android.widget.ImageButton
-import android.widget.Switch
 import androidx.appcompat.app.AppCompatActivity
 import com.example.playlistmaker.R
 import com.example.playlistmaker.data.sharedPreferences.AppSharedPreferencesImpl
+import com.example.playlistmaker.databinding.ActivitySettingsBinding
 
 class SettingsActivity : AppCompatActivity() {
+
+    private lateinit var settingsViewModel: SettingsViewModel
+
+    private lateinit var binding: ActivitySettingsBinding
+
     @SuppressLint("MissingInflatedId")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_settings)
 
-        val nightModeSwitch = findViewById<Switch>(R.id.night_mode_switch)
-        nightModeSwitch.isChecked = (applicationContext as AppSharedPreferencesImpl).getNightTheme()
-        nightModeSwitch.setOnCheckedChangeListener { _, checked ->
+        binding = ActivitySettingsBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+
+        //settingsViewModel = ViewModelProvider(this)[SettingsViewModel::class.java]
+
+        binding.nightModeSwitch.isChecked =
+            (applicationContext as AppSharedPreferencesImpl).getNightTheme()
+        binding.nightModeSwitch.setOnCheckedChangeListener { _, checked ->
             (applicationContext as AppSharedPreferencesImpl).putNightMode(checked)
             (applicationContext as AppSharedPreferencesImpl).switchTheme(checked)
         }
 
-        val backButton = findViewById<ImageButton>(R.id.back_btn)
-        backButton.setOnClickListener {
+        binding.backBtn.setOnClickListener {
             finish()
         }
 
-        val shareButton = findViewById<ImageButton>(R.id.share_button)
-        shareButton.setOnClickListener {
+        binding.shareBtn.setOnClickListener {
             val sendIntent: Intent = Intent().apply {
                 action = Intent.ACTION_SEND
                 putExtra(Intent.EXTRA_TEXT, getString(R.string.practicum_link))
@@ -40,8 +46,7 @@ class SettingsActivity : AppCompatActivity() {
             startActivity(shareIntent)
         }
 
-        val supportButton = findViewById<ImageButton>(R.id.support_button)
-        supportButton.setOnClickListener {
+        binding.supportBtn.setOnClickListener {
             val supportIntent = Intent(Intent.ACTION_SENDTO)
             val email = getString(R.string.support_email)
             val emailSubject = getString(R.string.support_email_subject)
@@ -53,12 +58,11 @@ class SettingsActivity : AppCompatActivity() {
             startActivity(Intent.createChooser(supportIntent, emailSubject))
         }
 
-        val agreementButton = findViewById<ImageButton>(R.id.agreement_button)
         val agreementButtonClickListener = View.OnClickListener {
             val web = getString(R.string.agreement_link)
             val agreementIntent = Intent((Intent.ACTION_VIEW), Uri.parse(web))
             startActivity(agreementIntent)
         }
-        agreementButton.setOnClickListener(agreementButtonClickListener)
+        binding.agreementBtn.setOnClickListener(agreementButtonClickListener)
     }
 }
