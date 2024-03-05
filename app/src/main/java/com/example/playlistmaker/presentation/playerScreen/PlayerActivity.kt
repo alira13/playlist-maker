@@ -1,4 +1,4 @@
-package com.example.playlistmaker.presentation.player_screen
+package com.example.playlistmaker.presentation.playerScreen
 
 import android.content.Intent
 import android.os.Build
@@ -15,9 +15,9 @@ import com.example.playlistmaker.R
 import com.example.playlistmaker.databinding.ActivityPlayerBinding
 import com.example.playlistmaker.domain.models.Track
 import com.example.playlistmaker.domain.player.PlayerListener
-import com.example.playlistmaker.presentation.player_screen.PlayerViewModel.Companion.getViewModelFactory
 import com.example.playlistmaker.presentation.mapper.TrackMapper
-import com.example.playlistmaker.presentation.search_screen.SearchActivity.Companion.TRACK_VALUE
+import com.example.playlistmaker.presentation.playerScreen.PlayerViewModel.Companion.getViewModelFactory
+import com.example.playlistmaker.presentation.searchScreen.SearchActivity.Companion.TRACK_VALUE
 
 class PlayerActivity : AppCompatActivity() {
     private var playerState = PlayerState.STATE_DEFAULT
@@ -95,10 +95,12 @@ class PlayerActivity : AppCompatActivity() {
                 Log.d("MY_LOG", "51")
                 pausePlayer()
             }
+
             PlayerState.STATE_PAUSED, PlayerState.STATE_PREPARED -> {
                 Log.d("MY_LOG", "52")
                 startPlayer()
             }
+
             else -> Unit
         }
     }

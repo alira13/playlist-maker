@@ -1,4 +1,4 @@
-package com.example.playlistmaker.presentation.player_screen
+package com.example.playlistmaker.presentation.playerScreen
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData

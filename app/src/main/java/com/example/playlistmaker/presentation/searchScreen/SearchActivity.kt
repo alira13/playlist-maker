@@ -1,4 +1,4 @@
-package com.example.playlistmaker.presentation.search_screen
+package com.example.playlistmaker.presentation.searchScreen
 
 import android.annotation.SuppressLint
 import android.content.Intent
@@ -16,7 +16,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.playlistmaker.R
 import com.example.playlistmaker.databinding.ActivitySearchBinding
 import com.example.playlistmaker.domain.models.Track
-import com.example.playlistmaker.presentation.player_screen.PlayerActivity
+import com.example.playlistmaker.presentation.playerScreen.PlayerActivity
 import com.example.playlistmaker.presentation.ui.ItemClickListener
 import com.example.playlistmaker.presentation.ui.TrackAdapter
 

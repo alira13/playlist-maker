@@ -2,7 +2,7 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     style="@style/SecondaryScreenLayoutStyle"
-    tools:context=".presentation.media_screen.MediaActivity">
+    tools:context=".presentation.mediaScreen.MediaActivity">
 
     <LinearLayout
         style="@style/HeaderStyle"

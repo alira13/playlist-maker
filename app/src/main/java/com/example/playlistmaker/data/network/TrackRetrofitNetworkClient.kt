@@ -4,9 +4,9 @@ import com.example.playlistmaker.data.dto.NetworkResponse
 import com.example.playlistmaker.data.dto.TrackNetworkResponse
 import com.example.playlistmaker.data.repository.TrackNetworkClient
 
-class TrackRetrofitNetworkClient: TrackNetworkClient {
+class TrackRetrofitNetworkClient : TrackNetworkClient {
     override fun search(track: String): NetworkResponse {
-        val trackResponse:NetworkResponse
+        val trackResponse: NetworkResponse
         try {
             val response = RetrofitClient.api.search(track).execute()
             if (response.isSuccessful) {
@@ -18,8 +18,7 @@ class TrackRetrofitNetworkClient: TrackNetworkClient {
                     trackResponse.resultCount = response.body()!!.resultCount
                 }
                 return trackResponse
-            }
-            else return NetworkResponse().apply { resultCount = 400 }
+            } else return NetworkResponse().apply { resultCount = 400 }
         } catch (ex: Exception) {
             return NetworkResponse().apply { resultCount = 400 }
         }

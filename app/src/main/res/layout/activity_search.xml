@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     style="@style/SecondaryScreenLayoutStyle"
-    tools:context=".presentation.search_screen.SearchActivity">
+    tools:context=".presentation.searchScreen.SearchActivity">
 
     <LinearLayout
         style="@style/HeaderStyle"
@@ -52,9 +52,9 @@
         android:layout_width="@dimen/progressbar_size"
         android:layout_height="@dimen/progressbar_size"
         android:layout_gravity="center"
+        android:layout_marginTop="160dp"
         android:indeterminateTint="@color/YP_blue"
-        android:visibility="gone"
-        android:layout_marginTop="160dp"/>
+        android:visibility="gone" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/track_list_rv"
@@ -62,8 +62,7 @@
         android:layout_height="wrap_content"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         tools:itemCount="5"
-        tools:listitem="@layout/track_view"
-        />
+        tools:listitem="@layout/track_view" />
 
     <TextView
         android:id="@+id/empty_list_error_tv"

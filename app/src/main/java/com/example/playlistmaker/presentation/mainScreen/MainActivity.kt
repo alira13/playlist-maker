@@ -1,4 +1,4 @@
-package com.example.playlistmaker.presentation.main_screen
+package com.example.playlistmaker.presentation.mainScreen
 
 import android.content.Intent
 import android.os.Bundle
@@ -6,9 +6,9 @@ import android.view.View
 import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
 import com.example.playlistmaker.R
-import com.example.playlistmaker.presentation.search_screen.SearchActivity
-import com.example.playlistmaker.presentation.media_screen.MediaActivity
-import com.example.playlistmaker.presentation.settings_screen.SettingsActivity
+import com.example.playlistmaker.presentation.mediaScreen.MediaActivity
+import com.example.playlistmaker.presentation.searchScreen.SearchActivity
+import com.example.playlistmaker.presentation.settingsScreen.SettingsActivity
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
