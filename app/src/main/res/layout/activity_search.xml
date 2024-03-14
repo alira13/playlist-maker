@@ -3,19 +3,19 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     style="@style/SecondaryScreenLayoutStyle"
-    tools:context=".presentation.ui.SearchActivity">
+    tools:context=".presentation.searchScreen.SearchActivity">
 
     <LinearLayout
         style="@style/HeaderStyle"
         tools:ignore="MissingConstraints">
 
         <ImageButton
-            android:id="@+id/arrow_back_button"
-            style="@style/PanelHeaderButton"
+            android:id="@+id/back_btn"
+            style="@style/BackBtn"
             android:src="@drawable/arrow_back" />
 
         <TextView
-            style="@style/PanelHeaderText"
+            style="@style/header_tv"
             android:text="@string/search_label" />
     </LinearLayout>
 
@@ -25,22 +25,22 @@
         tools:ignore="MissingConstraints">
 
         <EditText
-            android:id="@+id/input_edit_text"
-            style="@style/SearchEditText"
+            android:id="@+id/search_request_et"
+            style="@style/SearchRequestEt"
             android:autofillHints="name"
             android:hint="@string/search_label"
             android:singleLine="true" />
 
         <ImageView
-            android:id="@+id/search_button"
-            style="@style/IconInSearchEditText"
+            android:id="@+id/search_request_iv"
+            style="@style/ClearSearchRequestIv"
             android:layout_gravity="start|center"
             android:layout_marginStart="12dp"
             android:src="@drawable/search" />
 
         <ImageView
-            android:id="@+id/clear_button"
-            style="@style/IconInSearchEditText"
+            android:id="@+id/clear_search_request_iv"
+            style="@style/ClearSearchRequestIv"
             android:layout_gravity="end|center"
             android:layout_marginEnd="12dp"
             android:src="@drawable/close"
@@ -48,16 +48,16 @@
     </FrameLayout>
 
     <ProgressBar
-        android:id="@+id/progressBar"
+        android:id="@+id/search_pbr"
         android:layout_width="@dimen/progressbar_size"
         android:layout_height="@dimen/progressbar_size"
         android:layout_gravity="center"
+        android:layout_marginTop="160dp"
         android:indeterminateTint="@color/YP_blue"
-        android:visibility="gone"
-        android:layout_marginTop="160dp"/>
+        android:visibility="gone" />
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/track_list"
+        android:id="@+id/track_list_rv"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
@@ -65,20 +65,20 @@
         tools:listitem="@layout/track_view" />
 
     <TextView
-        android:id="@+id/empty_list_problem_text"
-        style="@style/empty_list_problem_text"
+        android:id="@+id/empty_list_error_tv"
+        style="@style/EmptyListErrorTv"
         android:text="@string/tracks_not_found"
         android:visibility="gone" />
 
     <TextView
-        android:id="@+id/search_no_internet_problem_text"
-        style="@style/search_no_internet_problem_text"
+        android:id="@+id/connection_error_tv"
+        style="@style/ConnectionErrorTv"
         android:text="@string/no_internet_connection"
         android:visibility="gone" />
 
     <Button
-        android:id="@+id/retry_search_button"
-        style="@style/search_no_internet_problem_retry_button"
+        android:id="@+id/retry_search_btn"
+        style="@style/SearchBtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="top|center"
@@ -91,8 +91,8 @@
         android:visibility="gone" />
 
     <TextView
-        android:id="@+id/history_text"
-        style="@style/history_text"
+        android:id="@+id/track_history_tv"
+        style="@style/TrackHistoryTv"
         android:text="@string/search_history_text"
         android:visibility="gone" />
 
@@ -102,7 +102,7 @@
         android:layout_weight="1">
 
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/history_track_list"
+            android:id="@+id/history_track_list_rv"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
@@ -113,8 +113,8 @@
     </ScrollView>
 
     <Button
-        android:id="@+id/clear_history"
-        style="@style/search_no_internet_problem_retry_button"
+        android:id="@+id/clear_history_btn"
+        style="@style/SearchBtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="top|center"

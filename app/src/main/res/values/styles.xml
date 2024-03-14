@@ -3,7 +3,7 @@
 
     <style name="Theme.PlaylistMaker" parent="Base.Theme.PlaylistMaker" />
 
-    <style name="PanelHeaderText">
+    <style name="header_tv">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">match_parent</item>
         <item name="android:layout_margin">@dimen/icon_padding</item>
@@ -14,7 +14,7 @@
         <item name="iconTint">?attr/colorOnPrimary</item>
     </style>
 
-    <style name="PanelHeaderButton">
+    <style name="BackBtn">
         <item name="android:layout_width">24dp</item>
         <item name="android:layout_height">24dp</item>
         <item name="android:layout_marginEnd">12dp</item>

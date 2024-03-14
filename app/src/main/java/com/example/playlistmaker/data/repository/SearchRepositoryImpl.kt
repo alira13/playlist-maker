@@ -15,10 +15,9 @@ class SearchRepositoryImpl(
         return if (response is TrackNetworkResponse) {
             val tracks = response.results
             Resource.Success(tracks)
-        } else if(response.resultCount==400){
+        } else if (response.resultCount == 400) {
             Resource.NetworkError()
-        }
-        else {
+        } else {
             Resource.EmptyListError()
         }
     }

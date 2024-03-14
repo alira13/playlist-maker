@@ -1,4 +1,4 @@
-package com.example.playlistmaker.domain.usecases
+package com.example.playlistmaker.domain.usecases.search
 
 import com.example.playlistmaker.domain.consumer.Consumer
 import com.example.playlistmaker.domain.consumer.ConsumerData
@@ -7,7 +7,7 @@ import com.example.playlistmaker.domain.models.Track
 import com.example.playlistmaker.domain.repository.SearchRepository
 import java.util.concurrent.Executors
 
-class SearchInteractorImpl(private val trackRepository: SearchRepository):SearchInteractor {
+class SearchInteractorImpl(private val trackRepository: SearchRepository) : SearchInteractor {
     private val executor = Executors.newCachedThreadPool()
     override fun execute(text: String, consumer: Consumer<Track>) {
         executor.execute {
@@ -16,9 +16,11 @@ class SearchInteractorImpl(private val trackRepository: SearchRepository):Search
                     val productDetails = trackResponse.data
                     consumer.consume(ConsumerData.Data(productDetails))
                 }
+
                 is Resource.NetworkError -> {
                     consumer.consume(ConsumerData.NetworkError(""))
                 }
+
                 is Resource.EmptyListError -> {
                     consumer.consume(ConsumerData.EmptyListError(""))
                 }

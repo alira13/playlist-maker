@@ -5,12 +5,12 @@
     <LinearLayout style="@style/HeaderStyle">
 
         <ImageButton
-            android:id="@+id/arrow_back_button"
-            style="@style/PanelHeaderButton"
+            android:id="@+id/back_btn"
+            style="@style/BackBtn"
             android:src="@drawable/arrow_back" />
 
         <TextView
-            style="@style/PanelHeaderText"
+            style="@style/header_tv"
             android:text="@string/settings_label" />
     </LinearLayout>
 
@@ -33,7 +33,7 @@
             android:text="@string/share_app_label" />
 
         <ImageButton
-            android:id="@+id/share_button"
+            android:id="@+id/share_btn"
             style="@style/SettingsListButton"
             android:src="@drawable/share" />
     </FrameLayout>
@@ -45,7 +45,7 @@
             android:text="@string/support_label" />
 
         <ImageButton
-            android:id="@+id/support_button"
+            android:id="@+id/support_btn"
             style="@style/SettingsListButton"
             android:src="@drawable/support" />
     </FrameLayout>
@@ -57,7 +57,7 @@
             android:text="@string/user_agreement_label" />
 
         <ImageButton
-            android:id="@+id/agreement_button"
+            android:id="@+id/agreement_btn"
             style="@style/SettingsListButton"
             android:src="@drawable/arrow_forward" />
     </FrameLayout>
