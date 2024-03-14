@@ -11,6 +11,8 @@ import android.util.Log
 import android.view.inputmethod.InputMethodManager
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
+import androidx.core.widget.doAfterTextChanged
+import androidx.core.widget.doOnTextChanged
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.RecyclerView
 import com.example.playlistmaker.R
@@ -47,8 +49,7 @@ class SearchActivity : AppCompatActivity(), ItemClickListener, SearchView {
             setContentView(binding.root)
 
             searchViewModel = ViewModelProvider(
-                this,
-                SearchViewModel.getViewModelFactory()
+                this, SearchViewModel.getViewModelFactory()
             )[SearchViewModel::class.java]
 
             searchViewModel.stateLiveData.observe(this) {
@@ -70,44 +71,28 @@ class SearchActivity : AppCompatActivity(), ItemClickListener, SearchView {
                 adapter = trackAdapter
             }
 
-
-            simpleTextWatcher = object : TextWatcher {
-
-                override fun beforeTextChanged(
-                    s: CharSequence?,
-                    start: Int,
-                    count: Int,
-                    after: Int
-                ) {
-                    Log.d("MY_LOG", "view: beforeTextChanged")
-                }
-
-                override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                    Log.d("MY_LOG", "view: onTextChanged")
-                    searchViewModel.searchDebounce(changedText = s?.toString() ?: "")
-                }
-
-                override fun afterTextChanged(s: Editable?) {
-                    Log.d("MY_LOG", "view: afterTextChanged")
-                    val inputMethodManager =
-                        getSystemService(INPUT_METHOD_SERVICE) as? InputMethodManager
-                    if (s.isNullOrEmpty()) {
-                        inputMethodManager?.hideSoftInputFromWindow(
-                            binding.searchRequestEt.windowToken,
-                            0
-                        )
-                        //при пустом поле поиска показываем историю, если она не пустая
-                        showTrackHistory()
-                    } else {
-                        //скрываем историю треков как только начинаем печатать что-то в поиске
-                        showEmpty()
-                        binding.clearSearchRequestIv.isVisible = true
-                        inputMethodManager?.showSoftInput(binding.searchRequestEt, 0)
-                    }
-                }
+            binding.searchRequestEt.doOnTextChanged { text, start, before, count ->
+                Log.d("MY_LOG", "view: doOnTextChanged")
+                searchViewModel.searchDebounce(changedText = text?.toString() ?: "")
             }
 
-            binding.searchRequestEt.addTextChangedListener(simpleTextWatcher)
+            binding.searchRequestEt.doAfterTextChanged { text: Editable? ->
+                Log.d("MY_LOG", "view: afterTextChanged")
+                val inputMethodManager =
+                    getSystemService(INPUT_METHOD_SERVICE) as? InputMethodManager
+                if (text.isNullOrEmpty()) {
+                    inputMethodManager?.hideSoftInputFromWindow(
+                        binding.searchRequestEt.windowToken, 0
+                    )
+                    //при пустом поле поиска показываем историю, если она не пустая
+                    showTrackHistory()
+                } else {
+                    //скрываем историю треков как только начинаем печатать что-то в поиске
+                    showEmpty()
+                    binding.clearSearchRequestIv.isVisible = true
+                    inputMethodManager?.showSoftInput(binding.searchRequestEt, 0)
+                }
+            }
 
             binding.searchRequestEt.setOnFocusChangeListener { _, hasFocus ->
                 if (hasFocus && binding.searchRequestEt.text.isEmpty() && historyTrackAdapter.items.isNotEmpty()) {
