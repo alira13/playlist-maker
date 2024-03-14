@@ -73,7 +73,7 @@ class PlayerActivity : AppCompatActivity() {
     }
 
     private fun setTrackInfo() {
-        val playerTrackInfo = TrackMapper.map(playerViewModel?.getScreenStateLiveData()?.value!!)
+        val playerTrackInfo = TrackMapper.map(playerViewModel?.screenStateLiveData?.value!!)
 
         binding.playerTrackName.text = playerTrackInfo.trackName
         binding.playerTrackAuthor.text = playerTrackInfo.artistName

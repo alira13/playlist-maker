@@ -27,10 +27,11 @@ class SearchViewModel(application: Application) : AndroidViewModel(application) 
 
     private var lastSearchText: String? = null
 
-    private val stateLiveData = MutableLiveData<SearchState>()
-    fun observeState(): LiveData<SearchState> = stateLiveData
+    private val _stateLiveData = MutableLiveData<SearchState>()
+    val stateLiveData : LiveData<SearchState> = _stateLiveData
+
     private fun renderState(state: SearchState) {
-        stateLiveData.postValue(state)
+        _stateLiveData.postValue(state)
     }
 
     private var searchRunnable = Runnable {

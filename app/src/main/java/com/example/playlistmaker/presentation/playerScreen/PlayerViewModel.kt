@@ -16,12 +16,12 @@ class PlayerViewModel(
     private val playerInteractor: PlayerInteractor
 ) : ViewModel() {
 
-    private var screenStateLiveData = MutableLiveData<Track>(track)
-    fun getScreenStateLiveData(): LiveData<Track> = screenStateLiveData
+    private var _screenStateLiveData = MutableLiveData<Track>(track)
+    var screenStateLiveData: LiveData<Track> = _screenStateLiveData
 
     fun preparePlayer(playerListener: PlayerListener) {
         playerInteractor.setListener(playerListener)
-        playerInteractor.prepare(screenStateLiveData.value!!.previewUrl)
+        playerInteractor.prepare(_screenStateLiveData.value!!.previewUrl)
     }
 
     fun play() {

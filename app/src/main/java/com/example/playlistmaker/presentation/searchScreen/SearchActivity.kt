@@ -8,9 +8,9 @@ import android.os.Looper
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
-import android.view.View
 import android.view.inputmethod.InputMethodManager
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.isVisible
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.RecyclerView
 import com.example.playlistmaker.R
@@ -51,7 +51,7 @@ class SearchActivity : AppCompatActivity(), ItemClickListener, SearchView {
                 SearchViewModel.getViewModelFactory()
             )[SearchViewModel::class.java]
 
-            searchViewModel.observeState().observe(this) {
+            searchViewModel.stateLiveData.observe(this) {
                 render(it)
             }
 
@@ -61,7 +61,7 @@ class SearchActivity : AppCompatActivity(), ItemClickListener, SearchView {
 
             binding.clearSearchRequestIv.setOnClickListener {
                 binding.searchRequestEt.setText("")
-                binding.clearSearchRequestIv.visibility = View.GONE
+                binding.clearSearchRequestIv.isVisible = false
                 showTrackHistory()
             }
 
@@ -69,6 +69,7 @@ class SearchActivity : AppCompatActivity(), ItemClickListener, SearchView {
             trackListRv.apply {
                 adapter = trackAdapter
             }
+
 
             simpleTextWatcher = object : TextWatcher {
 
@@ -100,7 +101,7 @@ class SearchActivity : AppCompatActivity(), ItemClickListener, SearchView {
                     } else {
                         //скрываем историю треков как только начинаем печатать что-то в поиске
                         showEmpty()
-                        binding.clearSearchRequestIv.visibility = View.VISIBLE
+                        binding.clearSearchRequestIv.isVisible = true
                         inputMethodManager?.showSoftInput(binding.searchRequestEt, 0)
                     }
                 }
@@ -196,88 +197,88 @@ class SearchActivity : AppCompatActivity(), ItemClickListener, SearchView {
 
     private fun showLoading() {
         Log.d("MY_LOG", "view: showLoading")
-        binding.emptyListErrorTv.visibility = View.GONE
-        binding.connectionErrorTv.visibility = View.GONE
-        binding.retrySearchBtn.visibility = View.GONE
+        binding.emptyListErrorTv.isVisible = false
+        binding.connectionErrorTv.isVisible = false
+        binding.retrySearchBtn.isVisible = false
 
-        binding.trackHistoryTv.visibility = View.GONE
-        binding.clearHistoryBtn.visibility = View.GONE
-        historyTrackListRv.visibility = View.GONE
+        binding.trackHistoryTv.isVisible = false
+        binding.clearHistoryBtn.isVisible = false
+        historyTrackListRv.isVisible = false
 
-        binding.searchPbr.visibility = View.VISIBLE
+        binding.searchPbr.isVisible = true
     }
 
     private fun showTrackList(tracks: List<Track>) {
         Log.d("MY_LOG", "view: showTrackList")
-        binding.trackHistoryTv.visibility = View.GONE
-        binding.clearHistoryBtn.visibility = View.GONE
-        historyTrackListRv.visibility = View.GONE
+        binding.trackHistoryTv.isVisible = false
+        binding.clearHistoryBtn.isVisible = false
+        historyTrackListRv.isVisible = false
 
 
-        binding.emptyListErrorTv.visibility = View.GONE
-        binding.connectionErrorTv.visibility = View.GONE
-        binding.retrySearchBtn.visibility = View.GONE
+        binding.emptyListErrorTv.isVisible = false
+        binding.connectionErrorTv.isVisible = false
+        binding.retrySearchBtn.isVisible = false
 
-        binding.searchPbr.visibility = View.GONE
-        trackListRv.visibility = View.VISIBLE
+        binding.searchPbr.isVisible = false
+        trackListRv.isVisible = true
         trackAdapter.items = tracks.toMutableList()
     }
 
     private fun showTrackHistory() {
         Log.d("MY_LOG", "view: showTrackHistory")
-        binding.emptyListErrorTv.visibility = View.GONE
-        binding.connectionErrorTv.visibility = View.GONE
-        binding.retrySearchBtn.visibility = View.GONE
+        binding.emptyListErrorTv.isVisible = false
+        binding.connectionErrorTv.isVisible = false
+        binding.retrySearchBtn.isVisible = false
 
-        trackListRv.visibility = View.GONE
+        trackListRv.isVisible = false
 
         if (historyTrackAdapter.items.isNotEmpty()) {
-            binding.trackHistoryTv.visibility = View.VISIBLE
-            binding.clearHistoryBtn.visibility = View.VISIBLE
-            historyTrackListRv.visibility = View.VISIBLE
+            binding.trackHistoryTv.isVisible = true
+            binding.clearHistoryBtn.isVisible = true
+            historyTrackListRv.isVisible = true
         }
     }
 
     private fun showEmptyTrackHistory() {
         Log.d("MY_LOG", "view: showEmptyTrackHistory")
         historyTrackAdapter.clearItems()
-        binding.trackHistoryTv.visibility = View.GONE
-        binding.clearHistoryBtn.visibility = View.GONE
-        historyTrackListRv.visibility = View.GONE
+        binding.trackHistoryTv.isVisible = false
+        binding.clearHistoryBtn.isVisible = false
+        historyTrackListRv.isVisible = false
     }
 
     private fun showConnectionError() {
         Log.d("MY_LOG", "view: showConnectionError")
-        binding.searchPbr.visibility = View.GONE
+        binding.searchPbr.isVisible = false
         trackAdapter.clearItems()
 
-        binding.trackHistoryTv.visibility = View.GONE
-        binding.clearHistoryBtn.visibility = View.GONE
-        historyTrackListRv.visibility = View.GONE
+        binding.trackHistoryTv.isVisible = false
+        binding.clearHistoryBtn.isVisible = false
+        historyTrackListRv.isVisible = false
 
-        trackListRv.visibility = View.GONE
-        binding.connectionErrorTv.visibility = View.VISIBLE
-        binding.retrySearchBtn.visibility = View.VISIBLE
+        trackListRv.isVisible = false
+        binding.connectionErrorTv.isVisible = true
+        binding.retrySearchBtn.isVisible = true
     }
 
     private fun showEmptyTrackListError() {
         Log.d("MY_LOG", "view: showEmptyTrackListError")
         trackAdapter.clearItems()
 
-        binding.trackHistoryTv.visibility = View.GONE
-        binding.clearHistoryBtn.visibility = View.GONE
-        historyTrackListRv.visibility = View.GONE
+        binding.trackHistoryTv.isVisible = false
+        binding.clearHistoryBtn.isVisible = false
+        historyTrackListRv.isVisible = false
 
-        binding.searchPbr.visibility = View.GONE
-        trackListRv.visibility = View.GONE
-        binding.emptyListErrorTv.visibility = View.VISIBLE
+        binding.searchPbr.isVisible = false
+        trackListRv.isVisible = false
+        binding.emptyListErrorTv.isVisible = true
     }
 
     private fun showEmpty() {
         Log.d("MY_LOG", "view: showEmpty")
-        binding.trackHistoryTv.visibility = View.GONE
-        binding.clearHistoryBtn.visibility = View.GONE
-        historyTrackListRv.visibility = View.GONE
+        binding.trackHistoryTv.isVisible = false
+        binding.clearHistoryBtn.isVisible = false
+        historyTrackListRv.isVisible = false
     }
 
     companion object {
