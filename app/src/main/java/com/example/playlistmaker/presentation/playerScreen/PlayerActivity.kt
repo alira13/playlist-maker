@@ -8,7 +8,6 @@ import android.os.Handler
 import android.os.Looper
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.example.playlistmaker.R
@@ -16,15 +15,17 @@ import com.example.playlistmaker.databinding.ActivityPlayerBinding
 import com.example.playlistmaker.domain.models.Track
 import com.example.playlistmaker.domain.player.PlayerListener
 import com.example.playlistmaker.presentation.mapper.TrackMapper
-import com.example.playlistmaker.presentation.playerScreen.PlayerViewModel.Companion.getViewModelFactory
 import com.example.playlistmaker.presentation.searchScreen.SearchActivity.Companion.TRACK_VALUE
+import org.koin.androidx.viewmodel.ext.android.viewModel
+import org.koin.core.parameter.parametersOf
 
 class PlayerActivity : AppCompatActivity() {
     private var playerState = PlayerState.STATE_DEFAULT
     private val handler = Handler(Looper.getMainLooper())
     private var isClickAllowed = true
 
-    private var playerViewModel: PlayerViewModel? = null
+    private val playerViewModel by viewModel<PlayerViewModel> { parametersOf(getTrack(intent)) }
+
     private lateinit var binding: ActivityPlayerBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -33,10 +34,7 @@ class PlayerActivity : AppCompatActivity() {
         binding = ActivityPlayerBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        val track = getTrack(intent)
-        playerViewModel =
-            ViewModelProvider(this, getViewModelFactory(track))[PlayerViewModel::class.java]
-
+        var track = getTrack(intent)
         //prepare
         preparePlayer()
         setTrackInfo()
@@ -59,7 +57,7 @@ class PlayerActivity : AppCompatActivity() {
 
     override fun onDestroy() {
         super.onDestroy()
-        playerViewModel?.quit()
+        playerViewModel.quit()
         stopTimer()
     }
 
@@ -73,7 +71,7 @@ class PlayerActivity : AppCompatActivity() {
     }
 
     private fun setTrackInfo() {
-        val playerTrackInfo = TrackMapper.map(playerViewModel?.screenStateLiveData?.value!!)
+        val playerTrackInfo = TrackMapper.map(playerViewModel.screenStateLiveData.value!!)
 
         binding.playerTrackName.text = playerTrackInfo.trackName
         binding.playerTrackAuthor.text = playerTrackInfo.artistName
@@ -119,18 +117,18 @@ class PlayerActivity : AppCompatActivity() {
                 stopTimer()
             }
         }
-        playerViewModel?.preparePlayer(playerListener)
+        playerViewModel.preparePlayer(playerListener)
     }
 
     private fun startPlayer() {
-        playerViewModel?.play()
+        playerViewModel.play()
         playerState = PlayerState.STATE_PLAYING
         binding.playControlButton.setImageResource(R.drawable.pause_button)
         startTimer()
     }
 
     private fun pausePlayer() {
-        playerViewModel?.pause()
+        playerViewModel.pause()
         playerState = PlayerState.STATE_PAUSED
         binding.playControlButton.setImageResource(R.drawable.play_button)
         stopTimer()
@@ -145,7 +143,7 @@ class PlayerActivity : AppCompatActivity() {
             override fun run() {
                 when (playerState) {
                     PlayerState.STATE_PLAYING -> {
-                        binding.currentTrackTime.text = playerViewModel?.getCurrentTime()
+                        binding.currentTrackTime.text = playerViewModel.getCurrentTime()
                     }
 
                     PlayerState.STATE_PREPARED -> {

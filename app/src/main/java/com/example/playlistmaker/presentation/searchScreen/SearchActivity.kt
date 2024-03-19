@@ -13,7 +13,6 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import androidx.core.widget.doAfterTextChanged
 import androidx.core.widget.doOnTextChanged
-import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.RecyclerView
 import com.example.playlistmaker.R
 import com.example.playlistmaker.databinding.ActivitySearchBinding
@@ -21,11 +20,13 @@ import com.example.playlistmaker.domain.models.Track
 import com.example.playlistmaker.presentation.playerScreen.PlayerActivity
 import com.example.playlistmaker.presentation.ui.ItemClickListener
 import com.example.playlistmaker.presentation.ui.TrackAdapter
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class SearchActivity : AppCompatActivity(), ItemClickListener, SearchView {
 
     private lateinit var binding: ActivitySearchBinding
-    private lateinit var searchViewModel: SearchViewModel
+
+    private val searchViewModel by viewModel<SearchViewModel>()
 
     private var isClickAllowed = true
 
@@ -47,10 +48,6 @@ class SearchActivity : AppCompatActivity(), ItemClickListener, SearchView {
 
             binding = ActivitySearchBinding.inflate(layoutInflater)
             setContentView(binding.root)
-
-            searchViewModel = ViewModelProvider(
-                this, SearchViewModel.getViewModelFactory()
-            )[SearchViewModel::class.java]
 
             searchViewModel.stateLiveData.observe(this) {
                 render(it)

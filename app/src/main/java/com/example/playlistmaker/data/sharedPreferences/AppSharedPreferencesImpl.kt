@@ -1,14 +1,14 @@
 package com.example.playlistmaker.data.sharedPreferences
 
-import android.app.Application
 import android.content.SharedPreferences
 import androidx.appcompat.app.AppCompatDelegate
+import com.example.playlistmaker.app.App
 import com.example.playlistmaker.domain.models.Track
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 
 
-class AppSharedPreferencesImpl : Application(), AppSharedPreferences {
+class AppSharedPreferencesImpl : App(), AppSharedPreferences {
 
     private var nightMode = false
     private lateinit var sharedPreferences: SharedPreferences

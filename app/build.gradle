@@ -60,4 +60,6 @@ dependencies {
     kapt "com.github.moxy-community:moxy-compiler:$moxyVersion"
 
     implementation "com.github.moxy-community:moxy-androidx:$moxyVersion"
+
+    implementation "io.insert-koin:koin-android:3.3.0"
 }
