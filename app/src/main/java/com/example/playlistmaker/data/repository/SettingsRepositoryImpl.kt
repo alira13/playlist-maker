@@ -1,18 +1,23 @@
 package com.example.playlistmaker.data.repository
 
-import android.content.Context
-import com.example.playlistmaker.data.sharedPreferences.AppSharedPreferencesImpl
+import com.example.playlistmaker.data.sharedPreferences.AppSharedPreferences
 import com.example.playlistmaker.domain.models.ThemeSettings
 import com.example.playlistmaker.domain.repository.SettingsRepository
 
-class SettingsRepositoryImpl(private val applicationContext: Context) : SettingsRepository {
+class SettingsRepositoryImpl(private val appSharedPreferences: AppSharedPreferences) :
+    SettingsRepository {
+
+    override fun initTheme() {
+        appSharedPreferences.initTheme()
+    }
+
     override fun getThemeSettings(): ThemeSettings {
-        val checked = (applicationContext as AppSharedPreferencesImpl).getNightTheme()
+        val checked = appSharedPreferences.getNightTheme()
         return ThemeSettings(checked)
     }
 
     override fun updateThemeSetting(settings: ThemeSettings) {
-        (applicationContext as AppSharedPreferencesImpl).putNightMode(settings.isChecked)
-        applicationContext.switchTheme(settings.isChecked)
+        appSharedPreferences.putNightMode(settings.isChecked)
+        appSharedPreferences.switchTheme(settings.isChecked)
     }
 }

@@ -15,4 +15,8 @@ open class App : Application() {
             modules(listOf(appModule, domainModule, dataModule))
         }
     }
+
+    companion object {
+        const val PLAYLIST_MAKER_PREFERENCES = "playlist_maker_preferences"
+    }
 }
