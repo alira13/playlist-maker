@@ -1,34 +1,28 @@
 package com.example.playlistmaker.presentation.searchScreen
 
-import android.app.Application
 import android.os.Handler
 import android.os.Looper
 import android.util.Log
-import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.ViewModelProvider.AndroidViewModelFactory.Companion.APPLICATION_KEY
-import androidx.lifecycle.viewmodel.initializer
-import androidx.lifecycle.viewmodel.viewModelFactory
-import com.example.playlistmaker.creator.Creator
+import androidx.lifecycle.ViewModel
 import com.example.playlistmaker.domain.consumer.Consumer
 import com.example.playlistmaker.domain.consumer.ConsumerData
 import com.example.playlistmaker.domain.models.Track
 import com.example.playlistmaker.domain.usecases.search.SearchHistoryInteractor
+import com.example.playlistmaker.domain.usecases.search.SearchInteractor
 
-class SearchViewModel(application: Application) : AndroidViewModel(application) {
-
-    private val searchInteractor = Creator.provideSearchInteractor()
-    private var searchHistoryInteractor: SearchHistoryInteractor =
-        Creator.provideSearchHistoryInteractor(getApplication<Application>())
+class SearchViewModel(
+    private val searchInteractor: SearchInteractor,
+    private val searchHistoryInteractor: SearchHistoryInteractor
+) : ViewModel() {
 
     private val handler: Handler = Handler(Looper.getMainLooper())
 
     private var lastSearchText: String? = null
 
     private val _stateLiveData = MutableLiveData<SearchState>()
-    val stateLiveData : LiveData<SearchState> = _stateLiveData
+    val stateLiveData: LiveData<SearchState> = _stateLiveData
 
     private fun renderState(state: SearchState) {
         _stateLiveData.postValue(state)
@@ -96,12 +90,6 @@ class SearchViewModel(application: Application) : AndroidViewModel(application) 
     companion object {
         private const val SEARCH_DEBOUNCE_DELAY = 2000L
         private val SEARCH_REQUEST_TOKEN = Any()
-
-        fun getViewModelFactory(): ViewModelProvider.Factory = viewModelFactory {
-            initializer {
-                SearchViewModel(this[APPLICATION_KEY] as Application)
-            }
-        }
     }
 
     override fun onCleared() {

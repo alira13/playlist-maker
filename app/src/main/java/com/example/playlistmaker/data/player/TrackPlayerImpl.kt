@@ -41,6 +41,6 @@ class TrackPlayerImpl : TrackPlayer {
     }
 
     override fun quit() {
-        mediaPlayer.release()
+        mediaPlayer.reset()
     }
 }

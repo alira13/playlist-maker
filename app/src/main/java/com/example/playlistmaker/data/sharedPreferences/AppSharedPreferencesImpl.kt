@@ -1,6 +1,5 @@
 package com.example.playlistmaker.data.sharedPreferences
 
-import android.app.Application
 import android.content.SharedPreferences
 import androidx.appcompat.app.AppCompatDelegate
 import com.example.playlistmaker.domain.models.Track
@@ -8,19 +7,18 @@ import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 
 
-class AppSharedPreferencesImpl : Application(), AppSharedPreferences {
+class AppSharedPreferencesImpl(
+    private val sharedPreferences: SharedPreferences,
+    private val json: Gson
+) :
+    AppSharedPreferences {
 
-    private var nightMode = false
-    private lateinit var sharedPreferences: SharedPreferences
-    override fun onCreate() {
-        super.onCreate()
-        sharedPreferences = getSharedPreferences(PLAYLIST_MAKER_PREFERENCES, MODE_PRIVATE)
-        this.nightMode = sharedPreferences.getBoolean(NIGHT_MODE, this.nightMode)
+    override fun initTheme() {
+        val nightMode = getNightTheme()
         switchTheme(nightMode)
     }
 
     override fun switchTheme(nightMode: Boolean) {
-        this.nightMode = nightMode
         AppCompatDelegate.setDefaultNightMode(
             if (nightMode) {
                 AppCompatDelegate.MODE_NIGHT_YES
@@ -29,7 +27,7 @@ class AppSharedPreferencesImpl : Application(), AppSharedPreferences {
             }
         )
         sharedPreferences.edit()
-            .putBoolean(NIGHT_MODE, this.nightMode)
+            .putBoolean(NIGHT_MODE, nightMode)
             .apply()
     }
 
@@ -40,25 +38,25 @@ class AppSharedPreferencesImpl : Application(), AppSharedPreferences {
     }
 
     override fun getNightTheme(): Boolean {
-        return sharedPreferences.getBoolean(NIGHT_MODE, false)
+        return sharedPreferences.getBoolean(NIGHT_MODE, DEFAULT_NIGHT_MODE)
     }
 
     override fun putSearchHistory(tracks: ArrayList<Track>) {
-        val json = Gson().toJson(tracks)
+        val jsonString = json.toJson(tracks)
         sharedPreferences.edit()
-            .putString(TRACK_HISTORY, json)
+            .putString(TRACK_HISTORY, jsonString)
             .apply()
     }
 
     override fun getSearchHistory(): ArrayList<Track> {
-        val json = sharedPreferences.getString(TRACK_HISTORY, null) ?: return ArrayList()
+        val jsonString = sharedPreferences.getString(TRACK_HISTORY, null) ?: return ArrayList()
         val token = object : TypeToken<ArrayList<Track>>() {}.type
-        return Gson().fromJson(json, token)
+        return json.fromJson(jsonString, token)
     }
 
     companion object {
-        const val PLAYLIST_MAKER_PREFERENCES = "playlist_maker_preferences"
         const val NIGHT_MODE = "night_mode"
+        const val DEFAULT_NIGHT_MODE = false
         const val TRACK_HISTORY = "track_history"
     }
 }
