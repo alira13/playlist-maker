@@ -127,4 +127,17 @@
     </style>
 
     <style name="PlayerSmallButtonStyle"/>
+
+
+    <style name="EmptyMediaErrorTv">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_gravity">top</item>
+        <item name="android:fontFamily">@font/ys_text_medium</item>
+        <item name="android:textAlignment">center</item>
+        <item name="android:textSize">@dimen/medium_text_size_19</item>
+        <item name="android:drawableTop">@drawable/no_search</item>
+        <item name="android:layout_marginTop">@dimen/search_problem_image_margin</item>
+        <item name="android:textColor">"@color/YP_black"</item>
+    </style>
 </resources>

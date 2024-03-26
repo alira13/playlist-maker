@@ -24,4 +24,7 @@
     <string name="track_year">Год</string>
     <string name="track_style">Жанр</string>
     <string name="track_country">Страна</string>
+    <string name="empty_playlists_error">Вы не создали\nни одного плейлиста</string>
+    <string name="empty_media_error">Ваша медиатека пуста</string>
+    <string name="create_playlist">Создать плейлист</string>
 </resources>
