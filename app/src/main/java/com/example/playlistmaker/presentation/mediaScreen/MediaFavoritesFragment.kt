@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.example.playlistmaker.databinding.FragmentMediaFavoritesContentBinding
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class MediaFavoritesFragment : Fragment() {
     companion object {
@@ -20,6 +21,7 @@ class MediaFavoritesFragment : Fragment() {
 
     private lateinit var binding: FragmentMediaFavoritesContentBinding
 
+    private val playerViewModel by viewModel<MediaFavoritesViewModel>()
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?

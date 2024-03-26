@@ -23,13 +23,11 @@
 
     <com.google.android.material.tabs.TabLayout
         android:id="@+id/tabLayout"
+        style="@style/MediaTab"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/YP_white"
         app:layout_constraintStart_toStartOf="@+id/media_header_ll"
-        app:layout_constraintTop_toBottomOf="@+id/media_header_ll"
-        app:tabIndicatorColor="@color/YP_black"
-        app:tabTextColor="@color/YP_black" />
+        app:layout_constraintTop_toBottomOf="@+id/media_header_ll" />
 
     <androidx.viewpager2.widget.ViewPager2
         android:id="@+id/viewPager"

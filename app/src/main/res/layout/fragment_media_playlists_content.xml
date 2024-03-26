@@ -6,12 +6,11 @@
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        style="@style/CreatePlaylistBtn"
         android:text="@string/create_playlist"
-        android:backgroundTint="@color/YP_black"
-        android:textColor="@color/YP_white"
-        android:layout_gravity="center|top"/>
+        android:layout_gravity="center|top"
+        android:layout_margin="24dp"/>
     <TextView
         android:id="@+id/empty_playlists_error_tv"
-        style="@style/EmptyMediaErrorTv"
-        android:text="@string/empty_playlists_error"/>
+        style="@style/EmptyMediaErrorTv" />
 </FrameLayout>

@@ -5,10 +5,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import com.example.playlistmaker.databinding.FragmentMediaFavoritesContentBinding
 import com.example.playlistmaker.databinding.FragmentMediaPlaylistsContentBinding
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class MediaPlaylistsFragment : Fragment() {
+
+    private val playerViewModel by viewModel<MediaPlaylistsViewModel>()
+
     companion object {
         private const val TEXT = "text"
 

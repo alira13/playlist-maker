@@ -26,5 +26,5 @@
     <string name="track_country">Страна</string>
     <string name="empty_playlists_error">Вы не создали\nни одного плейлиста</string>
     <string name="empty_media_error">Ваша медиатека пуста</string>
-    <string name="create_playlist">Создать плейлист</string>
+    <string name="create_playlist">Новый плейлист</string>
 </resources>
