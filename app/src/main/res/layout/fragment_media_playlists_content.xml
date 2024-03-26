@@ -12,5 +12,6 @@
         android:layout_margin="24dp"/>
     <TextView
         android:id="@+id/empty_playlists_error_tv"
-        style="@style/EmptyMediaErrorTv" />
+        style="@style/EmptyMediaErrorTv"
+        android:text="@string/empty_playlists_error"/>
 </FrameLayout>

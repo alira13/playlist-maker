@@ -14,9 +14,9 @@ class MediaViewPagerAdapter(fragmentManager: FragmentManager, lifecycle: Lifecyc
 
     override fun createFragment(position: Int): Fragment {
         return when (position) {
-            0 -> MediaFavoritesFragment.newInstance("Ваша медиатека пуста")
-            1 -> MediaPlaylistsFragment.newInstance("Вы не создали ни одного плейлиста")
-            else -> MediaFavoritesFragment.newInstance("Ваша медиатека пуста")
+            0 -> MediaFavoritesFragment()
+            1 -> MediaPlaylistsFragment()
+            else -> MediaFavoritesFragment()
         }
     }
 }

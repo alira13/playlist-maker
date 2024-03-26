@@ -12,28 +12,18 @@ class MediaPlaylistsFragment : Fragment() {
 
     private val playerViewModel by viewModel<MediaPlaylistsViewModel>()
 
-    companion object {
-        private const val TEXT = "text"
-
-        fun newInstance(text: String) = MediaPlaylistsFragment().apply {
-            arguments = Bundle().apply {
-                putString(TEXT, text)
-            }
-        }
-    }
-
-    private lateinit var binding: FragmentMediaPlaylistsContentBinding
+    private var binding: FragmentMediaPlaylistsContentBinding?=null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         binding = FragmentMediaPlaylistsContentBinding.inflate(inflater, container, false)
-        return binding.root
+        return binding?.root
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        binding.emptyPlaylistsErrorTv.text = requireArguments().getString(TEXT).toString()
+    override fun onDestroyView() {
+        super.onDestroyView()
+        binding = null
     }
 }

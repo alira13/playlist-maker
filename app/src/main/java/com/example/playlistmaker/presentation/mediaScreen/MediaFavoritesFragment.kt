@@ -9,17 +9,8 @@ import com.example.playlistmaker.databinding.FragmentMediaFavoritesContentBindin
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class MediaFavoritesFragment : Fragment() {
-    companion object {
-        private const val TEXT = "text"
 
-        fun newInstance(text: String) = MediaFavoritesFragment().apply {
-            arguments = Bundle().apply {
-                putString(TEXT, text)
-            }
-        }
-    }
-
-    private lateinit var binding: FragmentMediaFavoritesContentBinding
+    private var binding: FragmentMediaFavoritesContentBinding?=null
 
     private val playerViewModel by viewModel<MediaFavoritesViewModel>()
     override fun onCreateView(
@@ -27,11 +18,11 @@ class MediaFavoritesFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         binding = FragmentMediaFavoritesContentBinding.inflate(inflater, container, false)
-        return binding.root
+        return binding?.root
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        binding.emptyMediaErrorTv.text = requireArguments().getString(TEXT).toString()
+    override fun onDestroyView() {
+        super.onDestroyView()
+        binding = null
     }
 }

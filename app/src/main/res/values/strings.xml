@@ -27,4 +27,6 @@
     <string name="empty_playlists_error">Вы не создали\nни одного плейлиста</string>
     <string name="empty_media_error">Ваша медиатека пуста</string>
     <string name="create_playlist">Новый плейлист</string>
+    <string name="media_favorites_tab">Избранные треки</string>
+    <string name="media_playlists_tab">Плейлисты</string>
 </resources>
