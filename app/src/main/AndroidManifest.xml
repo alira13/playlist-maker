@@ -32,6 +32,10 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".presentation.mainScreen.MainActivity"
+            android:exported="false"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".presentation.ui.root.RootActivity"
             android:exported="true"
             android:screenOrientation="portrait">
             <intent-filter>
@@ -40,6 +44,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+
+
     </application>
 
 </manifest>
