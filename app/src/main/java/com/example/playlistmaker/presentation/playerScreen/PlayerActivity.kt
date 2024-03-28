@@ -15,7 +15,7 @@ import com.example.playlistmaker.databinding.ActivityPlayerBinding
 import com.example.playlistmaker.domain.models.Track
 import com.example.playlistmaker.domain.player.PlayerListener
 import com.example.playlistmaker.presentation.mapper.TrackMapper
-import com.example.playlistmaker.presentation.searchScreen.SearchActivity.Companion.TRACK_VALUE
+import com.example.playlistmaker.presentation.searchScreen.SearchFragment.Companion.TRACK_VALUE
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
 

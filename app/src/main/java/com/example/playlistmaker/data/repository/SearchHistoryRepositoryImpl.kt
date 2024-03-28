@@ -1,16 +1,15 @@
 package com.example.playlistmaker.data.repository
 
-import android.content.Context
 import com.example.playlistmaker.data.sharedPreferences.AppSharedPreferences
 import com.example.playlistmaker.domain.models.Track
 import com.example.playlistmaker.domain.repository.SearchHistoryRepository
 
-class SearchHistoryRepositoryImpl(private val context: Context) :
+class SearchHistoryRepositoryImpl(private val appSharedPreferences: AppSharedPreferences) :
     SearchHistoryRepository {
     private lateinit var tracks: ArrayList<Track>
 
     override fun getHistory(): ArrayList<Track> {
-        tracks = (context as AppSharedPreferences).getSearchHistory()
+        tracks = appSharedPreferences.getSearchHistory()
         return tracks
     }
 
@@ -23,12 +22,12 @@ class SearchHistoryRepositoryImpl(private val context: Context) :
         }
 
         tracks.add(0, track)
-        (context as AppSharedPreferences).putSearchHistory(tracks)
+        appSharedPreferences.putSearchHistory(tracks)
     }
 
     override fun clearHistory() {
         tracks.clear()
-        (context as AppSharedPreferences).putSearchHistory(tracks)
+        appSharedPreferences.putSearchHistory(tracks)
     }
 
     private companion object {
