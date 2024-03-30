@@ -1,33 +1,31 @@
-<?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    style="@style/MainScreenLayout">
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".presentation.mainScreen.MainActivity">
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="48dp"
-        android:layout_gravity="start"
-        android:fontFamily="@font/ys_font_family_medium"
-        android:text="@string/app_name"
-        android:textColor="@color/YP_white"
-        android:textSize="@dimen/medium_text_size_22" />
+    <androidx.fragment.app.FragmentContainerView
+        android:id="@+id/container_view"
+        android:name="androidx.navigation.fragment.NavHostFragment"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:defaultNavHost="true"
+        app:layout_constraintBottom_toTopOf="@id/bottomNavigationView"
 
-    <Button
-        android:id="@+id/search_request_iv"
-        style="@style/ButtonBig"
-        android:text="@string/search_label"
-        app:icon="@drawable/search" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:navGraph="@navigation/navigation_graph" />
 
-    <Button
-        android:id="@+id/media_button"
-        style="@style/ButtonBig"
-        android:text="@string/media_label"
-        app:icon="@drawable/media" />
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/bottomNavigationView"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
 
-    <Button
-        android:id="@+id/settings_button"
-        style="@style/ButtonBig"
-        android:text="@string/settings_label"
-        app:icon="@drawable/settings" />
-
-</LinearLayout>
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:menu="@menu/menu"/>
+</androidx.constraintlayout.widget.ConstraintLayout>

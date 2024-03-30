@@ -65,7 +65,7 @@ class SearchFragment : Fragment(), ItemClickListener, SearchView {
             }
 
             binding.backBtn.setOnClickListener {
-                activity?.finish();
+                activity?.finish()
             }
 
             binding.clearSearchRequestIv.setOnClickListener {
@@ -176,11 +176,11 @@ class SearchFragment : Fragment(), ItemClickListener, SearchView {
 
         trackListRv?.isVisible = false
 
-        //if (tracks.isNotEmpty()) {
-        binding.trackHistoryTv.isVisible = true
-        binding.clearHistoryBtn.isVisible = true
-        historyTrackListRv?.isVisible = true
-        //}
+        if (tracks.isNotEmpty()) {
+            binding.trackHistoryTv.isVisible = true
+            binding.clearHistoryBtn.isVisible = true
+            historyTrackListRv?.isVisible = true
+        }
         historyTrackAdapter.items = tracks.toMutableList()
     }
 

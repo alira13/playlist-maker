@@ -1,4 +1,4 @@
-package com.example.playlistmaker.presentation.settingsScreen
+package com.example.playlistmaker.presentation.mainScreen
 
 import androidx.lifecycle.ViewModel
 import com.example.playlistmaker.domain.usecases.settings.SettingsInteractor
