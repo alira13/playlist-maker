@@ -16,14 +16,14 @@
         android:theme="@style/Theme.PlaylistMaker"
         tools:targetApi="31">
         <activity
-            android:name=".presentation.searchScreen.SearchActivity"
+            android:name=".presentation.searchScreen.SearchFragment"
             android:exported="false" />
         <activity
             android:name=".presentation.mediaScreen.MediaFragment"
             android:exported="false"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".presentation.settingsScreen.SettingsActivity"
+            android:name=".presentation.settingsScreen.SettingsFragment"
             android:exported="false"
             android:screenOrientation="portrait" />
         <activity
@@ -31,11 +31,7 @@
             android:exported="false"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".presentation.mainScreen.MainActivity"
-            android:exported="false"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name=".presentation.ui.root.RootActivity"
+            android:name=".presentation.rootScreen.RootActivity"
             android:exported="true"
             android:screenOrientation="portrait">
             <intent-filter>

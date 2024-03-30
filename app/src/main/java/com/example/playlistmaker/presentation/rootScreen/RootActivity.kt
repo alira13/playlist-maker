@@ -1,4 +1,4 @@
-package com.example.playlistmaker.presentation.ui.root
+package com.example.playlistmaker.presentation.rootScreen
 
 import android.os.Bundle
 import android.util.Log
@@ -7,7 +7,6 @@ import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
 import com.example.playlistmaker.R
 import com.example.playlistmaker.databinding.ActivityRootBinding
-import com.example.playlistmaker.presentation.mainScreen.MainViewModel
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -15,7 +14,7 @@ class RootActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityRootBinding
 
-    private val viewModel by viewModel<MainViewModel>()
+    private val viewModel by viewModel<RootViewModel>()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         Log.d("MY_LOG", "RootActivity: onCreate")
