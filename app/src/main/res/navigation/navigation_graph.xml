@@ -16,13 +16,8 @@
         android:label="fragment_settings"
         tools:layout="@layout/fragment_settings" />
     <fragment
-        android:id="@+id/mediaPlaylistsFragment"
-        android:name="com.example.playlistmaker.presentation.mediaScreen.MediaPlaylistsFragment"
-        android:label="fragment_media_playlists_content"
-        tools:layout="@layout/fragment_media_playlists_content" />
-    <fragment
-        android:id="@+id/mediaFavoritesFragment"
-        android:name="com.example.playlistmaker.presentation.mediaScreen.MediaFavoritesFragment"
-        android:label="fragment_media_favorites_content"
-        tools:layout="@layout/fragment_media_favorites_content" />
+        android:id="@+id/mediaFragment"
+        android:name="com.example.playlistmaker.presentation.mediaScreen.MediaFragment"
+        android:label="fragment_media"
+        tools:layout="@layout/fragment_media" />
 </navigation>

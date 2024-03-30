@@ -64,10 +64,6 @@ class SearchFragment : Fragment(), ItemClickListener, SearchView {
                 render(it)
             }
 
-            binding.backBtn.setOnClickListener {
-                activity?.finish()
-            }
-
             binding.clearSearchRequestIv.setOnClickListener {
                 binding.searchRequestEt.setText("")
                 binding.clearSearchRequestIv.isVisible = false

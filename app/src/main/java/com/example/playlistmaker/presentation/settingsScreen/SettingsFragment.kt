@@ -32,10 +32,6 @@ class SettingsFragment : Fragment() {
             settingsViewModel.updateThemeSetting(ThemeSettings(checked))
         }
 
-        binding.backBtn.setOnClickListener {
-            activity?.finish()
-        }
-
         binding.shareBtn.setOnClickListener {
             settingsViewModel.shareApp()
         }

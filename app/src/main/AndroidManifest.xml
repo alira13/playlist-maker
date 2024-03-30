@@ -19,7 +19,7 @@
             android:name=".presentation.searchScreen.SearchActivity"
             android:exported="false" />
         <activity
-            android:name=".presentation.mediaScreen.MediaActivity"
+            android:name=".presentation.mediaScreen.MediaFragment"
             android:exported="false"
             android:screenOrientation="portrait" />
         <activity

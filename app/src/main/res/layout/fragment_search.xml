@@ -9,11 +9,6 @@
         style="@style/HeaderStyle"
         tools:ignore="MissingConstraints">
 
-        <ImageButton
-            android:id="@+id/back_btn"
-            style="@style/BackBtn"
-            android:src="@drawable/arrow_back" />
-
         <TextView
             style="@style/header_tv"
             android:text="@string/search_label" />

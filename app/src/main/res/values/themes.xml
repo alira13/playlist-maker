@@ -152,4 +152,10 @@
         <item name="tabIndicatorColor">?attr/colorOnPrimary</item>
         <item name="tabTextColor">?attr/colorOnPrimary</item>
     </style>
+
+    <style name="MenuStyle">
+        <item name="android:background">?attr/colorPrimary</item>
+        <item name="itemIconTint">?attr/colorOnPrimary</item>
+        <item name="itemTextColor">?attr/colorOnPrimary</item>
+    </style>
 </resources>

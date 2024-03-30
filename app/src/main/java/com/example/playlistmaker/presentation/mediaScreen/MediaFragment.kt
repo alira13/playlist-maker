@@ -1,27 +1,29 @@
 package com.example.playlistmaker.presentation.mediaScreen
 
-import android.annotation.SuppressLint
 import android.os.Bundle
-import androidx.appcompat.app.AppCompatActivity
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import androidx.fragment.app.Fragment
 import com.example.playlistmaker.R
-import com.example.playlistmaker.databinding.ActivityMediaBinding
+import com.example.playlistmaker.databinding.FragmentMediaBinding
 import com.google.android.material.tabs.TabLayoutMediator
 
-class MediaActivity : AppCompatActivity() {
+class MediaFragment : Fragment() {
 
-    private lateinit var binding: ActivityMediaBinding
+    private lateinit var binding: FragmentMediaBinding
 
     private lateinit var tabMediator: TabLayoutMediator
 
-    @SuppressLint("MissingInflatedId")
-    override fun onCreate(savedInstanceState: Bundle?) {
-        binding = ActivityMediaBinding.inflate(layoutInflater)
-        super.onCreate(savedInstanceState)
-        setContentView(binding.root)
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
+        binding = FragmentMediaBinding.inflate(inflater, container, false)
 
-        binding.backBtn.setOnClickListener { finish() }
-
-        binding.viewPager.adapter = MediaViewPagerAdapter(supportFragmentManager, lifecycle)
+        binding.viewPager.adapter =
+            MediaViewPagerAdapter(requireActivity().supportFragmentManager, lifecycle)
 
         tabMediator = TabLayoutMediator(binding.tabLayout, binding.viewPager) { tab, position ->
             when (position) {
@@ -30,6 +32,7 @@ class MediaActivity : AppCompatActivity() {
             }
         }
         tabMediator.attach()
+        return binding.root
     }
 
     override fun onDestroy() {

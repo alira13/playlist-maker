@@ -6,12 +6,6 @@
 
 
     <LinearLayout style="@style/HeaderStyle">
-
-        <ImageButton
-            android:id="@+id/back_btn"
-            style="@style/BackBtn"
-            android:src="@drawable/arrow_back" />
-
         <TextView
             style="@style/header_tv"
             android:text="@string/settings_label" />

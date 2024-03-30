@@ -7,7 +7,7 @@
         android:title="@string/search_tab" />
 
     <item
-        android:id="@+id/mediaPlaylistsFragment"
+        android:id="@+id/mediaFragment"
         android:icon="@drawable/media_tab"
         android:title="@string/media_tab"/>
 
