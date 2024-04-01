@@ -13,7 +13,7 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 class SettingsFragment : Fragment() {
 
     private val settingsViewModel by viewModel<SettingsViewModel>()
-    private var binding: FragmentSettingsBinding?=null
+    private var binding: FragmentSettingsBinding? = null
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,

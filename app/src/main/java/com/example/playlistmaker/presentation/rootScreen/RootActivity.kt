@@ -11,7 +11,7 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class RootActivity : AppCompatActivity() {
 
-    private lateinit var binding: ActivityRootBinding
+    private var binding: ActivityRootBinding? = null
 
     private val viewModel by viewModel<RootViewModel>()
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -22,12 +22,12 @@ class RootActivity : AppCompatActivity() {
 
         // Привязываем вёрстку к экрану
         binding = ActivityRootBinding.inflate(layoutInflater)
-        setContentView(binding.root)
+        setContentView(binding?.root)
 
         val navHostFragment =
             supportFragmentManager.findFragmentById(R.id.container_view) as NavHostFragment
         val navController = navHostFragment.navController
 
-        binding.bottomNavigationView.setupWithNavController(navController)
+        binding?.bottomNavigationView?.setupWithNavController(navController)
     }
 }

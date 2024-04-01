@@ -11,9 +11,9 @@ import com.google.android.material.tabs.TabLayoutMediator
 
 class MediaFragment : Fragment() {
 
-    private lateinit var binding: FragmentMediaBinding
+    private var binding: FragmentMediaBinding? = null
 
-    private lateinit var tabMediator: TabLayoutMediator
+    private var tabMediator: TabLayoutMediator? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -24,21 +24,21 @@ class MediaFragment : Fragment() {
 
         binding = FragmentMediaBinding.inflate(inflater, container, false)
 
-        binding.viewPager.adapter =
+        binding?.viewPager?.adapter =
             MediaViewPagerAdapter(childFragmentManager, lifecycle)
 
-        tabMediator = TabLayoutMediator(binding.tabLayout, binding.viewPager) { tab, position ->
+        tabMediator = TabLayoutMediator(binding!!.tabLayout, binding!!.viewPager) { tab, position ->
             when (position) {
                 0 -> tab.text = getString(R.string.media_favorites_tab)
                 1 -> tab.text = getString(R.string.media_playlists_tab)
             }
         }
-        tabMediator.attach()
-        return binding.root
+        tabMediator?.attach()
+        return binding!!.root
     }
 
     override fun onDestroy() {
         super.onDestroy()
-        tabMediator.detach()
+        tabMediator?.detach()
     }
 }
