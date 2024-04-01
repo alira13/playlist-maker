@@ -20,10 +20,12 @@ class MediaFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
+
+
         binding = FragmentMediaBinding.inflate(inflater, container, false)
 
         binding.viewPager.adapter =
-            MediaViewPagerAdapter(requireActivity().supportFragmentManager, lifecycle)
+            MediaViewPagerAdapter(childFragmentManager, lifecycle)
 
         tabMediator = TabLayoutMediator(binding.tabLayout, binding.viewPager) { tab, position ->
             when (position) {
