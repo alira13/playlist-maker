@@ -159,5 +159,13 @@
         <item name="itemTextColor">@color/item_state_color</item>
         <item name="itemBackground">?attr/colorPrimary</item>
         <item name="shapeAppearance">@null</item>
+        <item name="itemTextAppearanceActive">@style/MyBottomNavigationView.TextAppearance</item>
+        <item name="itemTextAppearanceInactive">@style/MyBottomNavigationView.TextAppearance</item>
+
+    </style>
+
+    <style name="MyBottomNavigationView.TextAppearance" parent="TextAppearance.MaterialComponents.Caption">
+        <item name="android:textSize">12sp</item>
+        <item name="fontFamily">@font/ys_font_family_regular</item>
     </style>
 </resources>
