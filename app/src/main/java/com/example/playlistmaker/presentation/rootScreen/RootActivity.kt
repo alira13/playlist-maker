@@ -7,7 +7,6 @@ import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
 import com.example.playlistmaker.R
 import com.example.playlistmaker.databinding.ActivityRootBinding
-import com.google.android.material.bottomnavigation.BottomNavigationView
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class RootActivity : AppCompatActivity() {
@@ -25,21 +24,10 @@ class RootActivity : AppCompatActivity() {
         binding = ActivityRootBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        /*if (savedInstanceState == null) {
-            Log.d("MY_LOG", "savedInstanceState=null")
-            // Добавляем фрагмент в контейнер
-            supportFragmentManager.commit {
-                //this.add(R.id.rootFragmentContainerView, SearchFragment())
-                this.add(R.id.container_view, SettingsFragment())
-            }
-        }
-         */
-
         val navHostFragment =
             supportFragmentManager.findFragmentById(R.id.container_view) as NavHostFragment
         val navController = navHostFragment.navController
 
-        val bottomNavigationView = findViewById<BottomNavigationView>(R.id.bottomNavigationView)
-        bottomNavigationView.setupWithNavController(navController)
+        binding.bottomNavigationView.setupWithNavController(navController)
     }
 }

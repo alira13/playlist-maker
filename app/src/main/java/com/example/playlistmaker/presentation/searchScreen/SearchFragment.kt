@@ -25,7 +25,7 @@ import com.example.playlistmaker.presentation.ui.TrackAdapter
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class SearchFragment : Fragment(), ItemClickListener, SearchView {
-    private lateinit var binding: FragmentSearchBinding
+    private var binding: FragmentSearchBinding?=null
 
     private val searchViewModel by viewModel<SearchViewModel>()
 
@@ -49,7 +49,7 @@ class SearchFragment : Fragment(), ItemClickListener, SearchView {
         Log.d("MY_LOG", "SearchFragment onCreateView start")
         binding = FragmentSearchBinding.inflate(inflater, container, false)
         Log.d("MY_LOG", "SearchFragment onCreateView finish")
-        return binding.root
+        return binding!!.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -57,16 +57,16 @@ class SearchFragment : Fragment(), ItemClickListener, SearchView {
         try {
             super.onViewCreated(view, savedInstanceState)
 
-            binding.trackListRv.adapter = trackAdapter
+            binding?.trackListRv?.adapter = trackAdapter
             historyTrackListRv?.adapter = historyTrackAdapter
 
             searchViewModel.stateLiveData.observe(viewLifecycleOwner) {
                 render(it)
             }
 
-            binding.clearSearchRequestIv.setOnClickListener {
-                binding.searchRequestEt.setText("")
-                binding.clearSearchRequestIv.isVisible = false
+            binding?.clearSearchRequestIv?.setOnClickListener {
+                binding?.searchRequestEt?.setText("")
+                binding?.clearSearchRequestIv?.isVisible = false
 
                 searchViewModel.getHistory()
                 searchViewModel.stateLiveData.observe(viewLifecycleOwner) {
@@ -74,18 +74,18 @@ class SearchFragment : Fragment(), ItemClickListener, SearchView {
                 }
             }
 
-            binding.searchRequestEt.doOnTextChanged { text, start, before, count ->
+            binding?.searchRequestEt?.doOnTextChanged { text, start, before, count ->
                 Log.d("MY_LOG", "view: doOnTextChanged")
                 searchViewModel.searchDebounce(changedText = text?.toString() ?: "")
             }
 
-            binding.searchRequestEt.doAfterTextChanged { text: Editable? ->
+            binding?.searchRequestEt?.doAfterTextChanged { text: Editable? ->
                 Log.d("MY_LOG", "view: afterTextChanged")
                 val inputMethodManager =
                     activity?.getSystemService(AppCompatActivity.INPUT_METHOD_SERVICE) as? InputMethodManager
                 if (text.isNullOrEmpty()) {
                     inputMethodManager?.hideSoftInputFromWindow(
-                        binding.searchRequestEt.windowToken, 0
+                        binding?.searchRequestEt?.windowToken, 0
                     )
                     //при пустом поле поиска показываем историю, если она не пустая
                     searchViewModel.getHistory()
@@ -95,24 +95,24 @@ class SearchFragment : Fragment(), ItemClickListener, SearchView {
                 } else {
                     //скрываем историю треков как только начинаем печатать что-то в поиске
                     showEmpty()
-                    binding.clearSearchRequestIv.isVisible = true
-                    inputMethodManager?.showSoftInput(binding.searchRequestEt, 0)
+                    binding?.clearSearchRequestIv?.isVisible = true
+                    inputMethodManager?.showSoftInput(binding?.searchRequestEt, 0)
                 }
             }
 
-            binding.searchRequestEt.setOnFocusChangeListener { _, hasFocus ->
-                if (hasFocus && binding.searchRequestEt.text.isEmpty() && historyTrackAdapter.items.isNotEmpty()) {
+            binding?.searchRequestEt?.setOnFocusChangeListener { _, hasFocus ->
+                if (hasFocus && binding!!.searchRequestEt.text.isEmpty() && historyTrackAdapter.items.isNotEmpty()) {
                     showTrackHistory(historyTrackAdapter.items)
                 } else {
                     showTrackList(trackAdapter.items)
                 }
             }
 
-            binding.retrySearchBtn.setOnClickListener {
-                searchViewModel.search(binding.searchRequestEt.text.toString())
+            binding?.retrySearchBtn?.setOnClickListener {
+                searchViewModel.search(binding?.searchRequestEt?.text.toString())
             }
 
-            binding.clearHistoryBtn.setOnClickListener {
+            binding?.clearHistoryBtn?.setOnClickListener {
                 searchViewModel.clearHistory()
             }
 
@@ -136,29 +136,29 @@ class SearchFragment : Fragment(), ItemClickListener, SearchView {
 
     private fun showLoading() {
         Log.d("MY_LOG", "view: showLoading")
-        binding.emptyListErrorTv.isVisible = false
-        binding.connectionErrorTv.isVisible = false
-        binding.retrySearchBtn.isVisible = false
+        binding?.emptyListErrorTv?.isVisible = false
+        binding?.connectionErrorTv?.isVisible = false
+        binding?.retrySearchBtn?.isVisible = false
 
-        binding.trackHistoryTv.isVisible = false
-        binding.clearHistoryBtn.isVisible = false
+        binding?.trackHistoryTv?.isVisible = false
+        binding?.clearHistoryBtn?.isVisible = false
         historyTrackListRv?.isVisible = false
 
-        binding.searchPbr.isVisible = true
+        binding?.searchPbr?.isVisible = true
     }
 
     private fun showTrackList(tracks: List<Track>) {
         Log.d("MY_LOG", "view: showTrackList")
-        binding.trackHistoryTv.isVisible = false
-        binding.clearHistoryBtn.isVisible = false
+        binding?.trackHistoryTv?.isVisible = false
+        binding?.clearHistoryBtn?.isVisible = false
         historyTrackListRv?.isVisible = false
 
 
-        binding.emptyListErrorTv.isVisible = false
-        binding.connectionErrorTv.isVisible = false
-        binding.retrySearchBtn.isVisible = false
+        binding?.emptyListErrorTv?.isVisible = false
+        binding?.connectionErrorTv?.isVisible = false
+        binding?.retrySearchBtn?.isVisible = false
 
-        binding.searchPbr.isVisible = false
+        binding?.searchPbr?.isVisible = false
         trackListRv?.isVisible = true
         trackAdapter.items = tracks.toMutableList()
     }
@@ -166,15 +166,15 @@ class SearchFragment : Fragment(), ItemClickListener, SearchView {
     private fun showTrackHistory(tracks: List<Track>) {
         Log.d("MY_LOG", "view: showTrackHistory")
 
-        binding.emptyListErrorTv.isVisible = false
-        binding.connectionErrorTv.isVisible = false
-        binding.retrySearchBtn.isVisible = false
+        binding?.emptyListErrorTv?.isVisible = false
+        binding?.connectionErrorTv?.isVisible = false
+        binding?.retrySearchBtn?.isVisible = false
 
         trackListRv?.isVisible = false
 
         if (tracks.isNotEmpty()) {
-            binding.trackHistoryTv.isVisible = true
-            binding.clearHistoryBtn.isVisible = true
+            binding?.trackHistoryTv?.isVisible = true
+            binding?.clearHistoryBtn?.isVisible = true
             historyTrackListRv?.isVisible = true
         }
         historyTrackAdapter.items = tracks.toMutableList()
@@ -183,42 +183,42 @@ class SearchFragment : Fragment(), ItemClickListener, SearchView {
     private fun showEmptyTrackHistory() {
         Log.d("MY_LOG", "view: showEmptyTrackHistory")
         historyTrackAdapter.clearItems()
-        binding.trackHistoryTv.isVisible = false
-        binding.clearHistoryBtn.isVisible = false
+        binding?.trackHistoryTv?.isVisible = false
+        binding?.clearHistoryBtn?.isVisible = false
         historyTrackListRv?.isVisible = false
     }
 
     private fun showConnectionError() {
         Log.d("MY_LOG", "view: showConnectionError")
-        binding.searchPbr.isVisible = false
+        binding?.searchPbr?.isVisible = false
         trackAdapter.clearItems()
 
-        binding.trackHistoryTv.isVisible = false
-        binding.clearHistoryBtn.isVisible = false
+        binding?.trackHistoryTv?.isVisible = false
+        binding?.clearHistoryBtn?.isVisible = false
         historyTrackListRv?.isVisible = false
 
         trackListRv?.isVisible = false
-        binding.connectionErrorTv.isVisible = true
-        binding.retrySearchBtn.isVisible = true
+        binding?.connectionErrorTv?.isVisible = true
+        binding?.retrySearchBtn?.isVisible = true
     }
 
     private fun showEmptyTrackListError() {
         Log.d("MY_LOG", "view: showEmptyTrackListError")
         trackAdapter.clearItems()
 
-        binding.trackHistoryTv.isVisible = false
-        binding.clearHistoryBtn.isVisible = false
+        binding?.trackHistoryTv?.isVisible = false
+        binding?.clearHistoryBtn?.isVisible = false
         historyTrackListRv?.isVisible = false
 
-        binding.searchPbr.isVisible = false
+        binding?.searchPbr?.isVisible = false
         trackListRv?.isVisible = false
-        binding.emptyListErrorTv.isVisible = true
+        binding?.emptyListErrorTv?.isVisible = true
     }
 
     private fun showEmpty() {
         Log.d("MY_LOG", "view: showEmpty")
-        binding.trackHistoryTv.isVisible = false
-        binding.clearHistoryBtn.isVisible = false
+        binding?.trackHistoryTv?.isVisible = false
+        binding?.clearHistoryBtn?.isVisible = false
         historyTrackListRv?.isVisible = false
     }
 
@@ -253,19 +253,20 @@ class SearchFragment : Fragment(), ItemClickListener, SearchView {
     override fun onDestroyView() {
         super.onDestroyView()
         Log.d("MY_LOG", "view: onDestroy")
-        simpleTextWatcher?.let { binding.searchRequestEt.removeTextChangedListener(it) }
+        simpleTextWatcher?.let { binding?.searchRequestEt?.removeTextChangedListener(it) }
+        binding = null
     }
-
+    
     override fun onSaveInstanceState(outState: Bundle) {
         Log.d("MY_LOG", "view: onSaveInstanceState")
         super.onSaveInstanceState(outState)
-        outState.putString(SEARCH_VALUE, binding.searchRequestEt.text.toString())
+        outState.putString(SEARCH_VALUE, binding?.searchRequestEt?.text.toString())
     }
 
     override fun onViewStateRestored(savedInstanceState: Bundle?) {
         super.onViewStateRestored(savedInstanceState)
         Log.d("MY_LOG", "view: onRestoreInstanceState")
         val searchValue = savedInstanceState?.getString(SEARCH_VALUE, "")
-        binding.searchRequestEt.setText(searchValue)
+        binding?.searchRequestEt?.setText(searchValue)
     }
 }

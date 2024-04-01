@@ -61,6 +61,7 @@ class PlayerActivity : AppCompatActivity() {
         stopTimer()
     }
 
+
     private fun getTrack(intent: Intent): Track {
         val track = if (SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             intent.getParcelableExtra(TRACK_VALUE, Track::class.java)!!

@@ -13,7 +13,7 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 class SettingsFragment : Fragment() {
 
     private val settingsViewModel by viewModel<SettingsViewModel>()
-    private lateinit var binding: FragmentSettingsBinding
+    private var binding: FragmentSettingsBinding?=null
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -22,26 +22,31 @@ class SettingsFragment : Fragment() {
         Log.d("MY_LOG", "SettingsFragment onCreateView start")
         binding = FragmentSettingsBinding.inflate(inflater, container, false)
         Log.d("MY_LOG", "SettingsFragment onCreateView finish")
-        return binding.root
+        return binding!!.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding.nightModeSwitch.isChecked = settingsViewModel.getThemeSettings().isChecked
-        binding.nightModeSwitch.setOnCheckedChangeListener { _, checked ->
+        binding?.nightModeSwitch?.isChecked = settingsViewModel.getThemeSettings().isChecked
+        binding?.nightModeSwitch?.setOnCheckedChangeListener { _, checked ->
             settingsViewModel.updateThemeSetting(ThemeSettings(checked))
         }
 
-        binding.shareBtn.setOnClickListener {
+        binding?.shareBtn?.setOnClickListener {
             settingsViewModel.shareApp()
         }
 
-        binding.supportBtn.setOnClickListener {
+        binding?.supportBtn?.setOnClickListener {
             settingsViewModel.openSupport()
         }
 
-        binding.agreementBtn.setOnClickListener {
+        binding?.agreementBtn?.setOnClickListener {
             settingsViewModel.openTerms()
         }
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        binding = null
     }
 }
