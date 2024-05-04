@@ -3,16 +3,11 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     style="@style/SecondaryScreenLayoutStyle"
-    tools:context=".presentation.searchScreen.SearchActivity">
+    tools:context=".presentation.searchScreen.SearchFragment">
 
     <LinearLayout
         style="@style/HeaderStyle"
         tools:ignore="MissingConstraints">
-
-        <ImageButton
-            android:id="@+id/back_btn"
-            style="@style/BackBtn"
-            android:src="@drawable/arrow_back" />
 
         <TextView
             style="@style/header_tv"

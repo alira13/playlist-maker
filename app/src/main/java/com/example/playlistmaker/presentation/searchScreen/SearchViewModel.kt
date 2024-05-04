@@ -25,6 +25,7 @@ class SearchViewModel(
     val stateLiveData: LiveData<SearchState> = _stateLiveData
 
     private fun renderState(state: SearchState) {
+        Log.d("MY_LOG", "ViewModel:renderState: $state")
         _stateLiveData.postValue(state)
     }
 
@@ -77,12 +78,18 @@ class SearchViewModel(
     }
 
     fun addToHistory(track: Track) {
+        Log.d("MY_LOG", "ADD TO HISTORY")
         searchHistoryInteractor.addToHistory(track)
     }
 
-    fun getHistory() = searchHistoryInteractor.getHistory()
+    fun getHistory() {
+        Log.d("MY_LOG", "GET HISTORY")
+        val tracks = searchHistoryInteractor.getHistory()
+        renderState(SearchState.TrackHistory(tracks))
+    }
 
     fun clearHistory() {
+        Log.d("MY_LOG", "CLEAR HISTORY")
         searchHistoryInteractor.clearHistory()
         renderState(SearchState.EmptyTrackHistory)
     }

@@ -29,4 +29,7 @@
     <string name="create_playlist">Новый плейлист</string>
     <string name="media_favorites_tab">Избранные треки</string>
     <string name="media_playlists_tab">Плейлисты</string>
+    <string name="search_tab">Поиск</string>
+    <string name="media_tab">Медиатека</string>
+    <string name="settings_tab">Настройки</string>
 </resources>

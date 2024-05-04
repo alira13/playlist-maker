@@ -5,20 +5,20 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import com.example.playlistmaker.databinding.FragmentMediaPlaylistsContentBinding
+import com.example.playlistmaker.databinding.FragmentMediaPlaylistsBinding
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class MediaPlaylistsFragment : Fragment() {
 
     private val playerViewModel by viewModel<MediaPlaylistsViewModel>()
 
-    private var binding: FragmentMediaPlaylistsContentBinding?=null
+    private var binding: FragmentMediaPlaylistsBinding? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        binding = FragmentMediaPlaylistsContentBinding.inflate(inflater, container, false)
+        binding = FragmentMediaPlaylistsBinding.inflate(inflater, container, false)
         return binding?.root
     }
 

@@ -1,9 +1,9 @@
-package com.example.playlistmaker.presentation.settingsScreen
+package com.example.playlistmaker.presentation.rootScreen
 
 import androidx.lifecycle.ViewModel
 import com.example.playlistmaker.domain.usecases.settings.SettingsInteractor
 
-class MainViewModel(
+class RootViewModel(
     private val settingsInteractor: SettingsInteractor
 ) : ViewModel() {
 
