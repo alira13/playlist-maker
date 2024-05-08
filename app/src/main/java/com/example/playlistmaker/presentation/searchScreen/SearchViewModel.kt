@@ -1,25 +1,26 @@
 package com.example.playlistmaker.presentation.searchScreen
 
-import android.os.Handler
-import android.os.Looper
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.example.playlistmaker.domain.consumer.Consumer
 import com.example.playlistmaker.domain.consumer.ConsumerData
 import com.example.playlistmaker.domain.models.Track
 import com.example.playlistmaker.domain.usecases.search.SearchHistoryInteractor
 import com.example.playlistmaker.domain.usecases.search.SearchInteractor
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 class SearchViewModel(
     private val searchInteractor: SearchInteractor,
     private val searchHistoryInteractor: SearchHistoryInteractor
 ) : ViewModel() {
 
-    private val handler: Handler = Handler(Looper.getMainLooper())
-
     private var lastSearchText: String? = null
+    private var searchJob: Job? = null
 
     private val _stateLiveData = MutableLiveData<SearchState>()
     val stateLiveData: LiveData<SearchState> = _stateLiveData
@@ -29,15 +30,16 @@ class SearchViewModel(
         _stateLiveData.postValue(state)
     }
 
-    private var searchRunnable = Runnable {
-        val newSearchText = lastSearchText ?: ""
-        search(newSearchText)
-    }
-
     fun searchDebounce(changedText: String) {
+        if (lastSearchText == changedText) {
+            return
+        }
         this.lastSearchText = changedText
-        handler.removeCallbacks(searchRunnable)
-        handler.postDelayed(searchRunnable, SEARCH_DEBOUNCE_DELAY)
+        searchJob?.cancel()
+        searchJob = viewModelScope.launch {
+            delay(SEARCH_DEBOUNCE_DELAY)
+            search(changedText)
+        }
     }
 
     fun search(newSearchText: String) {
@@ -49,10 +51,9 @@ class SearchViewModel(
             searchInteractor.execute(newSearchText,
                 consumer = object : Consumer<Track> {
                     override fun consume(data: ConsumerData<Track>) {
-                        val currentRunnable = searchRunnable
-                        handler.removeCallbacks(currentRunnable)
+                        searchJob?.cancel()
 
-                        val newDetailsRunnable = Runnable {
+                        val newJob = viewModelScope.launch {
                             when (data) {
                                 is ConsumerData.NetworkError -> {
                                     renderState(SearchState.ConnectionError)
@@ -70,8 +71,7 @@ class SearchViewModel(
                                 }
                             }
                         }
-                        searchRunnable = newDetailsRunnable
-                        handler.post(newDetailsRunnable)
+                        searchJob = newJob
                     }
                 })
         }
@@ -96,10 +96,5 @@ class SearchViewModel(
 
     companion object {
         private const val SEARCH_DEBOUNCE_DELAY = 2000L
-        private val SEARCH_REQUEST_TOKEN = Any()
-    }
-
-    override fun onCleared() {
-        handler.removeCallbacksAndMessages(SEARCH_REQUEST_TOKEN)
     }
 }
