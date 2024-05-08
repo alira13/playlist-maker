@@ -2,8 +2,6 @@ package com.example.playlistmaker.presentation.searchScreen
 
 import android.content.Intent
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
@@ -16,16 +14,19 @@ import androidx.core.view.isVisible
 import androidx.core.widget.doAfterTextChanged
 import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.RecyclerView
 import com.example.playlistmaker.databinding.FragmentSearchBinding
 import com.example.playlistmaker.domain.models.Track
 import com.example.playlistmaker.presentation.playerScreen.PlayerActivity
 import com.example.playlistmaker.presentation.ui.ItemClickListener
 import com.example.playlistmaker.presentation.ui.TrackAdapter
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class SearchFragment : Fragment(), ItemClickListener, SearchView {
-    private var binding: FragmentSearchBinding?=null
+    private var binding: FragmentSearchBinding? = null
 
     private val searchViewModel by viewModel<SearchViewModel>()
 
@@ -33,8 +34,6 @@ class SearchFragment : Fragment(), ItemClickListener, SearchView {
 
     private val trackAdapter = TrackAdapter(this)
     private val historyTrackAdapter = TrackAdapter(this)
-
-    private val handler: Handler = Handler(Looper.getMainLooper())
 
     private var simpleTextWatcher: TextWatcher? = null
 
@@ -245,7 +244,13 @@ class SearchFragment : Fragment(), ItemClickListener, SearchView {
         val current = isClickAllowed
         if (isClickAllowed) {
             isClickAllowed = false
-            handler.postDelayed({ isClickAllowed = true }, CLICK_DEBOUNCE_DELAY)
+            lifecycleScope.launch {
+                Log.d("MY_LOG", "view 1: clickDebounce")
+                delay(CLICK_DEBOUNCE_DELAY)
+                Log.d("MY_LOG", "view 2: clickDebounce")
+                isClickAllowed = true
+                Log.d("MY_LOG", "view 3: clickDebounce")
+            }
         }
         return current
     }
@@ -256,7 +261,7 @@ class SearchFragment : Fragment(), ItemClickListener, SearchView {
         simpleTextWatcher?.let { binding?.searchRequestEt?.removeTextChangedListener(it) }
         binding = null
     }
-    
+
     override fun onSaveInstanceState(outState: Bundle) {
         Log.d("MY_LOG", "view: onSaveInstanceState")
         super.onSaveInstanceState(outState)
