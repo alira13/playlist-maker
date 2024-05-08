@@ -8,6 +8,7 @@ import android.os.Handler
 import android.os.Looper
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.lifecycleScope
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.example.playlistmaker.R
@@ -16,6 +17,8 @@ import com.example.playlistmaker.domain.models.Track
 import com.example.playlistmaker.domain.player.PlayerListener
 import com.example.playlistmaker.presentation.mapper.TrackMapper
 import com.example.playlistmaker.presentation.searchScreen.SearchFragment.Companion.TRACK_VALUE
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
 
@@ -91,12 +94,12 @@ class PlayerActivity : AppCompatActivity() {
     private fun playerButtonControl() {
         when (playerState) {
             PlayerState.STATE_PLAYING -> {
-                Log.d("MY_LOG", "51")
+                Log.d("MY_LOG", "pausePlayer")
                 pausePlayer()
             }
 
             PlayerState.STATE_PAUSED, PlayerState.STATE_PREPARED -> {
-                Log.d("MY_LOG", "52")
+                Log.d("MY_LOG", "startPlayer")
                 startPlayer()
             }
 
@@ -166,7 +169,10 @@ class PlayerActivity : AppCompatActivity() {
         val current = isClickAllowed
         if (isClickAllowed) {
             isClickAllowed = false
-            handler.postDelayed({ isClickAllowed = true }, CLICK_DEBOUNCE_DELAY_MILLIS)
+            lifecycleScope.launch {
+                delay(CLICK_DEBOUNCE_DELAY_MILLIS)
+                isClickAllowed = true
+            }
         }
         return current
     }
