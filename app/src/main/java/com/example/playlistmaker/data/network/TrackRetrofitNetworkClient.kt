@@ -1,25 +1,30 @@
 package com.example.playlistmaker.data.network
 
+import android.util.Log
 import com.example.playlistmaker.data.dto.NetworkResponse
 import com.example.playlistmaker.data.dto.TrackNetworkResponse
 import com.example.playlistmaker.data.repository.TrackNetworkClient
 
 class TrackRetrofitNetworkClient : TrackNetworkClient {
-    override fun search(track: String): NetworkResponse {
+    override suspend fun search(track: String): NetworkResponse {
         val trackResponse: NetworkResponse
         try {
-            val response = RetrofitClient.api.search(track).execute()
-            if (response.isSuccessful) {
-                if (response.body()!!.results.isEmpty()) {
+            val response = RetrofitClient.api.search(track)
+            return if (response != null) {
+                if (response.results.isEmpty()) {
                     trackResponse = NetworkResponse()
                     trackResponse.resultCount = 0
                 } else {
-                    trackResponse = TrackNetworkResponse(response.body()!!.results.toList())
-                    trackResponse.resultCount = response.body()!!.resultCount
+                    trackResponse = TrackNetworkResponse(response.results.toList())
+                    trackResponse.resultCount = response.resultCount
                 }
-                return trackResponse
-            } else return NetworkResponse().apply { resultCount = 400 }
-        } catch (ex: Exception) {
+                Log.d(
+                    "MY_LOG",
+                    "Successfully ${trackResponse.toString()} on ${Thread.currentThread().name}"
+                )
+                trackResponse
+            } else NetworkResponse().apply { resultCount = 400 }
+        } catch (ex: Throwable) {
             return NetworkResponse().apply { resultCount = 400 }
         }
     }

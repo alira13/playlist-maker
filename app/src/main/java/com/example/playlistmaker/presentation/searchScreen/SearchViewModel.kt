@@ -5,7 +5,6 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.playlistmaker.domain.consumer.Consumer
 import com.example.playlistmaker.domain.consumer.ConsumerData
 import com.example.playlistmaker.domain.models.Track
 import com.example.playlistmaker.domain.usecases.search.SearchHistoryInteractor
@@ -48,32 +47,36 @@ class SearchViewModel(
 
             renderState(SearchState.Loading)
 
-            searchInteractor.execute(newSearchText,
-                consumer = object : Consumer<Track> {
-                    override fun consume(data: ConsumerData<Track>) {
-                        searchJob?.cancel()
+            searchJob?.cancel()
 
-                        val newJob = viewModelScope.launch {
-                            when (data) {
-                                is ConsumerData.NetworkError -> {
-                                    renderState(SearchState.ConnectionError)
-                                }
+            val newJob = viewModelScope.launch {
+                searchInteractor
+                    .execute(newSearchText)
+                    .collect { pair -> processResult(pair.first, pair.second) }
+            }
+            searchJob = newJob
+        }
+    }
 
-                                is ConsumerData.EmptyListError -> {
-                                    renderState(SearchState.EmptyTrackListError)
-                                    Log.d("MY_LOG", "EMPTY LIST ERROR")
-                                }
+    private fun processResult(foundTracks: List<Track>?, consumerData: ConsumerData<Track>?) {
+        when (consumerData) {
+            is ConsumerData.NetworkError -> {
+                renderState(SearchState.ConnectionError)
+                Log.d("MY_LOG", "CONNECTION ERROR")
+            }
 
-                                is ConsumerData.Data -> {
-                                    val tracks = data.value
-                                    renderState(SearchState.TrackList(tracks))
-                                    Log.d("MY_LOG", "SUCCESS: $tracks")
-                                }
-                            }
-                        }
-                        searchJob = newJob
-                    }
-                })
+            is ConsumerData.EmptyListError -> {
+                renderState(SearchState.EmptyTrackListError)
+                Log.d("MY_LOG", "EMPTY LIST ERROR")
+            }
+
+            is ConsumerData.Data -> {
+                val tracks = foundTracks!!
+                renderState(SearchState.TrackList(tracks))
+                Log.d("MY_LOG", "SUCCESS: $tracks")
+            }
+
+            else -> {}
         }
     }
 
