@@ -17,6 +17,10 @@ class PlayerInteractorImpl(private val trackPlayer: TrackPlayer) : PlayerInterac
         trackPlayer.play()
     }
 
+    override fun isPlaying(): Boolean {
+        return trackPlayer.isPlaying()
+    }
+
     override fun pause() {
         trackPlayer.pause()
     }
