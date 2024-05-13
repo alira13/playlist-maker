@@ -1,6 +1,5 @@
 package com.example.playlistmaker.presentation.playerScreen
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -42,20 +41,16 @@ class PlayerViewModel(
     }
 
     fun onPlayButtonClicked() {
-        Log.d("MY_LOG", "onPlayButtonClicked ${_playerState.value}")
         when (_playerState.value) {
             is PlayerState.Playing -> {
-                Log.d("MY_LOG", "pausePlayer")
                 pause()
             }
 
             is PlayerState.Paused, is PlayerState.Prepared -> {
-                Log.d("MY_LOG", "startPlayer")
                 play()
             }
 
             else -> {
-                Log.d("MY_LOG", "no identified")
                 Unit
             }
         }
@@ -79,11 +74,11 @@ class PlayerViewModel(
     }
 
     private fun startTimer() {
+        timerJob?.cancel()
         timerJob = viewModelScope.launch {
             while (playerInteractor.isPlaying()) {
                 delay(UPDATE_TIMER_DELAY_MILLIS)
                 val time = getCurrentTime()
-                Log.d("MY_LOG", "getCurrentTime=$time")
                 _playerState.postValue(PlayerState.Playing(time))
             }
             _playerState.postValue(PlayerState.Prepared())
