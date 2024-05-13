@@ -1,7 +1,10 @@
 package com.example.playlistmaker.di
 
 import android.content.Context
+import androidx.room.Room
 import com.example.playlistmaker.app.App.Companion.PLAYLIST_MAKER_PREFERENCES
+import com.example.playlistmaker.data.converters.TrackDbConvertor
+import com.example.playlistmaker.data.db.AppDatabase
 import com.example.playlistmaker.data.externalNavigator.ExternalNavigatorImpl
 import com.example.playlistmaker.data.network.TrackRetrofitNetworkClient
 import com.example.playlistmaker.data.player.TrackPlayerImpl
@@ -62,4 +65,11 @@ val dataModule = module {
     }
 
     factory { Gson() }
+
+    single {
+        Room.databaseBuilder(androidContext(), AppDatabase::class.java, "database.db")
+            .build()
+    }
+
+    factory { TrackDbConvertor() }
 }
