@@ -24,7 +24,8 @@ class PlayerActivity : AppCompatActivity() {
     private val playerViewModel by viewModel<PlayerViewModel> { parametersOf(getTrack(intent)) }
 
     private lateinit var binding: ActivityPlayerBinding
-    private var isClickAllowed = true
+    private var isPlayClickAllowed = true
+    private var isLikeClickAllowed = true
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -32,15 +33,24 @@ class PlayerActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         getTrack(intent)
+
         //prepare
         playerViewModel.preparePlayer()
         setTrackInfo()
 
+        binding.likeButton.setOnClickListener {
+            Log.d("MY_LOG", "likeClickDebounce1")
+            val click = likeClickDebounce()
+            Log.d("MY_LOG", "likeClickDebounce2 = $click")
+            if (click)
+                playerViewModel.onLikeButtonClicked()
+        }
+
         //play, pause, stop
         binding.playControlButton.setOnClickListener {
-            val cl = clickDebounce()
-            Log.d("MY_LOG", "clickAllowed = $cl")
-            if (cl)
+            val click = playClickDebounce()
+            Log.d("MY_LOG", "clickAllowed = $click")
+            if (click)
                 playerViewModel.onPlayButtonClicked()
         }
 
@@ -49,8 +59,13 @@ class PlayerActivity : AppCompatActivity() {
             finish()
         }
 
+        playerViewModel.isLiked.observe(this) {
+            binding.likeButton.isEnabled = it.isButtonEnabled
+            binding.likeButton.setImageResource(it.buttonImage)
+        }
+
         playerViewModel.playerState.observe(this) {
-            binding.playControlButton.isEnabled = it.isPlayButtonEnabled
+            binding.playControlButton.isEnabled = it.isButtonEnabled
             binding.playControlButton.setImageResource(it.buttonImage)
             binding.currentTrackTime.text = it.progress
         }
@@ -82,13 +97,25 @@ class PlayerActivity : AppCompatActivity() {
             .into(binding.playerTrackImage)
     }
 
-    private fun clickDebounce(): Boolean {
-        val current = isClickAllowed
-        if (isClickAllowed) {
-            isClickAllowed = false
+    private fun playClickDebounce(): Boolean {
+        val current = isPlayClickAllowed
+        if (isPlayClickAllowed) {
+            isPlayClickAllowed = false
             lifecycleScope.launch {
                 delay(CLICK_DEBOUNCE_DELAY_MILLIS)
-                isClickAllowed = true
+                isPlayClickAllowed = true
+            }
+        }
+        return current
+    }
+
+    private fun likeClickDebounce(): Boolean {
+        val current = isLikeClickAllowed
+        if (isLikeClickAllowed) {
+            isLikeClickAllowed = false
+            lifecycleScope.launch {
+                delay(CLICK_DEBOUNCE_DELAY_MILLIS)
+                isLikeClickAllowed = true
             }
         }
         return current

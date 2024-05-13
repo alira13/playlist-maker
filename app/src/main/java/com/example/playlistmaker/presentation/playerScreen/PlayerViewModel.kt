@@ -1,5 +1,6 @@
 package com.example.playlistmaker.presentation.playerScreen
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -22,12 +23,22 @@ class PlayerViewModel(
     private var _playerState = MutableLiveData<PlayerState>()
     var playerState: LiveData<PlayerState> = _playerState
 
+    private var _isLiked = MutableLiveData<LikeState>()
+    var isLiked: LiveData<LikeState> = _isLiked
+
     private var timerJob: Job? = null
 
     fun preparePlayer() {
         playerInteractor.setListener(getPlayerListener())
         playerInteractor.prepare(_screenStateLiveData.value!!.previewUrl)
         _playerState.postValue(PlayerState.Prepared())
+        getLikeState()
+    }
+
+    private fun getLikeState() {
+        if (playerInteractor.isLiked(_screenStateLiveData.value!!))
+            _isLiked.postValue(LikeState.Liked())
+        else _isLiked.postValue(LikeState.NotLiked())
     }
 
     private fun getPlayerListener() = object : PlayerListener {
@@ -87,6 +98,27 @@ class PlayerViewModel(
 
     private fun getCurrentTime(): String {
         return playerInteractor.getCurrentTime()
+    }
+
+    fun onLikeButtonClicked() {
+        when (_isLiked.value) {
+            is LikeState.Liked -> {
+                Log.d("MY_LOG", "_isLiked=true")
+                playerInteractor.deleteFromFavorites(track)
+                _isLiked.postValue(LikeState.NotLiked())
+            }
+
+            is LikeState.NotLiked -> {
+                Log.d("MY_LOG", "_isLiked=false")
+                playerInteractor.addToFavorites(track)
+                _isLiked.postValue(LikeState.Liked())
+            }
+
+            else -> {
+                Log.d("MY_LOG", "else")
+                Unit
+            }
+        }
     }
 
     override fun onCleared() {
