@@ -30,6 +30,10 @@ class TrackPlayerImpl : TrackPlayer {
         mediaPlayer.start()
     }
 
+    override fun isPlaying(): Boolean {
+        return mediaPlayer.isPlaying
+    }
+
     override fun pause() {
         mediaPlayer.pause()
     }

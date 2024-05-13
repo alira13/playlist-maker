@@ -9,7 +9,9 @@
 - RecyclerView
 - ViewPager
 - SharedPreferences
+- Fragments
 - Clean Architecture (MVVM)
+- Coroutines
 
 ## Функционал приложения
 - Поиск песен в базе iTunes

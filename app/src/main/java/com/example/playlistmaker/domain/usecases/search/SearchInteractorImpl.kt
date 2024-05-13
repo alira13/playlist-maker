@@ -1,28 +1,26 @@
 package com.example.playlistmaker.domain.usecases.search
 
-import com.example.playlistmaker.domain.consumer.Consumer
 import com.example.playlistmaker.domain.consumer.ConsumerData
 import com.example.playlistmaker.domain.models.Resource
 import com.example.playlistmaker.domain.models.Track
 import com.example.playlistmaker.domain.repository.SearchRepository
-import java.util.concurrent.Executors
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
 
 class SearchInteractorImpl(private val trackRepository: SearchRepository) : SearchInteractor {
-    private val executor = Executors.newCachedThreadPool()
-    override fun execute(text: String, consumer: Consumer<Track>) {
-        executor.execute {
-            when (val trackResponse = trackRepository.search(text)) {
+    override fun execute(text: String): Flow<Pair<List<Track>?, ConsumerData<Track>?>> {
+        return trackRepository.search(text).map { result ->
+            when (result) {
                 is Resource.Success -> {
-                    val productDetails = trackResponse.data
-                    consumer.consume(ConsumerData.Data(productDetails))
+                    Pair(result.data, ConsumerData.Data(result.data))
                 }
 
                 is Resource.NetworkError -> {
-                    consumer.consume(ConsumerData.NetworkError(""))
+                    Pair(null, ConsumerData.NetworkError(""))
                 }
 
                 is Resource.EmptyListError -> {
-                    consumer.consume(ConsumerData.EmptyListError(""))
+                    Pair(null, ConsumerData.EmptyListError(""))
                 }
             }
         }
