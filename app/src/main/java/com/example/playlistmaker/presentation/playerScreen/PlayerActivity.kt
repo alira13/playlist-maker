@@ -4,7 +4,6 @@ import android.content.Intent
 import android.os.Build
 import android.os.Build.VERSION.SDK_INT
 import android.os.Bundle
-import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import com.bumptech.glide.Glide
@@ -39,11 +38,11 @@ class PlayerActivity : AppCompatActivity() {
         setTrackInfo()
 
         binding.likeButton.setOnClickListener {
-            Log.d("MY_LOG", "likeButton.setOnClickListener")
+
             val click = likeClickDebounce()
-            Log.d("MY_LOG", "likeButton.setOnClickListener = $click")
+
             if (click) {
-                Log.d("MY_LOG", "likeButton.click = true")
+
                 playerViewModel.onLikeButtonClicked()
             }
         }
@@ -51,7 +50,7 @@ class PlayerActivity : AppCompatActivity() {
         //play, pause, stop
         binding.playControlButton.setOnClickListener {
             val click = playClickDebounce()
-            Log.d("MY_LOG", "clickAllowed = $click")
+
             if (click)
                 playerViewModel.onPlayButtonClicked()
         }
@@ -93,6 +92,8 @@ class PlayerActivity : AppCompatActivity() {
         binding.trackStyleValue.text = playerTrackInfo.primaryGenreName
         binding.trackCountryValue.text = playerTrackInfo.country
 
+        binding.likeButton.setImageResource(playerViewModel.isLiked.value!!.buttonImage)
+
         Glide.with(binding.playerTrackImage).load(playerTrackInfo.artworkUrl512).fitCenter()
             .placeholder(R.drawable.placeholder)
             .transform(RoundedCorners(binding.playerTrackImage.resources.getDimensionPixelSize(R.dimen.player_track_image_corner_radius)))
@@ -122,6 +123,7 @@ class PlayerActivity : AppCompatActivity() {
         }
         return current
     }
+
 
     override fun onPause() {
         super.onPause()

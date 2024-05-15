@@ -1,7 +1,6 @@
 package com.example.playlistmaker.presentation.rootScreen
 
 import android.os.Bundle
-import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
@@ -16,7 +15,7 @@ class RootActivity : AppCompatActivity() {
     private val viewModel by viewModel<RootViewModel>()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        Log.d("MY_LOG", "RootActivity: onCreate")
+
 
         viewModel.initTheme()
 

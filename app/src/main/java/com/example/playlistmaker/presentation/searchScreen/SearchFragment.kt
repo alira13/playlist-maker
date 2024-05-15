@@ -4,7 +4,6 @@ import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -45,14 +44,14 @@ class SearchFragment : Fragment(), ItemClickListener, SearchView {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        Log.d("MY_LOG", "SearchFragment onCreateView start")
+
         binding = FragmentSearchBinding.inflate(inflater, container, false)
-        Log.d("MY_LOG", "SearchFragment onCreateView finish")
+
         return binding!!.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        Log.d("MY_LOG", "SearchFragment onViewCreated start")
+
         try {
             super.onViewCreated(view, savedInstanceState)
 
@@ -74,12 +73,12 @@ class SearchFragment : Fragment(), ItemClickListener, SearchView {
             }
 
             binding?.searchRequestEt?.doOnTextChanged { text, start, before, count ->
-                Log.d("MY_LOG", "view: doOnTextChanged")
+
                 searchViewModel.searchDebounce(changedText = text?.toString() ?: "")
             }
 
             binding?.searchRequestEt?.doAfterTextChanged { text: Editable? ->
-                Log.d("MY_LOG", "view: afterTextChanged")
+
                 val inputMethodManager =
                     activity?.getSystemService(AppCompatActivity.INPUT_METHOD_SERVICE) as? InputMethodManager
                 if (text.isNullOrEmpty()) {
@@ -116,12 +115,12 @@ class SearchFragment : Fragment(), ItemClickListener, SearchView {
             }
 
         } catch (ex: Exception) {
-            Log.d("MY_LOG", ex.message.toString(), ex.fillInStackTrace())
+
         }
     }
 
     override fun render(state: SearchState) {
-        Log.d("MY_LOG", "view:render: $state")
+
         when (state) {
             SearchState.Loading -> showLoading()
             is SearchState.TrackHistory -> showTrackHistory(state.tracks)
@@ -134,7 +133,7 @@ class SearchFragment : Fragment(), ItemClickListener, SearchView {
     }
 
     private fun showLoading() {
-        Log.d("MY_LOG", "view: showLoading")
+
         binding?.emptyListErrorTv?.isVisible = false
         binding?.connectionErrorTv?.isVisible = false
         binding?.retrySearchBtn?.isVisible = false
@@ -147,7 +146,7 @@ class SearchFragment : Fragment(), ItemClickListener, SearchView {
     }
 
     private fun showTrackList(tracks: List<Track>) {
-        Log.d("MY_LOG", "view: showTrackList")
+
         binding?.trackHistoryTv?.isVisible = false
         binding?.clearHistoryBtn?.isVisible = false
         historyTrackListRv?.isVisible = false
@@ -163,7 +162,7 @@ class SearchFragment : Fragment(), ItemClickListener, SearchView {
     }
 
     private fun showTrackHistory(tracks: List<Track>) {
-        Log.d("MY_LOG", "view: showTrackHistory")
+
 
         binding?.emptyListErrorTv?.isVisible = false
         binding?.connectionErrorTv?.isVisible = false
@@ -180,7 +179,7 @@ class SearchFragment : Fragment(), ItemClickListener, SearchView {
     }
 
     private fun showEmptyTrackHistory() {
-        Log.d("MY_LOG", "view: showEmptyTrackHistory")
+
         historyTrackAdapter.clearItems()
         binding?.trackHistoryTv?.isVisible = false
         binding?.clearHistoryBtn?.isVisible = false
@@ -188,7 +187,7 @@ class SearchFragment : Fragment(), ItemClickListener, SearchView {
     }
 
     private fun showConnectionError() {
-        Log.d("MY_LOG", "view: showConnectionError")
+
         binding?.searchPbr?.isVisible = false
         trackAdapter.clearItems()
 
@@ -202,7 +201,7 @@ class SearchFragment : Fragment(), ItemClickListener, SearchView {
     }
 
     private fun showEmptyTrackListError() {
-        Log.d("MY_LOG", "view: showEmptyTrackListError")
+
         trackAdapter.clearItems()
 
         binding?.trackHistoryTv?.isVisible = false
@@ -215,7 +214,7 @@ class SearchFragment : Fragment(), ItemClickListener, SearchView {
     }
 
     private fun showEmpty() {
-        Log.d("MY_LOG", "view: showEmpty")
+
         binding?.trackHistoryTv?.isVisible = false
         binding?.clearHistoryBtn?.isVisible = false
         historyTrackListRv?.isVisible = false
@@ -228,11 +227,12 @@ class SearchFragment : Fragment(), ItemClickListener, SearchView {
     }
 
     override fun onClick(track: Track) {
-        Log.d("MY_LOG", "view: onClick")
+
         if (clickDebounce()) {
             searchViewModel.addToHistory(track)
             historyTrackAdapter.notifyDataSetChanged()
             Intent(requireContext(), PlayerActivity::class.java).apply {
+
                 putExtra(TRACK_VALUE, track)
                 startActivity(this)
             }
@@ -240,16 +240,16 @@ class SearchFragment : Fragment(), ItemClickListener, SearchView {
     }
 
     private fun clickDebounce(): Boolean {
-        Log.d("MY_LOG", "view: clickDebounce")
+
         val current = isClickAllowed
         if (isClickAllowed) {
             isClickAllowed = false
             lifecycleScope.launch {
-                Log.d("MY_LOG", "view 1: clickDebounce")
+
                 delay(CLICK_DEBOUNCE_DELAY)
-                Log.d("MY_LOG", "view 2: clickDebounce")
+
                 isClickAllowed = true
-                Log.d("MY_LOG", "view 3: clickDebounce")
+
             }
         }
         return current
@@ -257,20 +257,20 @@ class SearchFragment : Fragment(), ItemClickListener, SearchView {
 
     override fun onDestroyView() {
         super.onDestroyView()
-        Log.d("MY_LOG", "view: onDestroy")
+
         simpleTextWatcher?.let { binding?.searchRequestEt?.removeTextChangedListener(it) }
         binding = null
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
-        Log.d("MY_LOG", "view: onSaveInstanceState")
+
         super.onSaveInstanceState(outState)
         outState.putString(SEARCH_VALUE, binding?.searchRequestEt?.text.toString())
     }
 
     override fun onViewStateRestored(savedInstanceState: Bundle?) {
         super.onViewStateRestored(savedInstanceState)
-        Log.d("MY_LOG", "view: onRestoreInstanceState")
+
         val searchValue = savedInstanceState?.getString(SEARCH_VALUE, "")
         binding?.searchRequestEt?.setText(searchValue)
     }

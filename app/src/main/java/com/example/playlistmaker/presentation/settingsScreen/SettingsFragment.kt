@@ -1,7 +1,6 @@
 package com.example.playlistmaker.presentation.settingsScreen
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -19,9 +18,9 @@ class SettingsFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        Log.d("MY_LOG", "SettingsFragment onCreateView start")
+
         binding = FragmentSettingsBinding.inflate(inflater, container, false)
-        Log.d("MY_LOG", "SettingsFragment onCreateView finish")
+
         return binding!!.root
     }
 

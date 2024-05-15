@@ -1,6 +1,5 @@
 package com.example.playlistmaker.presentation.playerScreen
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -30,25 +29,17 @@ class PlayerViewModel(
     fun preparePlayer() {
         playerInteractor.setListener(getPlayerListener())
         playerInteractor.prepare(_screenStateLiveData.value!!.previewUrl)
-        Log.d("MY_LOG", "preparePlayer _screenStateLiveData = ${_screenStateLiveData.value}")
+
         _playerState.postValue(PlayerState.Prepared())
         getLikeState()
     }
 
-    private fun getLikeState() {
+
+    fun getLikeState() {
         if (track.isFavorite) {
-            Log.d(
-                "MY_LOG",
-                "getLikeState isButtonEnabled = ${FavoriteTrackState.Favorite().isButtonEnabled}"
-            )
             _isFavorite.value = FavoriteTrackState.Favorite()
         } else {
-            Log.d(
-                "MY_LOG",
-                "getLikeState isButtonEnabled = ${FavoriteTrackState.NotFavorite().isButtonEnabled}"
-            )
             _isFavorite.value = FavoriteTrackState.NotFavorite()
-            Log.d("MY_LOG", "postValue _isFavorite = ${_isFavorite.value}")
         }
     }
 
@@ -113,23 +104,26 @@ class PlayerViewModel(
 
     fun onLikeButtonClicked() {
         viewModelScope.launch {
-            Log.d("MY_LOG", "onLikeButtonClicked _isFavorite=${_isFavorite.value})")
+
 
             when (_isFavorite.value) {
                 is FavoriteTrackState.Favorite -> {
-                    Log.d("MY_LOG", "onLikeButtonClicked _isLiked=true")
+
                     playerInteractor.deleteFromFavorites(track)
+                    track.isFavorite = false
                     _isFavorite.postValue(FavoriteTrackState.NotFavorite())
                 }
 
                 is FavoriteTrackState.NotFavorite -> {
-                    Log.d("MY_LOG", "onLikeButtonClicked _isLiked=false")
+
+                    track.isFavorite = true
                     playerInteractor.addToFavorites(track)
-                    _isFavorite.postValue(FavoriteTrackState.Favorite())
+                    _isFavorite.value = (FavoriteTrackState.Favorite())
+
                 }
 
                 else -> {
-                    Log.d("MY_LOG", "onLikeButtonClicked else")
+
                     Unit
                 }
             }

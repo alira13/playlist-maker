@@ -2,7 +2,6 @@ package com.example.playlistmaker.presentation.mediaScreen
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -31,14 +30,14 @@ class MediaFavoritesFragment : Fragment(), ItemClickListener {
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View? {
         binding = FragmentMediaFavoritesBinding.inflate(inflater, container, false)
-        Log.d("VIEW", "onCreateView {$binding}")
+
         return binding?.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding?.trackListRv?.adapter = trackAdapter
-        Log.d("VIEW", "onViewCreated {$binding}")
+
         playerViewModel.getState()
 
         playerViewModel.screenStateLiveData.observe(viewLifecycleOwner) {
@@ -48,20 +47,14 @@ class MediaFavoritesFragment : Fragment(), ItemClickListener {
         }
     }
 
-    override fun onResume() {
-        super.onResume()
-        Log.d("VIEW", "onResume {$binding}")
-        playerViewModel.getState()
-    }
-
     override fun onDestroyView() {
         super.onDestroyView()
         binding = null
-        Log.d("VIEW", "onDestroyView {$binding}")
+
     }
 
     override fun onClick(track: Track) {
-        Log.d("MY_LOG", "view: onClick")
+
         if (clickDebounce()) {
             Intent(requireContext(), PlayerActivity::class.java).apply {
                 putExtra(TRACK_VALUE, track)
@@ -71,16 +64,16 @@ class MediaFavoritesFragment : Fragment(), ItemClickListener {
     }
 
     private fun clickDebounce(): Boolean {
-        Log.d("MY_LOG", "view: clickDebounce")
+
         val current = isClickAllowed
         if (isClickAllowed) {
             isClickAllowed = false
             lifecycleScope.launch {
-                Log.d("MY_LOG", "view 1: clickDebounce")
+
                 delay(CLICK_DEBOUNCE_DELAY)
-                Log.d("MY_LOG", "view 2: clickDebounce")
+
                 isClickAllowed = true
-                Log.d("MY_LOG", "view 3: clickDebounce")
+
             }
         }
         return current
