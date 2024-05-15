@@ -5,19 +5,18 @@ import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
-import com.example.playlistmaker.domain.models.Track
 
 @Dao
 interface TrackDao {
     @Insert(entity = TrackEntity::class, onConflict = OnConflictStrategy.REPLACE)
-    fun addTrack(track: Track)
+    suspend fun addTrack(track: TrackEntity)
 
     @Delete(entity = TrackEntity::class)
-    fun deleteTrack(track: Track)
+    suspend fun deleteTrack(track: TrackEntity)
 
     @Query("SELECT * FROM track_table")
-    fun getTracks(): List<Track>
+    suspend fun getTracks(): List<TrackEntity>
 
     @Query("SELECT trackId FROM track_table")
-    fun getTrackIds(): List<Int>
+    suspend fun getTrackIds(): List<Int>
 }

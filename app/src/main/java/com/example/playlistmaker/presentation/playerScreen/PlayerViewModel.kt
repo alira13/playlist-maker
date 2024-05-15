@@ -13,8 +13,7 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 class PlayerViewModel(
-    private val track: Track,
-    private val playerInteractor: PlayerInteractor
+    private val track: Track, private val playerInteractor: PlayerInteractor
 ) : ViewModel() {
 
     private var _screenStateLiveData = MutableLiveData<Track>(track)
@@ -23,22 +22,34 @@ class PlayerViewModel(
     private var _playerState = MutableLiveData<PlayerState>()
     var playerState: LiveData<PlayerState> = _playerState
 
-    private var _isLiked = MutableLiveData<LikeState>()
-    var isLiked: LiveData<LikeState> = _isLiked
+    private var _isFavorite = MutableLiveData<FavoriteState>()
+    var isLiked: LiveData<FavoriteState> = _isFavorite
 
     private var timerJob: Job? = null
 
     fun preparePlayer() {
         playerInteractor.setListener(getPlayerListener())
         playerInteractor.prepare(_screenStateLiveData.value!!.previewUrl)
+        Log.d("MY_LOG", "preparePlayer _screenStateLiveData = ${_screenStateLiveData.value}")
         _playerState.postValue(PlayerState.Prepared())
         getLikeState()
     }
 
     private fun getLikeState() {
-        if (playerInteractor.isLiked(_screenStateLiveData.value!!))
-            _isLiked.postValue(LikeState.Liked())
-        else _isLiked.postValue(LikeState.NotLiked())
+        if (track.isFavorite) {
+            Log.d(
+                "MY_LOG",
+                "getLikeState isButtonEnabled = ${FavoriteState.Favorite().isButtonEnabled}"
+            )
+            _isFavorite.value = FavoriteState.Favorite()
+        } else {
+            Log.d(
+                "MY_LOG",
+                "getLikeState isButtonEnabled = ${FavoriteState.NotFavorite().isButtonEnabled}"
+            )
+            _isFavorite.value = FavoriteState.NotFavorite()
+            Log.d("MY_LOG", "postValue _isFavorite = ${_isFavorite.value}")
+        }
     }
 
     private fun getPlayerListener() = object : PlayerListener {
@@ -101,22 +112,26 @@ class PlayerViewModel(
     }
 
     fun onLikeButtonClicked() {
-        when (_isLiked.value) {
-            is LikeState.Liked -> {
-                Log.d("MY_LOG", "_isLiked=true")
-                playerInteractor.deleteFromFavorites(track)
-                _isLiked.postValue(LikeState.NotLiked())
-            }
+        viewModelScope.launch {
+            Log.d("MY_LOG", "onLikeButtonClicked _isFavorite=${_isFavorite.value})")
 
-            is LikeState.NotLiked -> {
-                Log.d("MY_LOG", "_isLiked=false")
-                playerInteractor.addToFavorites(track)
-                _isLiked.postValue(LikeState.Liked())
-            }
+            when (_isFavorite.value) {
+                is FavoriteState.Favorite -> {
+                    Log.d("MY_LOG", "onLikeButtonClicked _isLiked=true")
+                    playerInteractor.deleteFromFavorites(track)
+                    _isFavorite.postValue(FavoriteState.NotFavorite())
+                }
 
-            else -> {
-                Log.d("MY_LOG", "else")
-                Unit
+                is FavoriteState.NotFavorite -> {
+                    Log.d("MY_LOG", "onLikeButtonClicked _isLiked=false")
+                    playerInteractor.addToFavorites(track)
+                    _isFavorite.postValue(FavoriteState.Favorite())
+                }
+
+                else -> {
+                    Log.d("MY_LOG", "onLikeButtonClicked else")
+                    Unit
+                }
             }
         }
     }

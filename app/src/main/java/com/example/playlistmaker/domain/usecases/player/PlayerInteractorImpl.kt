@@ -4,6 +4,7 @@ import com.example.playlistmaker.domain.models.Track
 import com.example.playlistmaker.domain.player.PlayerListener
 import com.example.playlistmaker.domain.player.TrackPlayer
 import com.example.playlistmaker.domain.repository.FavoritesRepository
+import kotlinx.coroutines.flow.Flow
 
 class PlayerInteractorImpl(
     private val trackPlayer: TrackPlayer,
@@ -42,11 +43,15 @@ class PlayerInteractorImpl(
         return true
     }
 
-    override fun addToFavorites(track: Track) {
+    override suspend fun addToFavorites(track: Track) {
         favoritesRepository.addToFavorites(track)
     }
 
-    override fun deleteFromFavorites(track: Track) {
+    override suspend fun deleteFromFavorites(track: Track) {
         favoritesRepository.deleteFromRepository(track)
+    }
+
+    override fun favoritesTracks(): Flow<List<Track>> {
+        return favoritesRepository.favoritesTracks()
     }
 }

@@ -39,11 +39,13 @@ class PlayerActivity : AppCompatActivity() {
         setTrackInfo()
 
         binding.likeButton.setOnClickListener {
-            Log.d("MY_LOG", "likeClickDebounce1")
+            Log.d("MY_LOG", "likeButton.setOnClickListener")
             val click = likeClickDebounce()
-            Log.d("MY_LOG", "likeClickDebounce2 = $click")
-            if (click)
+            Log.d("MY_LOG", "likeButton.setOnClickListener = $click")
+            if (click) {
+                Log.d("MY_LOG", "likeButton.click = true")
                 playerViewModel.onLikeButtonClicked()
+            }
         }
 
         //play, pause, stop
@@ -60,7 +62,7 @@ class PlayerActivity : AppCompatActivity() {
         }
 
         playerViewModel.isLiked.observe(this) {
-            binding.likeButton.isEnabled = it.isButtonEnabled
+            binding.likeButton.isEnabled = isPlayClickAllowed
             binding.likeButton.setImageResource(it.buttonImage)
         }
 

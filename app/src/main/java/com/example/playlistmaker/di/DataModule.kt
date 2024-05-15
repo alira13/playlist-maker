@@ -8,7 +8,7 @@ import com.example.playlistmaker.data.db.AppDatabase
 import com.example.playlistmaker.data.externalNavigator.ExternalNavigatorImpl
 import com.example.playlistmaker.data.network.TrackRetrofitNetworkClient
 import com.example.playlistmaker.data.player.TrackPlayerImpl
-import com.example.playlistmaker.data.repository.FavoritesRepositoryImpl
+import com.example.playlistmaker.data.db.FavoritesRepositoryImpl
 import com.example.playlistmaker.data.repository.SearchHistoryRepositoryImpl
 import com.example.playlistmaker.data.repository.SearchRepositoryImpl
 import com.example.playlistmaker.data.repository.SettingsRepositoryImpl
@@ -40,7 +40,7 @@ val dataModule = module {
     }
 
     single<SearchRepository> {
-        SearchRepositoryImpl(get())
+        SearchRepositoryImpl(get(), get())
     }
 
     single<SettingsRepository> {
@@ -61,7 +61,7 @@ val dataModule = module {
     }
 
     single<FavoritesRepository> {
-        FavoritesRepositoryImpl()
+        FavoritesRepositoryImpl(get(), get())
     }
 
     factory { Gson() }
