@@ -39,10 +39,6 @@ class PlayerInteractorImpl(
         trackPlayer.quit()
     }
 
-    override fun isLiked(track: Track): Boolean {
-        return true
-    }
-
     override suspend fun addToFavorites(track: Track) {
         favoritesRepository.addToFavorites(track)
     }

@@ -12,7 +12,6 @@ interface PlayerInteractor {
     fun pause()
     fun getCurrentTime(): String
     fun quit()
-    fun isLiked(track: Track): Boolean
     suspend fun addToFavorites(track: Track)
     suspend fun deleteFromFavorites(track: Track)
     fun favoritesTracks(): Flow<List<Track>>
