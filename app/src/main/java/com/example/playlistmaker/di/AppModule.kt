@@ -1,5 +1,6 @@
 package com.example.playlistmaker.di
 
+import com.example.playlistmaker.presentation.mediaScreen.MediaFavoritesViewModel
 import com.example.playlistmaker.presentation.playerScreen.PlayerViewModel
 import com.example.playlistmaker.presentation.searchScreen.SearchViewModel
 import com.example.playlistmaker.presentation.rootScreen.RootViewModel
@@ -23,5 +24,9 @@ val appModule = module {
 
     viewModel<RootViewModel> {
         RootViewModel(settingsInteractor = get())
+    }
+
+    viewModel<MediaFavoritesViewModel> {
+        MediaFavoritesViewModel(playerInteractor = get())
     }
 }
