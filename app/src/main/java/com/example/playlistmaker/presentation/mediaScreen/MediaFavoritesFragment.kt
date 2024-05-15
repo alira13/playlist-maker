@@ -47,6 +47,11 @@ class MediaFavoritesFragment : Fragment(), ItemClickListener {
         }
     }
 
+    override fun onResume() {
+        super.onResume()
+        playerViewModel.getState()
+    }
+
     override fun onDestroyView() {
         super.onDestroyView()
         binding = null

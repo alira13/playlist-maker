@@ -21,8 +21,9 @@ class FavoritesRepositoryImpl(
     }
 
     override fun favoritesTracks(): Flow<List<Track>> = flow {
-        val tracks = appDatabase.getTrackDao().getTracks().reversed()
-        emit(convertFromTrackEntity(tracks))
+        val trackEntity = appDatabase.getTrackDao().getTracks().reversed()
+        val tracks = convertFromTrackEntity(trackEntity).map { it.copy(isFavorite = true) }
+        emit(tracks)
     }
 
     private fun convertFromTrackEntity(tracks: List<TrackEntity>): List<Track> {
