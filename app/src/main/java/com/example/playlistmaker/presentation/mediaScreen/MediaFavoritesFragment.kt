@@ -6,6 +6,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import com.example.playlistmaker.databinding.FragmentMediaFavoritesBinding
@@ -27,31 +28,37 @@ class MediaFavoritesFragment : Fragment(), ItemClickListener {
 
     private var isClickAllowed = true
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
+        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View? {
         binding = FragmentMediaFavoritesBinding.inflate(inflater, container, false)
+        Log.d("VIEW", "onCreateView {$binding}")
         return binding?.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding?.trackListRv?.adapter = trackAdapter
-
+        Log.d("VIEW", "onViewCreated {$binding}")
         playerViewModel.getState()
 
         playerViewModel.screenStateLiveData.observe(viewLifecycleOwner) {
-            binding?.emptyMediaErrorTv?.isEnabled = it.isEmpty
-            binding?.trackListRv?.isEnabled = !it.isEmpty
+            binding?.emptyMediaErrorTv?.isVisible = it.isEmpty
+            binding?.trackListRv?.isVisible = !it.isEmpty
             trackAdapter.items = it.tracks.toMutableList()
         }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        Log.d("VIEW", "onResume {$binding}")
+        playerViewModel.getState()
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
         binding = null
+        Log.d("VIEW", "onDestroyView {$binding}")
     }
-
 
     override fun onClick(track: Track) {
         Log.d("MY_LOG", "view: onClick")
