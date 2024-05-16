@@ -32,4 +32,8 @@
     <string name="search_tab">Поиск</string>
     <string name="media_tab">Медиатека</string>
     <string name="settings_tab">Настройки</string>
+    <string name="playlist_name">Название*</string>
+    <string name="playlist_header">Новый плейлист</string>
+    <string name="playlist_description">Описание</string>
+    <string name="create_playlist_btn_text">Создать</string>
 </resources>

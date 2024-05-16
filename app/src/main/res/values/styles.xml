@@ -26,7 +26,7 @@
         <item name="android:layout_gravity">start</item>
         <item name="android:gravity">center</item>
         <item name="android:textColor">?attr/colorOnPrimary</item>
-        <item name="android:textSize">@dimen/regular_text_size</item>
+        <item name="android:textSize">@dimen/regular_text_size_16</item>
         <item name="android:fontFamily">@font/ys_font_family_regular</item>
     </style>
 

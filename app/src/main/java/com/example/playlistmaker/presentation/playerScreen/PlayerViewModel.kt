@@ -36,6 +36,7 @@ class PlayerViewModel(
 
 
     fun getLikeState() {
+        //TODO Вот тут надо делать запрос к БД
         if (track.isFavorite) {
             _isFavorite.value = FavoriteTrackState.Favorite()
         } else {
