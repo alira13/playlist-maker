@@ -17,4 +17,11 @@
         android:id="@+id/empty_playlists_error_tv"
         style="@style/EmptyMediaErrorTv"
         android:text="@string/empty_playlists_error"/>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/playlists_rv"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="16dp" />
 </FrameLayout>

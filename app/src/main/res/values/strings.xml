@@ -36,4 +36,6 @@
     <string name="playlist_header">Новый плейлист</string>
     <string name="playlist_description">Описание</string>
     <string name="create_playlist_btn_text">Создать</string>
+    <string name="playlist_name_hint">Название плейлиста</string>
+    <string name="playlist_songs_number_hint">98 треков</string>
 </resources>
