@@ -6,6 +6,8 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
+import com.example.playlistmaker.R
 import com.example.playlistmaker.databinding.FragmentMediaPlaylistsBinding
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -36,11 +38,12 @@ class MediaPlaylistsFragment : Fragment() {
     }
 
     private fun createBtnClickListener() {
-
+        binding?.createPlaylistButtonBtn?.setOnClickListener {
+            findNavController().navigate(R.id.action_mediaFragment_to_createPlaylistFragment)
+        }
     }
 
     private fun clickDebounce(): Boolean {
-
         val current = isClickAllowed
         if (isClickAllowed) {
             isClickAllowed = false
