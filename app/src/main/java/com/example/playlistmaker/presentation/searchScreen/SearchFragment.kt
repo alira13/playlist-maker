@@ -14,7 +14,6 @@ import androidx.core.widget.doAfterTextChanged
 import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
-import androidx.recyclerview.widget.RecyclerView
 import com.example.playlistmaker.databinding.FragmentSearchBinding
 import com.example.playlistmaker.domain.models.Track
 import com.example.playlistmaker.presentation.playerScreen.PlayerActivity
@@ -36,91 +35,75 @@ class SearchFragment : Fragment(), ItemClickListener, SearchView {
 
     private var simpleTextWatcher: TextWatcher? = null
 
-    private var trackListRv: RecyclerView? = null
-    private var historyTrackListRv: RecyclerView? = null
-
     override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
+        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
-
         binding = FragmentSearchBinding.inflate(inflater, container, false)
-
         return binding!!.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
-        try {
-            super.onViewCreated(view, savedInstanceState)
+        binding?.trackListRv?.adapter = trackAdapter
+        binding?.historyTrackListRv?.adapter = historyTrackAdapter
 
-            binding?.trackListRv?.adapter = trackAdapter
-            historyTrackListRv?.adapter = historyTrackAdapter
+        searchViewModel.stateLiveData.observe(viewLifecycleOwner) {
+            render(it)
+        }
 
+        binding?.clearSearchRequestIv?.setOnClickListener {
+            binding?.searchRequestEt?.setText("")
+            binding?.clearSearchRequestIv?.isVisible = false
+
+            searchViewModel.getHistory()
             searchViewModel.stateLiveData.observe(viewLifecycleOwner) {
                 render(it)
             }
+        }
 
-            binding?.clearSearchRequestIv?.setOnClickListener {
-                binding?.searchRequestEt?.setText("")
-                binding?.clearSearchRequestIv?.isVisible = false
+        binding?.searchRequestEt?.doOnTextChanged { text, start, before, count ->
+            searchViewModel.searchDebounce(changedText = text?.toString() ?: "")
+        }
 
+        binding?.searchRequestEt?.doAfterTextChanged { text: Editable? ->
+            val inputMethodManager =
+                activity?.getSystemService(AppCompatActivity.INPUT_METHOD_SERVICE) as? InputMethodManager
+            if (text.isNullOrEmpty()) {
+                inputMethodManager?.hideSoftInputFromWindow(
+                    binding?.searchRequestEt?.windowToken, 0
+                )
+                //при пустом поле поиска показываем историю, если она не пустая
                 searchViewModel.getHistory()
                 searchViewModel.stateLiveData.observe(viewLifecycleOwner) {
                     render(it)
                 }
+            } else {
+                //скрываем историю треков как только начинаем печатать что-то в поиске
+                showEmpty()
+                binding?.clearSearchRequestIv?.isVisible = true
+                inputMethodManager?.showSoftInput(binding?.searchRequestEt, 0)
             }
+        }
 
-            binding?.searchRequestEt?.doOnTextChanged { text, start, before, count ->
-
-                searchViewModel.searchDebounce(changedText = text?.toString() ?: "")
+        binding?.searchRequestEt?.setOnFocusChangeListener { _, hasFocus ->
+            if (hasFocus && binding!!.searchRequestEt.text.isEmpty() && historyTrackAdapter.items.isNotEmpty()) {
+                showTrackHistory(historyTrackAdapter.items)
+            } else {
+                showTrackList(trackAdapter.items)
             }
+        }
 
-            binding?.searchRequestEt?.doAfterTextChanged { text: Editable? ->
+        binding?.retrySearchBtn?.setOnClickListener {
+            searchViewModel.search(binding?.searchRequestEt?.text.toString())
+        }
 
-                val inputMethodManager =
-                    activity?.getSystemService(AppCompatActivity.INPUT_METHOD_SERVICE) as? InputMethodManager
-                if (text.isNullOrEmpty()) {
-                    inputMethodManager?.hideSoftInputFromWindow(
-                        binding?.searchRequestEt?.windowToken, 0
-                    )
-                    //при пустом поле поиска показываем историю, если она не пустая
-                    searchViewModel.getHistory()
-                    searchViewModel.stateLiveData.observe(viewLifecycleOwner) {
-                        render(it)
-                    }
-                } else {
-                    //скрываем историю треков как только начинаем печатать что-то в поиске
-                    showEmpty()
-                    binding?.clearSearchRequestIv?.isVisible = true
-                    inputMethodManager?.showSoftInput(binding?.searchRequestEt, 0)
-                }
-            }
-
-            binding?.searchRequestEt?.setOnFocusChangeListener { _, hasFocus ->
-                if (hasFocus && binding!!.searchRequestEt.text.isEmpty() && historyTrackAdapter.items.isNotEmpty()) {
-                    showTrackHistory(historyTrackAdapter.items)
-                } else {
-                    showTrackList(trackAdapter.items)
-                }
-            }
-
-            binding?.retrySearchBtn?.setOnClickListener {
-                searchViewModel.search(binding?.searchRequestEt?.text.toString())
-            }
-
-            binding?.clearHistoryBtn?.setOnClickListener {
-                searchViewModel.clearHistory()
-            }
-
-        } catch (ex: Exception) {
-
+        binding?.clearHistoryBtn?.setOnClickListener {
+            searchViewModel.clearHistory()
         }
     }
 
     override fun render(state: SearchState) {
-
         when (state) {
             SearchState.Loading -> showLoading()
             is SearchState.TrackHistory -> showTrackHistory(state.tracks)
@@ -133,91 +116,82 @@ class SearchFragment : Fragment(), ItemClickListener, SearchView {
     }
 
     private fun showLoading() {
-
         binding?.emptyListErrorTv?.isVisible = false
         binding?.connectionErrorTv?.isVisible = false
         binding?.retrySearchBtn?.isVisible = false
 
         binding?.trackHistoryTv?.isVisible = false
         binding?.clearHistoryBtn?.isVisible = false
-        historyTrackListRv?.isVisible = false
+        binding?.historyTrackListRv?.isVisible = false
 
         binding?.searchPbr?.isVisible = true
     }
 
     private fun showTrackList(tracks: List<Track>) {
-
         binding?.trackHistoryTv?.isVisible = false
         binding?.clearHistoryBtn?.isVisible = false
-        historyTrackListRv?.isVisible = false
-
+        binding?.historyTrackListRv?.isVisible = false
 
         binding?.emptyListErrorTv?.isVisible = false
         binding?.connectionErrorTv?.isVisible = false
         binding?.retrySearchBtn?.isVisible = false
 
         binding?.searchPbr?.isVisible = false
-        trackListRv?.isVisible = true
+        binding?.trackListRv?.isVisible = true
         trackAdapter.items = tracks.toMutableList()
     }
 
     private fun showTrackHistory(tracks: List<Track>) {
-
-
         binding?.emptyListErrorTv?.isVisible = false
         binding?.connectionErrorTv?.isVisible = false
         binding?.retrySearchBtn?.isVisible = false
 
-        trackListRv?.isVisible = false
+        binding?.trackListRv?.isVisible = false
 
         if (tracks.isNotEmpty()) {
             binding?.trackHistoryTv?.isVisible = true
             binding?.clearHistoryBtn?.isVisible = true
-            historyTrackListRv?.isVisible = true
+            binding?.historyTrackListRv?.isVisible = true
+            historyTrackAdapter.items = tracks.toMutableList()
         }
-        historyTrackAdapter.items = tracks.toMutableList()
     }
 
     private fun showEmptyTrackHistory() {
-
         historyTrackAdapter.clearItems()
         binding?.trackHistoryTv?.isVisible = false
         binding?.clearHistoryBtn?.isVisible = false
-        historyTrackListRv?.isVisible = false
+        binding?.historyTrackListRv?.isVisible = false
     }
 
     private fun showConnectionError() {
-
         binding?.searchPbr?.isVisible = false
         trackAdapter.clearItems()
 
         binding?.trackHistoryTv?.isVisible = false
         binding?.clearHistoryBtn?.isVisible = false
-        historyTrackListRv?.isVisible = false
+        binding?.historyTrackListRv?.isVisible = false
 
-        trackListRv?.isVisible = false
+        binding?.trackListRv?.isVisible = false
         binding?.connectionErrorTv?.isVisible = true
         binding?.retrySearchBtn?.isVisible = true
     }
 
     private fun showEmptyTrackListError() {
-
         trackAdapter.clearItems()
 
         binding?.trackHistoryTv?.isVisible = false
         binding?.clearHistoryBtn?.isVisible = false
-        historyTrackListRv?.isVisible = false
+        binding?.historyTrackListRv?.isVisible = false
 
         binding?.searchPbr?.isVisible = false
-        trackListRv?.isVisible = false
+        binding?.trackListRv?.isVisible = false
         binding?.emptyListErrorTv?.isVisible = true
     }
 
     private fun showEmpty() {
-
         binding?.trackHistoryTv?.isVisible = false
         binding?.clearHistoryBtn?.isVisible = false
-        historyTrackListRv?.isVisible = false
+        binding?.historyTrackListRv?.isVisible = false
     }
 
     companion object {
@@ -227,7 +201,6 @@ class SearchFragment : Fragment(), ItemClickListener, SearchView {
     }
 
     override fun onClick(track: Track) {
-
         if (clickDebounce()) {
             searchViewModel.addToHistory(track)
             historyTrackAdapter.notifyDataSetChanged()
@@ -240,16 +213,12 @@ class SearchFragment : Fragment(), ItemClickListener, SearchView {
     }
 
     private fun clickDebounce(): Boolean {
-
         val current = isClickAllowed
         if (isClickAllowed) {
             isClickAllowed = false
             lifecycleScope.launch {
-
                 delay(CLICK_DEBOUNCE_DELAY)
-
                 isClickAllowed = true
-
             }
         }
         return current
@@ -257,20 +226,17 @@ class SearchFragment : Fragment(), ItemClickListener, SearchView {
 
     override fun onDestroyView() {
         super.onDestroyView()
-
         simpleTextWatcher?.let { binding?.searchRequestEt?.removeTextChangedListener(it) }
         binding = null
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
-
         super.onSaveInstanceState(outState)
         outState.putString(SEARCH_VALUE, binding?.searchRequestEt?.text.toString())
     }
 
     override fun onViewStateRestored(savedInstanceState: Bundle?) {
         super.onViewStateRestored(savedInstanceState)
-
         val searchValue = savedInstanceState?.getString(SEARCH_VALUE, "")
         binding?.searchRequestEt?.setText(searchValue)
     }
