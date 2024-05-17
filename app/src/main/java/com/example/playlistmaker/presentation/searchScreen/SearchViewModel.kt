@@ -24,7 +24,6 @@ class SearchViewModel(
     val stateLiveData: LiveData<SearchState> = _stateLiveData
 
     private fun renderState(state: SearchState) {
-
         _stateLiveData.postValue(state)
     }
 
@@ -42,12 +41,9 @@ class SearchViewModel(
 
     fun search(newSearchText: String) {
         if (newSearchText.isNotEmpty()) {
-
-
             renderState(SearchState.Loading)
 
             searchJob?.cancel()
-
             val newJob = viewModelScope.launch {
                 searchInteractor
                     .execute(newSearchText)
@@ -80,18 +76,18 @@ class SearchViewModel(
     }
 
     fun addToHistory(track: Track) {
-
         searchHistoryInteractor.addToHistory(track)
     }
 
     fun getHistory() {
-
-        val tracks = searchHistoryInteractor.getHistory()
-        renderState(SearchState.TrackHistory(tracks))
+        viewModelScope.launch {
+            searchHistoryInteractor
+                .getHistory()
+                .collect { renderState(SearchState.TrackHistory(it)) }
+        }
     }
 
     fun clearHistory() {
-
         searchHistoryInteractor.clearHistory()
         renderState(SearchState.EmptyTrackHistory)
     }

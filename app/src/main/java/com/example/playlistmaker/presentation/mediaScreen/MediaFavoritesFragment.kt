@@ -55,11 +55,9 @@ class MediaFavoritesFragment : Fragment(), ItemClickListener {
     override fun onDestroyView() {
         super.onDestroyView()
         binding = null
-
     }
 
     override fun onClick(track: Track) {
-
         if (clickDebounce()) {
             Intent(requireContext(), PlayerActivity::class.java).apply {
                 putExtra(TRACK_VALUE, track)
@@ -69,16 +67,12 @@ class MediaFavoritesFragment : Fragment(), ItemClickListener {
     }
 
     private fun clickDebounce(): Boolean {
-
         val current = isClickAllowed
         if (isClickAllowed) {
             isClickAllowed = false
             lifecycleScope.launch {
-
                 delay(CLICK_DEBOUNCE_DELAY)
-
                 isClickAllowed = true
-
             }
         }
         return current

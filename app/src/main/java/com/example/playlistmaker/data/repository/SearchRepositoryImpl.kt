@@ -18,10 +18,7 @@ class SearchRepositoryImpl(
         if (response is TrackNetworkResponse) {
             val tracks = response.results
             val ids = appDatabase.getTrackDao().getTrackIds()
-
-
             tracks.map { it.isFavorite = ids.contains(it.trackId) }
-
             emit(Resource.Success(tracks))
         } else if (response.resultCount == 400) {
             emit(Resource.NetworkError())

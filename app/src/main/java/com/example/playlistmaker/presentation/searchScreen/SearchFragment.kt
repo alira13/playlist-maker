@@ -205,7 +205,6 @@ class SearchFragment : Fragment(), ItemClickListener, SearchView {
             searchViewModel.addToHistory(track)
             historyTrackAdapter.notifyDataSetChanged()
             Intent(requireContext(), PlayerActivity::class.java).apply {
-
                 putExtra(TRACK_VALUE, track)
                 startActivity(this)
             }
@@ -222,6 +221,11 @@ class SearchFragment : Fragment(), ItemClickListener, SearchView {
             }
         }
         return current
+    }
+
+    override fun onResume() {
+        super.onResume()
+        searchViewModel.getHistory()
     }
 
     override fun onDestroyView() {
