@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
@@ -19,7 +20,7 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class MediaPlaylistsFragment : Fragment(), PlaylistItemClickListener {
 
-    private val playerViewModel by viewModel<MediaPlaylistsViewModel>()
+    private val viewModel by viewModel<MediaPlaylistsViewModel>()
 
     private var binding: FragmentMediaPlaylistsBinding? = null
 
@@ -46,25 +47,20 @@ class MediaPlaylistsFragment : Fragment(), PlaylistItemClickListener {
         binding?.playlistsRv?.adapter = adapter
         binding?.playlistsRv?.layoutManager = GridLayoutManager(activity, 2)
 
-        showPlaylists()
-    }
-
-    private fun getPlaylists(): List<PlaylistInfo> {
-        return listOf<PlaylistInfo>(
-            PlaylistInfo("Имя1", "10", ""),
-            PlaylistInfo("Имя2", "20", ""),
-            PlaylistInfo("Имя3", "30", ""),
-            PlaylistInfo("Имя4", "30", "")
-        )
-    }
-
-    private fun showPlaylists() {
-        val playlists = getPlaylists()
-        if (playlists.isNotEmpty()) {
-            adapter.items = playlists.toMutableList()
-            binding?.emptyPlaylistsErrorTv?.visibility = View.GONE
+        viewModel.getState()
+        viewModel.state.observe(viewLifecycleOwner) {
+            render(it)
         }
     }
+
+    private fun render(state: PlaylistsState) {
+        binding?.emptyPlaylistsErrorTv?.isVisible = state.isError
+        when (state) {
+            is PlaylistsState.ShowPlaylists -> adapter.items = state.playlists.toMutableList()
+            else -> {}
+        }
+    }
+
 
     private fun createBtnClickListener() {
         binding?.createPlaylistButtonBtn?.setOnClickListener {

@@ -20,8 +20,8 @@ class PlaylistViewHolder(parentView: ViewGroup) : RecyclerView.ViewHolder(
     private val image: ImageView = itemView.findViewById(R.id.playlist_image_iv)
 
     fun bind(model: PlaylistInfo) {
-        name.text = model.name
-        songsNumber.text = model.songsNumber
+        name.text = model.playlistName
+        songsNumber.text = model.tracksNum.toString()
 
         Glide
             .with(image)
