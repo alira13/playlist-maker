@@ -1,7 +1,8 @@
-package com.example.playlistmaker.presentation.mediaScreen
+package com.example.playlistmaker.presentation.mediaScreen.favorites
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -59,26 +60,22 @@ class MediaFavoritesFragment : Fragment(), ItemClickListener {
     }
 
     override fun onClick(track: Track) {
-
-        if (clickDebounce()) {
+        //if (clickDebounce()) {
             Intent(requireContext(), PlayerActivity::class.java).apply {
                 putExtra(TRACK_VALUE, track)
                 startActivity(this)
             }
-        }
+        //}
     }
 
     private fun clickDebounce(): Boolean {
-
+Log.d("MY_LOG", "click")
         val current = isClickAllowed
         if (isClickAllowed) {
             isClickAllowed = false
             lifecycleScope.launch {
-
                 delay(CLICK_DEBOUNCE_DELAY)
-
                 isClickAllowed = true
-
             }
         }
         return current
@@ -86,6 +83,6 @@ class MediaFavoritesFragment : Fragment(), ItemClickListener {
 
     companion object {
         const val TRACK_VALUE = "TRACK_VALUE"
-        private const val CLICK_DEBOUNCE_DELAY = 1000L
+        private const val CLICK_DEBOUNCE_DELAY = 500L
     }
 }

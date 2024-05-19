@@ -68,4 +68,11 @@
         <item name="android:textSize">@dimen/medium_text_size_14</item>
         <item name="android:fontFamily">@font/ys_font_family_regular</item>
     </style>
+
+    <style name="PlaylistTextInputStyle" parent="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+        <item name="boxStrokeColor">@color/YP_white</item>
+        <item name="android:textColorHint">@color/YP_black</item>
+        <item name="hintTextColor">@color/YP_dark_blue</item>
+        <item name="colorControlActivated">@color/YP_dark_blue</item>
+    </style>
 </resources>

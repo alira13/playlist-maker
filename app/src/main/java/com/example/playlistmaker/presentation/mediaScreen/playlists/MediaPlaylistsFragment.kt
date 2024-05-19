@@ -1,4 +1,4 @@
-package com.example.playlistmaker.presentation.mediaScreen
+package com.example.playlistmaker.presentation.mediaScreen.playlists
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -7,17 +7,23 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.GridLayoutManager
 import com.example.playlistmaker.R
 import com.example.playlistmaker.databinding.FragmentMediaPlaylistsBinding
+import com.example.playlistmaker.presentation.models.PlaylistInfo
+import com.example.playlistmaker.presentation.ui.PlaylistAdapter
+import com.example.playlistmaker.presentation.ui.PlaylistItemClickListener
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class MediaPlaylistsFragment : Fragment() {
+class MediaPlaylistsFragment : Fragment(), PlaylistItemClickListener {
 
     private val playerViewModel by viewModel<MediaPlaylistsViewModel>()
 
     private var binding: FragmentMediaPlaylistsBinding? = null
+
+    private val adapter = PlaylistAdapter(this)
 
     private var isClickAllowed = true
     override fun onCreateView(
@@ -30,10 +36,33 @@ class MediaPlaylistsFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
         binding?.createPlaylistButtonBtn?.setOnClickListener {
             if (clickDebounce()) {
                 createBtnClickListener()
             }
+        }
+
+        binding?.playlistsRv?.adapter = adapter
+        binding?.playlistsRv?.layoutManager = GridLayoutManager(activity, 2)
+
+        showPlaylists()
+    }
+
+    private fun getPlaylists(): List<PlaylistInfo> {
+        return listOf<PlaylistInfo>(
+            PlaylistInfo("Имя1", "10", ""),
+            PlaylistInfo("Имя2", "20", ""),
+            PlaylistInfo("Имя3", "30", ""),
+            PlaylistInfo("Имя4", "30", "")
+        )
+    }
+
+    private fun showPlaylists() {
+        val playlists = getPlaylists()
+        if (playlists.isNotEmpty()) {
+            adapter.items = playlists.toMutableList()
+            binding?.emptyPlaylistsErrorTv?.visibility = View.GONE
         }
     }
 
@@ -62,5 +91,9 @@ class MediaPlaylistsFragment : Fragment() {
 
     companion object {
         private const val CLICK_DEBOUNCE_DELAY = 1000L
+    }
+
+    override fun onClick(track: PlaylistInfo) {
+        TODO("Not yet implemented")
     }
 }

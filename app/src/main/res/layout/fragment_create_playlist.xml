@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context=".presentation.mediaScreen.CreatePlaylistFragment">
+    tools:context=".presentation.mediaScreen.playlists.createPlaylist.CreatePlaylistFragment">
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/left_guideline"
@@ -45,7 +45,7 @@
         app:layout_constraintStart_toEndOf="@id/back_button"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <ImageView
+    <ImageButton
         android:id="@+id/player_track_image"
         android:layout_width="0dp"
         android:layout_height="0dp"
@@ -72,8 +72,8 @@
             android:id="@+id/playlist_name_ti_ed"
             android:layout_width="match_parent"
             android:layout_height="56dp"
+            style="@style/PlaylistTextInputStyle"
             android:hint="@string/playlist_name"
-            android:textColorHint="@color/YP_black"
             app:layout_constraintEnd_toEndOf="@id/right_guideline"
             app:layout_constraintStart_toStartOf="@+id/left_guideline"
             app:layout_constraintTop_toBottomOf="@+id/player_track_image" />
@@ -95,7 +95,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/playlist_description"
-            android:textColorHint="@color/YP_black"
+            style="@style/PlaylistTextInputStyle"
             app:layout_constraintBottom_toTopOf="@+id/create_button"
             app:layout_constraintEnd_toEndOf="@id/right_guideline"
             app:layout_constraintStart_toStartOf="@+id/left_guideline"

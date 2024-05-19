@@ -26,7 +26,7 @@
     </fragment>
     <fragment
         android:id="@+id/createPlaylistFragment"
-        android:name="com.example.playlistmaker.presentation.mediaScreen.CreatePlaylistFragment"
+        android:name="com.example.playlistmaker.presentation.mediaScreen.playlists.createPlaylist.CreatePlaylistFragment"
         android:label="fragment_create_playlist"
         tools:layout="@layout/fragment_create_playlist" />
 </navigation>

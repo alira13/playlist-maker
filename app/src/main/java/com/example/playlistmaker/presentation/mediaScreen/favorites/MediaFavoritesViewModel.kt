@@ -1,4 +1,4 @@
-package com.example.playlistmaker.presentation.mediaScreen
+package com.example.playlistmaker.presentation.mediaScreen.favorites
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
