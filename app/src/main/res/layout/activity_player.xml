@@ -271,6 +271,7 @@
             android:id="@+id/add_to_playlist_tv"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
             android:gravity="center"
             android:padding="10dp"
             android:text="@string/add_to_playlist"
@@ -280,12 +281,11 @@
 
         <Button
             android:id="@+id/new_playlist_btn"
-            android:layout_width="132dp"
-            android:layout_height="36dp"
+            style="@style/NewPlaylistBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
             android:layout_gravity="center"
-            android:background="@drawable/rounded_rectangle"
-            android:backgroundTint="?attr/colorOnPrimary"
-            android:textColor="?attr/colorPrimary"
             android:text="@string/new_playlist"
             android:visibility="visible" />
 

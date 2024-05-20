@@ -170,4 +170,9 @@
         <item name="android:textSize">12sp</item>
         <item name="fontFamily">@font/ys_font_family_regular</item>
     </style>
+
+    <style name="NewPlaylistBtn">
+        <item name="android:backgroundTint">?attr/colorPrimary</item>
+        <item name="android:textColor">?attr/colorOnPrimary</item>
+    </style>
 </resources>
