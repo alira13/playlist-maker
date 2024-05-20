@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout
+    style="@style/Widget.Support.CoordinatorLayout"
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#1A1B22"
     android:orientation="vertical"
     tools:context=".presentation.playerScreen.PlayerActivity">
 
@@ -79,7 +80,7 @@
             app:layout_constraintTop_toBottomOf="@+id/player_track_name" />
 
         <ImageButton
-            android:id="@+id/add_track_button"
+            android:id="@+id/add_to_playlist_btn"
             style="@style/PlayerSmallButtonStyle"
             android:layout_width="0dp"
             android:layout_height="0dp"
@@ -246,6 +247,13 @@
             app:layout_constraintHeight_percent="0.05"
             app:layout_constraintTop_toBottomOf="@+id/track_style_value" />
     </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <View
+        android:id="@+id/shadow_v"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/YP_transperent_grey"
+        android:visibility="gone" />
 
     <LinearLayout
         android:id="@+id/standard_bottom_sheet"

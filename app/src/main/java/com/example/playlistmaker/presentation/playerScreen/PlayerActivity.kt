@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Build
 import android.os.Build.VERSION.SDK_INT
 import android.os.Bundle
+import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import com.bumptech.glide.Glide
@@ -13,6 +14,7 @@ import com.example.playlistmaker.databinding.ActivityPlayerBinding
 import com.example.playlistmaker.domain.models.Track
 import com.example.playlistmaker.presentation.mapper.TrackMapper
 import com.example.playlistmaker.presentation.searchScreen.SearchFragment.Companion.TRACK_VALUE
+import com.google.android.material.bottomsheet.BottomSheetBehavior
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -38,13 +40,19 @@ class PlayerActivity : AppCompatActivity() {
         setTrackInfo()
 
         binding.likeButton.setOnClickListener {
-
             val click = likeClickDebounce()
-
             if (click) {
-
                 playerViewModel.onLikeButtonClicked()
             }
+        }
+
+
+        val bottomSheetBehavior = BottomSheetBehavior.from(binding.standardBottomSheet).apply {
+            state = BottomSheetBehavior.STATE_HIDDEN
+        }
+        binding.addToPlaylistBtn.setOnClickListener {
+            bottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
+            binding.shadowV.visibility = View.VISIBLE
         }
 
         //play, pause, stop
