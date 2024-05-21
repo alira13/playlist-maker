@@ -69,10 +69,19 @@
         <item name="android:fontFamily">@font/ys_font_family_regular</item>
     </style>
 
-    <style name="PlaylistTextInputStyle" parent="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+    <style name="PlaylistTextInputStyle" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="fontFamily">@font/ys_font_family_regular</item>
+
         <item name="boxStrokeColor">@color/YP_white</item>
         <item name="android:textColorHint">@color/YP_black</item>
         <item name="hintTextColor">@color/YP_dark_blue</item>
         <item name="colorControlActivated">@color/YP_dark_blue</item>
+
+        <item name="boxCornerRadiusBottomEnd">8dp</item>
+        <item name="boxCornerRadiusBottomStart">8dp</item>
+        <item name="boxCornerRadiusTopEnd">8dp</item>
+        <item name="boxCornerRadiusTopStart">8dp</item>
     </style>
 </resources>
