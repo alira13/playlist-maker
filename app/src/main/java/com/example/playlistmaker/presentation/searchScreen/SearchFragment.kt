@@ -1,6 +1,5 @@
 package com.example.playlistmaker.presentation.searchScreen
 
-import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -14,9 +13,10 @@ import androidx.core.widget.doAfterTextChanged
 import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
+import com.example.playlistmaker.R
 import com.example.playlistmaker.databinding.FragmentSearchBinding
 import com.example.playlistmaker.domain.models.Track
-import com.example.playlistmaker.presentation.playerScreen.PlayerActivity
 import com.example.playlistmaker.presentation.ui.ItemClickListener
 import com.example.playlistmaker.presentation.ui.TrackAdapter
 import kotlinx.coroutines.delay
@@ -204,10 +204,10 @@ class SearchFragment : Fragment(), ItemClickListener, SearchView {
         if (clickDebounce()) {
             searchViewModel.addToHistory(track)
             historyTrackAdapter.notifyDataSetChanged()
-            Intent(requireContext(), PlayerActivity::class.java).apply {
-                putExtra(TRACK_VALUE, track)
-                startActivity(this)
-            }
+
+            val bundle = Bundle()
+            bundle.putParcelable(TRACK_VALUE, track)
+            findNavController().navigate(R.id.action_searchFragment_to_playerFragment, bundle)
         }
     }
 

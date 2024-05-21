@@ -1,17 +1,16 @@
 package com.example.playlistmaker.presentation.mediaScreen.favorites
 
-import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
+import com.example.playlistmaker.R
 import com.example.playlistmaker.databinding.FragmentMediaFavoritesBinding
 import com.example.playlistmaker.domain.models.Track
-import com.example.playlistmaker.presentation.playerScreen.PlayerActivity
 import com.example.playlistmaker.presentation.ui.ItemClickListener
 import com.example.playlistmaker.presentation.ui.TrackAdapter
 import kotlinx.coroutines.delay
@@ -53,6 +52,7 @@ class MediaFavoritesFragment : Fragment(), ItemClickListener {
         playerViewModel.getState()
     }
 
+
     override fun onDestroyView() {
         super.onDestroyView()
         binding = null
@@ -60,16 +60,17 @@ class MediaFavoritesFragment : Fragment(), ItemClickListener {
     }
 
     override fun onClick(track: Track) {
-        //if (clickDebounce()) {
-            Intent(requireContext(), PlayerActivity::class.java).apply {
-                putExtra(TRACK_VALUE, track)
-                startActivity(this)
-            }
-        //}
+        if (clickDebounce()) {
+            val bundle = Bundle()
+            bundle.putParcelable(TRACK_VALUE, track)
+            findNavController().navigate(
+                R.id.action_mediaFragment_to_playerFragment,
+                bundle
+            )
+        }
     }
 
     private fun clickDebounce(): Boolean {
-Log.d("MY_LOG", "click")
         val current = isClickAllowed
         if (isClickAllowed) {
             isClickAllowed = false

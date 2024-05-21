@@ -27,7 +27,7 @@
             android:exported="false"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".presentation.playerScreen.PlayerActivity"
+            android:name=".presentation.playerScreen.PlayerFragment"
             android:exported="false"
             android:screenOrientation="portrait" />
         <activity

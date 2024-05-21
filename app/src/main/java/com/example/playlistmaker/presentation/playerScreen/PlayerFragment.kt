@@ -1,17 +1,19 @@
 package com.example.playlistmaker.presentation.playerScreen
 
-import android.content.Intent
 import android.os.Build
 import android.os.Build.VERSION.SDK_INT
 import android.os.Bundle
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import android.widget.LinearLayout
-import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.example.playlistmaker.R
-import com.example.playlistmaker.databinding.ActivityPlayerBinding
+import com.example.playlistmaker.databinding.FragmentPlayerBinding
 import com.example.playlistmaker.domain.models.Track
 import com.example.playlistmaker.presentation.mapper.TrackMapper
 import com.example.playlistmaker.presentation.models.PlaylistInfo
@@ -24,11 +26,11 @@ import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
 
-class PlayerActivity : AppCompatActivity(), PlaylistItemClickListener {
+class PlayerFragment : Fragment(), PlaylistItemClickListener {
 
-    private val playerViewModel by viewModel<PlayerViewModel> { parametersOf(getTrack(intent)) }
+    private val playerViewModel by viewModel<PlayerViewModel> { parametersOf(getTrack()) }
 
-    private lateinit var binding: ActivityPlayerBinding
+    private lateinit var binding: FragmentPlayerBinding
     private var isPlayClickAllowed = true
     private var isLikeClickAllowed = true
 
@@ -36,13 +38,18 @@ class PlayerActivity : AppCompatActivity(), PlaylistItemClickListener {
 
     private val adapter = PlaylistAdapter(this)
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        binding = FragmentPlayerBinding.inflate(inflater, container, false)
+        return binding.root
+    }
 
-        binding = ActivityPlayerBinding.inflate(layoutInflater)
-        setContentView(binding.root)
-
-        getTrack(intent)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        getTrack()
 
         //prepare
         playerViewModel.preparePlayer()
@@ -76,26 +83,26 @@ class PlayerActivity : AppCompatActivity(), PlaylistItemClickListener {
 
         //quit player
         binding.backButton.setOnClickListener {
-            finish()
+            findNavController().navigateUp()
         }
 
-        playerViewModel.isLiked.observe(this) {
+        playerViewModel.isLiked.observe(viewLifecycleOwner) {
             binding.likeButton.isEnabled = isPlayClickAllowed
             binding.likeButton.setImageResource(it.buttonImage)
         }
 
-        playerViewModel.playerState.observe(this) {
+        playerViewModel.playerState.observe(viewLifecycleOwner) {
             binding.playControlButton.isEnabled = it.isButtonEnabled
             binding.playControlButton.setImageResource(it.buttonImage)
             binding.currentTrackTime.text = it.progress
         }
     }
 
-    private fun getTrack(intent: Intent): Track {
+    private fun getTrack(): Track {
         val track = if (SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            intent.getParcelableExtra(TRACK_VALUE, Track::class.java)!!
+            arguments?.getParcelable(TRACK_VALUE)!!
         } else {
-            intent.getParcelableExtra<Track>(TRACK_VALUE)!!
+            arguments?.getParcelable<Track>(TRACK_VALUE)!!
         }
         return track
     }

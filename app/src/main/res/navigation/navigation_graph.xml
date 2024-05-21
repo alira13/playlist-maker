@@ -9,7 +9,11 @@
         android:id="@+id/searchFragment"
         android:name="com.example.playlistmaker.presentation.searchScreen.SearchFragment"
         android:label="fragment_search"
-        tools:layout="@layout/fragment_search" />
+        tools:layout="@layout/fragment_search" >
+        <action
+            android:id="@+id/action_searchFragment_to_playerFragment"
+            app:destination="@id/playerFragment" />
+    </fragment>
     <fragment
         android:id="@+id/settingsFragment"
         android:name="com.example.playlistmaker.presentation.settingsScreen.SettingsFragment"
@@ -23,10 +27,28 @@
         <action
             android:id="@+id/action_mediaFragment_to_createPlaylistFragment"
             app:destination="@id/createPlaylistFragment" />
+        <action
+            android:id="@+id/action_mediaFragment_to_playerFragment"
+            app:destination="@id/playerFragment" />
     </fragment>
     <fragment
         android:id="@+id/createPlaylistFragment"
         android:name="com.example.playlistmaker.presentation.mediaScreen.playlists.createPlaylist.CreatePlaylistFragment"
         android:label="fragment_create_playlist"
         tools:layout="@layout/fragment_create_playlist" />
+    <fragment
+        android:id="@+id/playerFragment"
+        android:name="com.example.playlistmaker.presentation.playerScreen.PlayerFragment"
+        android:label="fragment_player"
+        tools:layout="@layout/fragment_player" />
+    <fragment
+        android:id="@+id/mediaPlaylistsFragment"
+        android:name="com.example.playlistmaker.presentation.mediaScreen.playlists.MediaPlaylistsFragment"
+        android:label="fragment_media_playlists"
+        tools:layout="@layout/fragment_media_playlists" />
+    <fragment
+        android:id="@+id/mediaFavoritesFragment"
+        android:name="com.example.playlistmaker.presentation.mediaScreen.favorites.MediaFavoritesFragment"
+        android:label="fragment_media_favorites"
+        tools:layout="@layout/fragment_media_favorites" />
 </navigation>
