@@ -100,7 +100,7 @@
         app:layout_constraintTop_toBottomOf="@id/playlist_name_til">
 
         <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/description_ti_ed"
+            android:id="@+id/description_ti_et"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="textCapSentences"
