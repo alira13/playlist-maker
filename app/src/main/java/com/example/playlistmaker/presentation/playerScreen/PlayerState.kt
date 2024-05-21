@@ -2,7 +2,7 @@ package com.example.playlistmaker.presentation.playerScreen
 
 import com.example.playlistmaker.R
 
-sealed class PlayerState(val isPlayButtonEnabled: Boolean, val buttonImage: Int, val progress: String) {
+sealed class PlayerState(val isButtonEnabled: Boolean, val buttonImage: Int, val progress: String) {
 
     class Default : PlayerState(false, R.drawable.play_button, "00:00")
 

@@ -1,6 +1,5 @@
 package com.example.playlistmaker.presentation.searchScreen
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -25,7 +24,6 @@ class SearchViewModel(
     val stateLiveData: LiveData<SearchState> = _stateLiveData
 
     private fun renderState(state: SearchState) {
-        Log.d("MY_LOG", "ViewModel:renderState: $state")
         _stateLiveData.postValue(state)
     }
 
@@ -43,12 +41,9 @@ class SearchViewModel(
 
     fun search(newSearchText: String) {
         if (newSearchText.isNotEmpty()) {
-            Log.d("MY_LOG", "Start search: $newSearchText")
-
             renderState(SearchState.Loading)
 
             searchJob?.cancel()
-
             val newJob = viewModelScope.launch {
                 searchInteractor
                     .execute(newSearchText)
@@ -62,18 +57,18 @@ class SearchViewModel(
         when (consumerData) {
             is ConsumerData.NetworkError -> {
                 renderState(SearchState.ConnectionError)
-                Log.d("MY_LOG", "CONNECTION ERROR")
+
             }
 
             is ConsumerData.EmptyListError -> {
                 renderState(SearchState.EmptyTrackListError)
-                Log.d("MY_LOG", "EMPTY LIST ERROR")
+
             }
 
             is ConsumerData.Data -> {
                 val tracks = foundTracks!!
                 renderState(SearchState.TrackList(tracks))
-                Log.d("MY_LOG", "SUCCESS: $tracks")
+
             }
 
             else -> {}
@@ -81,18 +76,18 @@ class SearchViewModel(
     }
 
     fun addToHistory(track: Track) {
-        Log.d("MY_LOG", "ADD TO HISTORY")
         searchHistoryInteractor.addToHistory(track)
     }
 
     fun getHistory() {
-        Log.d("MY_LOG", "GET HISTORY")
-        val tracks = searchHistoryInteractor.getHistory()
-        renderState(SearchState.TrackHistory(tracks))
+        viewModelScope.launch {
+            searchHistoryInteractor
+                .getHistory()
+                .collect { renderState(SearchState.TrackHistory(it)) }
+        }
     }
 
     fun clearHistory() {
-        Log.d("MY_LOG", "CLEAR HISTORY")
         searchHistoryInteractor.clearHistory()
         renderState(SearchState.EmptyTrackHistory)
     }

@@ -1,6 +1,5 @@
 package com.example.playlistmaker.data.network
 
-import android.util.Log
 import com.example.playlistmaker.data.dto.NetworkResponse
 import com.example.playlistmaker.data.dto.TrackNetworkResponse
 import com.example.playlistmaker.data.repository.TrackNetworkClient
@@ -18,10 +17,7 @@ class TrackRetrofitNetworkClient : TrackNetworkClient {
                     trackResponse = TrackNetworkResponse(response.results.toList())
                     trackResponse.resultCount = response.resultCount
                 }
-                Log.d(
-                    "MY_LOG",
-                    "Successfully ${trackResponse.toString()} on ${Thread.currentThread().name}"
-                )
+
                 trackResponse
             } else NetworkResponse().apply { resultCount = 400 }
         } catch (ex: Throwable) {

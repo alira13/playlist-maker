@@ -30,7 +30,7 @@ val domainModule = module {
     }
 
     factory<PlayerInteractor> {
-        PlayerInteractorImpl(trackPlayer = get())
+        PlayerInteractorImpl(trackPlayer = get(), favoritesRepository = get())
     }
 }
 

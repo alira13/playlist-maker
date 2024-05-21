@@ -4,7 +4,6 @@ import android.content.Intent
 import android.os.Build
 import android.os.Build.VERSION.SDK_INT
 import android.os.Bundle
-import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import com.bumptech.glide.Glide
@@ -24,7 +23,8 @@ class PlayerActivity : AppCompatActivity() {
     private val playerViewModel by viewModel<PlayerViewModel> { parametersOf(getTrack(intent)) }
 
     private lateinit var binding: ActivityPlayerBinding
-    private var isClickAllowed = true
+    private var isPlayClickAllowed = true
+    private var isLikeClickAllowed = true
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -32,15 +32,26 @@ class PlayerActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         getTrack(intent)
+
         //prepare
         playerViewModel.preparePlayer()
         setTrackInfo()
 
+        binding.likeButton.setOnClickListener {
+
+            val click = likeClickDebounce()
+
+            if (click) {
+
+                playerViewModel.onLikeButtonClicked()
+            }
+        }
+
         //play, pause, stop
         binding.playControlButton.setOnClickListener {
-            val cl = clickDebounce()
-            Log.d("MY_LOG", "clickAllowed = $cl")
-            if (cl)
+            val click = playClickDebounce()
+
+            if (click)
                 playerViewModel.onPlayButtonClicked()
         }
 
@@ -49,8 +60,13 @@ class PlayerActivity : AppCompatActivity() {
             finish()
         }
 
+        playerViewModel.isLiked.observe(this) {
+            binding.likeButton.isEnabled = isPlayClickAllowed
+            binding.likeButton.setImageResource(it.buttonImage)
+        }
+
         playerViewModel.playerState.observe(this) {
-            binding.playControlButton.isEnabled = it.isPlayButtonEnabled
+            binding.playControlButton.isEnabled = it.isButtonEnabled
             binding.playControlButton.setImageResource(it.buttonImage)
             binding.currentTrackTime.text = it.progress
         }
@@ -76,23 +92,38 @@ class PlayerActivity : AppCompatActivity() {
         binding.trackStyleValue.text = playerTrackInfo.primaryGenreName
         binding.trackCountryValue.text = playerTrackInfo.country
 
+        binding.likeButton.setImageResource(playerViewModel.isLiked.value!!.buttonImage)
+
         Glide.with(binding.playerTrackImage).load(playerTrackInfo.artworkUrl512).fitCenter()
             .placeholder(R.drawable.placeholder)
             .transform(RoundedCorners(binding.playerTrackImage.resources.getDimensionPixelSize(R.dimen.player_track_image_corner_radius)))
             .into(binding.playerTrackImage)
     }
 
-    private fun clickDebounce(): Boolean {
-        val current = isClickAllowed
-        if (isClickAllowed) {
-            isClickAllowed = false
+    private fun playClickDebounce(): Boolean {
+        val current = isPlayClickAllowed
+        if (isPlayClickAllowed) {
+            isPlayClickAllowed = false
             lifecycleScope.launch {
                 delay(CLICK_DEBOUNCE_DELAY_MILLIS)
-                isClickAllowed = true
+                isPlayClickAllowed = true
             }
         }
         return current
     }
+
+    private fun likeClickDebounce(): Boolean {
+        val current = isLikeClickAllowed
+        if (isLikeClickAllowed) {
+            isLikeClickAllowed = false
+            lifecycleScope.launch {
+                delay(CLICK_DEBOUNCE_DELAY_MILLIS)
+                isLikeClickAllowed = true
+            }
+        }
+        return current
+    }
+
 
     override fun onPause() {
         super.onPause()
