@@ -16,7 +16,7 @@ val appModule = module {
     }
 
     viewModel<PlayerViewModel> { params ->
-        PlayerViewModel(params.get(), playerInteractor = get())
+        PlayerViewModel(params.get(), playerInteractor = get(), playlisInteractor = get())
     }
 
     viewModel<SettingsViewModel> {
