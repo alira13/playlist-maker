@@ -86,6 +86,10 @@ class PlayerFragment : Fragment(), PlaylistItemClickListener {
             findNavController().navigateUp()
         }
 
+        binding.newPlaylistBtn.setOnClickListener{
+            findNavController().navigate(R.id.action_playerFragment_to_createPlaylistFragment)
+        }
+
         playerViewModel.isLiked.observe(viewLifecycleOwner) {
             binding.likeButton.isEnabled = isPlayClickAllowed
             binding.likeButton.setImageResource(it.buttonImage)
