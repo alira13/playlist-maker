@@ -7,6 +7,8 @@ import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.result.PickVisualMediaRequest
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.example.playlistmaker.R
@@ -55,6 +57,22 @@ class CreatePlaylistFragment : Fragment() {
         }
 
         addPlaylistNameTextWatcher()
+
+        //регистрируем событие, которое вызывает photo picker
+        val pickMedia =
+            registerForActivityResult(ActivityResultContracts.PickVisualMedia()) { uri ->
+                //обрабатываем событие выбора пользователем фотографии
+                if (uri != null) {
+                    binding?.playerTrackImage?.setImageURI(uri)
+                    albumImageUri = uri
+                } else {
+                }
+            }
+
+        binding?.playerTrackImage?.setOnClickListener {
+            pickMedia.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
+        }
+
     }
 
     protected fun addPlaylistNameTextWatcher() {
