@@ -39,9 +39,9 @@ class MediaPlaylistsFragment : Fragment(), PlaylistItemClickListener {
         super.onViewCreated(view, savedInstanceState)
 
         binding?.createPlaylistButtonBtn?.setOnClickListener {
-            if (clickDebounce()) {
+            //if (clickDebounce()) {
                 createBtnClickListener()
-            }
+            //}
         }
 
         binding?.playlistsRv?.adapter = adapter
