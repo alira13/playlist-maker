@@ -23,6 +23,7 @@ import com.example.playlistmaker.presentation.searchScreen.SearchFragment.Compan
 import com.example.playlistmaker.presentation.ui.PlaylistInStringAdapter
 import com.example.playlistmaker.presentation.ui.PlaylistItemClickListener
 import com.google.android.material.bottomsheet.BottomSheetBehavior
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -39,6 +40,8 @@ class PlayerFragment : Fragment(), PlaylistItemClickListener {
     private lateinit var bottomSheetBehavior: BottomSheetBehavior<LinearLayout>
 
     private val adapter = PlaylistInStringAdapter(this)
+
+    private var dialog: MaterialAlertDialogBuilder? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -66,6 +69,7 @@ class PlayerFragment : Fragment(), PlaylistItemClickListener {
 
         bottomSheetBehavior = BottomSheetBehavior.from(binding.standardBottomSheet).apply {
             state = BottomSheetBehavior.STATE_HIDDEN
+            binding.shadowV.isVisible = false
         }
         binding.playlerPlaylistsRv.adapter = adapter
         binding.addToPlaylistBtn.setOnClickListener {
@@ -102,7 +106,14 @@ class PlayerFragment : Fragment(), PlaylistItemClickListener {
             binding.currentTrackTime.text = it.progress
         }
 
+        dialog = MaterialAlertDialogBuilder(requireContext()).apply {
+            //TODO Не работает
+            setMessage(playerViewModel.playlistTrackState.value?.message)
 
+            setPositiveButton("ОК") { _, _ ->
+                bottomSheetBehavior.state = BottomSheetBehavior.STATE_HIDDEN
+            }
+        }
     }
 
     private fun getTrack(): Track {
@@ -137,7 +148,6 @@ class PlayerFragment : Fragment(), PlaylistItemClickListener {
         bottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
         binding.shadowV.visibility = View.VISIBLE
 
-        //TODO Показать плейлисты
         playerViewModel.getPlaylists()
 
         playerViewModel.playlistsState.observe(viewLifecycleOwner) {
@@ -185,7 +195,8 @@ class PlayerFragment : Fragment(), PlaylistItemClickListener {
         private const val CLICK_DEBOUNCE_DELAY_MILLIS = 1000L
     }
 
-    override fun onClick(track: PlaylistInfo) {
-        TODO("Not yet implemented")
+    override fun onClick(item: PlaylistInfo) {
+        playerViewModel.onPlaylistItemClicked(item)
+        dialog?.show()
     }
 }

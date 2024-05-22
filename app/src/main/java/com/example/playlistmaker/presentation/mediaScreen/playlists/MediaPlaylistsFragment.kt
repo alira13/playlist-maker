@@ -56,7 +56,10 @@ class MediaPlaylistsFragment : Fragment(), PlaylistItemClickListener {
     private fun render(state: PlaylistsState) {
         binding?.emptyPlaylistsErrorTv?.isVisible = state.isError
         when (state) {
-            is PlaylistsState.ShowPlaylists -> adapter.items = state.playlists.toMutableList()
+            is PlaylistsState.ShowPlaylists -> {
+                adapter.items = state.playlists.toMutableList()
+            }
+
             else -> {}
         }
     }
@@ -89,7 +92,6 @@ class MediaPlaylistsFragment : Fragment(), PlaylistItemClickListener {
         private const val CLICK_DEBOUNCE_DELAY = 1000L
     }
 
-    override fun onClick(track: PlaylistInfo) {
-        TODO("Not yet implemented")
+    override fun onClick(playlist: PlaylistInfo) {
     }
 }

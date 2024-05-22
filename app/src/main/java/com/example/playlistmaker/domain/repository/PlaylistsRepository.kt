@@ -4,6 +4,6 @@ import com.example.playlistmaker.presentation.models.PlaylistInfo
 import kotlinx.coroutines.flow.Flow
 
 interface PlaylistsRepository {
-    suspend fun addToPlaylists(track: PlaylistInfo)
+    suspend fun addToPlaylist(playlist: PlaylistInfo)
     fun getPlaylists(): Flow<List<PlaylistInfo>>
 }

@@ -11,9 +11,9 @@ class PlaylistsRepositoryImpl(
     private val appDatabase: AppDatabase,
     private val playlistDbConvertor: PlaylistDbConverter,
 ) : PlaylistsRepository {
-    override suspend fun addToPlaylists(track: PlaylistInfo) {
-        val trackEntity = playlistDbConvertor.map(track)
-        appDatabase.getPlaylistDao().addToPlaylists(trackEntity)
+    override suspend fun addToPlaylist(playlist: PlaylistInfo) {
+        val playlistEntity = playlistDbConvertor.map(playlist)
+        appDatabase.getPlaylistDao().addToPlaylists(playlistEntity)
     }
 
     override fun getPlaylists(): Flow<List<PlaylistInfo>> = flow {

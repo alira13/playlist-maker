@@ -303,7 +303,18 @@
             android:layout_height="wrap_content"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             tools:itemCount="5"
-            tools:listitem="@layout/playlist_view" />
-    </LinearLayout>
+            tools:listitem="@layout/playlist_in_string_view" />
 
+        <TextView
+            android:id="@+id/player_message_tv"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:layout_gravity="bottom|center"
+            android:background="?attr/colorOnPrimary"
+            android:fontFamily="@font/ys_font_family_regular"
+            android:gravity="center"
+            android:textColor="?attr/colorPrimary"
+            android:textSize="@dimen/regular_text_size_16"
+            android:visibility="gone" />
+    </LinearLayout>
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

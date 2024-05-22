@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.appcompat.widget.LinearLayoutCompat
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -29,6 +30,19 @@
         android:layout_marginTop="16dp"
         app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
         app:spanCount="2"
-        tools:itemCount="8"
+        tools:itemCount="2"
         tools:listitem="@layout/playlist_view" />
+
+    <TextView
+        android:id="@+id/player_message_tv"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:background="?attr/colorOnPrimary"
+        android:fontFamily="@font/ys_font_family_regular"
+        android:gravity="center"
+        android:textColor="?attr/colorPrimary"
+        android:textSize="@dimen/regular_text_size_16"
+        android:visibility="visible"
+        android:baselineAligned="false"
+        android:layout_gravity="bottom"/>
 </androidx.appcompat.widget.LinearLayoutCompat>
