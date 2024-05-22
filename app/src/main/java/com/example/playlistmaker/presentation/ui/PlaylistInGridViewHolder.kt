@@ -10,7 +10,7 @@ import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.example.playlistmaker.R
 import com.example.playlistmaker.presentation.models.PlaylistInfo
 
-class PlaylistViewHolder(parentView: ViewGroup) : RecyclerView.ViewHolder(
+class PlaylistInGridViewHolder(parentView: ViewGroup) : RecyclerView.ViewHolder(
     LayoutInflater.from(parentView.context)
         .inflate(R.layout.playlist_view, parentView, false)
 ) {

@@ -68,13 +68,13 @@
         <item name="android:layout_gravity">start|center</item>
     </style>
 
-    <style name="TrackViewEditTextRegular">
+    <style name="ListItemEditTextRegular">
         <item name="android:textSize">@dimen/regular_text_size_16</item>
         <item name="android:fontFamily">@font/ys_font_family_regular</item>
         <item name="android:textColor">@color/YP_black</item>
     </style>
 
-    <style name="TrackViewEditTextSmall">
+    <style name="ListItemEditTextSmall">
         <item name="android:textSize">@dimen/small_text_size</item>
         <item name="android:fontFamily">@font/ys_font_family_regular</item>
         <item name="android:textColor">@color/YP_grey</item>
@@ -172,4 +172,5 @@
         <item name="android:backgroundTint">?attr/colorOnPrimary</item>
         <item name="android:textColor">?attr/colorPrimary</item>
     </style>
+
 </resources>

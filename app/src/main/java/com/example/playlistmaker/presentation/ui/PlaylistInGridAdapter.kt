@@ -10,7 +10,7 @@ interface PlaylistItemClickListener {
 
 class PlaylistAdapter(
     private val onItemClickListener: PlaylistItemClickListener
-) : RecyclerView.Adapter<PlaylistViewHolder>() {
+) : RecyclerView.Adapter<PlaylistInGridViewHolder>() {
 
     var items: MutableList<PlaylistInfo> = mutableListOf()
         set(value) {
@@ -23,11 +23,11 @@ class PlaylistAdapter(
         notifyDataSetChanged()
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PlaylistViewHolder {
-        return PlaylistViewHolder(parent)
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PlaylistInGridViewHolder {
+        return PlaylistInGridViewHolder(parent)
     }
 
-    override fun onBindViewHolder(holder: PlaylistViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: PlaylistInGridViewHolder, position: Int) {
         holder.bind(items[position])
         holder.itemView.setOnClickListener {
             onItemClickListener.onClick(items[position])

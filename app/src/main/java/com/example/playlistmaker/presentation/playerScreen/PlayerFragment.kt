@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
@@ -16,9 +17,10 @@ import com.example.playlistmaker.R
 import com.example.playlistmaker.databinding.FragmentPlayerBinding
 import com.example.playlistmaker.domain.models.Track
 import com.example.playlistmaker.presentation.mapper.TrackMapper
+import com.example.playlistmaker.presentation.mediaScreen.playlists.PlaylistsState
 import com.example.playlistmaker.presentation.models.PlaylistInfo
 import com.example.playlistmaker.presentation.searchScreen.SearchFragment.Companion.TRACK_VALUE
-import com.example.playlistmaker.presentation.ui.PlaylistAdapter
+import com.example.playlistmaker.presentation.ui.PlaylistInStringAdapter
 import com.example.playlistmaker.presentation.ui.PlaylistItemClickListener
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import kotlinx.coroutines.delay
@@ -36,7 +38,7 @@ class PlayerFragment : Fragment(), PlaylistItemClickListener {
 
     private lateinit var bottomSheetBehavior: BottomSheetBehavior<LinearLayout>
 
-    private val adapter = PlaylistAdapter(this)
+    private val adapter = PlaylistInStringAdapter(this)
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -76,7 +78,6 @@ class PlayerFragment : Fragment(), PlaylistItemClickListener {
         //play, pause, stop
         binding.playControlButton.setOnClickListener {
             val click = playClickDebounce()
-
             if (click)
                 playerViewModel.onPlayButtonClicked()
         }
@@ -100,6 +101,8 @@ class PlayerFragment : Fragment(), PlaylistItemClickListener {
             binding.playControlButton.setImageResource(it.buttonImage)
             binding.currentTrackTime.text = it.progress
         }
+
+
     }
 
     private fun getTrack(): Track {
@@ -135,16 +138,17 @@ class PlayerFragment : Fragment(), PlaylistItemClickListener {
         binding.shadowV.visibility = View.VISIBLE
 
         //TODO Показать плейлисты
-        /*
-        var playlistsState: PlaylistsState
-        binding.playlerPlaylistsRv.isVisible = !playlistsState.isError
-        when (playlistsState) {
-            is PlaylistsState.ShowPlaylists -> adapter.items =
-                playlistsState.playlists.toMutableList()
+        playerViewModel.getPlaylists()
 
-            else -> {}
+        playerViewModel.playlistsState.observe(viewLifecycleOwner) {
+            binding.playlerPlaylistsRv.isVisible = !it.isError
+            when (it) {
+                is PlaylistsState.ShowPlaylists -> adapter.items =
+                    it.playlists.toMutableList()
+
+                else -> {}
+            }
         }
-        */
     }
 
     private fun playClickDebounce(): Boolean {

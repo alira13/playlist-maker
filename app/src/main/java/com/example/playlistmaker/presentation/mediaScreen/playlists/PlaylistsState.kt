@@ -6,5 +6,5 @@ sealed class PlaylistsState(val isError: Boolean, playlists: List<PlaylistInfo>)
 
     data class ShowPlaylists(val playlists: List<PlaylistInfo>) : PlaylistsState(false, playlists)
 
-    class EmptyPlaylists : PlaylistsState(true, emptyList())
+    class EmptyPlaylists() : PlaylistsState(true, emptyList())
 }
