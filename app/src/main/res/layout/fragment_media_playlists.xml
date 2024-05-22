@@ -42,7 +42,7 @@
         android:gravity="center"
         android:textColor="?attr/colorPrimary"
         android:textSize="@dimen/regular_text_size_16"
-        android:visibility="visible"
+        android:visibility="gone"
         android:baselineAligned="false"
         android:layout_gravity="bottom"/>
 </androidx.appcompat.widget.LinearLayoutCompat>

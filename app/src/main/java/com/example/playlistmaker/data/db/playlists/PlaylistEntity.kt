@@ -14,7 +14,5 @@ data class PlaylistEntity(
 
     val artworkUrl512: String,
 
-    var trackIds: String,
-
-    var tracksNum: Int
+    var trackIds: String
 )

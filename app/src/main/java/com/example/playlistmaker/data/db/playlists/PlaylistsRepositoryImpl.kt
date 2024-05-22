@@ -18,20 +18,7 @@ class PlaylistsRepositoryImpl(
 
     override fun getPlaylists(): Flow<List<PlaylistInfo>> = flow {
         val trackEntity = appDatabase.getPlaylistDao().getPlaylists().reversed()
-        //val tracks = convertFromPlaylistEntity(trackEntity)
-        val tracks = listOf<PlaylistInfo>(
-            PlaylistInfo(
-                1, "Имя1", "", 5, "", emptyList()
-            ),
-            PlaylistInfo(
-                2, "Имя2", "", 5, "", emptyList()
-
-            ),
-            PlaylistInfo(
-                3, "Имя3", "", 5, "", emptyList()
-
-            )
-        )
+        val tracks = convertFromPlaylistEntity(trackEntity)
         emit(tracks)
     }
 
