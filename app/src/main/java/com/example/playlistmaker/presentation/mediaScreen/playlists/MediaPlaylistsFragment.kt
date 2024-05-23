@@ -39,9 +39,9 @@ class MediaPlaylistsFragment : Fragment(), PlaylistItemClickListener {
         super.onViewCreated(view, savedInstanceState)
 
         binding?.createPlaylistButtonBtn?.setOnClickListener {
-            //if (clickDebounce()) {
+            if (clickDebounce()) {
                 createBtnClickListener()
-            //}
+            }
         }
 
         binding?.playlistsRv?.adapter = adapter
@@ -66,9 +66,7 @@ class MediaPlaylistsFragment : Fragment(), PlaylistItemClickListener {
 
 
     private fun createBtnClickListener() {
-        binding?.createPlaylistButtonBtn?.setOnClickListener {
-            findNavController().navigate(R.id.action_mediaFragment_to_createPlaylistFragment)
-        }
+        findNavController().navigate(R.id.action_mediaFragment_to_createPlaylistFragment)
     }
 
     private fun clickDebounce(): Boolean {

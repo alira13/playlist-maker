@@ -11,6 +11,7 @@ import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.WindowManager
 import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.PickVisualMediaRequest
@@ -28,14 +29,18 @@ import java.util.Calendar
 
 class NewPlaylistFragment : Fragment() {
     private val viewModel by viewModel<NewPlaylistViewModel>()
-    var binding: FragmentNewPlaylistBinding? = null
+    private var binding: FragmentNewPlaylistBinding? = null
 
     private var onCloseDialog: MaterialAlertDialogBuilder? = null
-    var pickMedia: ActivityResultLauncher<PickVisualMediaRequest>? = null
+    private var pickMedia: ActivityResultLauncher<PickVisualMediaRequest>? = null
 
     private var playlistImageUri: Uri? = null
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
         binding = FragmentNewPlaylistBinding.inflate(inflater, container, false)
         return binding!!.root
     }
@@ -46,6 +51,8 @@ class NewPlaylistFragment : Fragment() {
         createOnCloseDialog()
         createPickMedia()
         addTextWatcher()
+
+        requireActivity().window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN)
 
         binding?.backButton?.setOnClickListener {
             onBackClick()
@@ -60,7 +67,7 @@ class NewPlaylistFragment : Fragment() {
         }
     }
 
-    private fun createPickMedia(){
+    private fun createPickMedia() {
         pickMedia =
             registerForActivityResult(ActivityResultContracts.PickVisualMedia()) { uri ->
                 if (uri != null) {
@@ -69,7 +76,8 @@ class NewPlaylistFragment : Fragment() {
                 }
             }
     }
-    private fun createOnCloseDialog(){
+
+    private fun createOnCloseDialog() {
         onCloseDialog = MaterialAlertDialogBuilder(requireContext()).apply {
             setTitle(getString(R.string.complete_playlist_creation))
             setMessage(getString(R.string.unsaved_data_losing))
@@ -80,8 +88,9 @@ class NewPlaylistFragment : Fragment() {
             }
         }
     }
+
     private fun addTextWatcher() {
-        binding?.playlistNameTiEd?.addTextChangedListener(object : TextWatcher {
+        binding?.playlistNameTiEt?.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
             }
 
@@ -93,9 +102,10 @@ class NewPlaylistFragment : Fragment() {
             }
         })
     }
-    private fun onBackClick(){
+
+    private fun onBackClick() {
         if (playlistImageUri != null ||
-            !binding?.playlistNameTiEd?.text.isNullOrEmpty() ||
+            !binding?.playlistNameTiEt?.text.isNullOrEmpty() ||
             !binding?.descriptionTiEt?.text.isNullOrEmpty()
         ) {
             onCloseDialog?.show()
@@ -103,11 +113,13 @@ class NewPlaylistFragment : Fragment() {
             findNavController().navigateUp()
         }
     }
-    private fun onImageClick(){
+
+    private fun onImageClick() {
         pickMedia?.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
     }
-    private fun onCreateClick(){
-        val playlistName = binding?.playlistNameTiEd?.text.toString()
+
+    private fun onCreateClick() {
+        val playlistName = binding?.playlistNameTiEt?.text.toString()
         val playlistDescription = binding?.descriptionTiEt?.text.toString()
 
         var playlistImageName: String? = null
@@ -117,7 +129,7 @@ class NewPlaylistFragment : Fragment() {
         }
 
         val playlist = NewPlaylist(playlistName, playlistDescription, playlistImageName)
-        viewModel.createPlaylist(playlist)
+        viewModel.createNewPlayList(playlist)
 
         val toast = Toast(context)
         toast.setGravity(Gravity.BOTTOM, 0, 0)
@@ -127,6 +139,7 @@ class NewPlaylistFragment : Fragment() {
 
         findNavController().navigateUp()
     }
+
     private fun savePlaylistImage(playlistImageName: String) {
         val filePath = File(
             requireActivity().getExternalFilesDir(Environment.DIRECTORY_PICTURES),
@@ -138,7 +151,7 @@ class NewPlaylistFragment : Fragment() {
 
         val file = File(filePath, playlistImageName)
         val inputStream =
-            requireActivity().contentResolver.openInputStream(playlistImageUri!!)        // создаём входящий поток байтов из выбранной картинки
+            requireActivity().contentResolver.openInputStream(playlistImageUri!!)
         val outputStream = FileOutputStream(file)
         BitmapFactory
             .decodeStream(inputStream)
@@ -147,10 +160,12 @@ class NewPlaylistFragment : Fragment() {
         inputStream!!.close()
         outputStream.close()
     }
+
     override fun onDestroyView() {
         super.onDestroyView()
         binding = null
     }
+
     companion object {
         private const val DIRECTORY = "playlists_images"
         private const val QUALITY = 100

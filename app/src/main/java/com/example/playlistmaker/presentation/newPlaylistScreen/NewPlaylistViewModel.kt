@@ -1,17 +1,26 @@
 package com.example.playlistmaker.presentation.newPlaylistScreen
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.example.playlistmaker.domain.usecases.playlists.PlaylistsInteractor
-import com.example.playlistmaker.presentation.mediaScreen.playlists.PlaylistsState
 import com.example.playlistmaker.presentation.models.NewPlaylist
+import com.example.playlistmaker.presentation.models.PlaylistInfo
+import kotlinx.coroutines.launch
 
 class NewPlaylistViewModel(private val playlistsInteractor: PlaylistsInteractor) : ViewModel() {
-
-    private var _state = MutableLiveData<PlaylistsState>()
-    var state: LiveData<PlaylistsState> = _state
-
-    fun createPlaylist(playlist: NewPlaylist) {
+    fun createNewPlayList(playlist: NewPlaylist) {
+        val playListInfo = convertPlaylistInfo(playlist)
+        viewModelScope.launch {
+            playlistsInteractor.addToPlaylist(playListInfo)
+        }
     }
+
+    private fun convertPlaylistInfo(playlist: NewPlaylist) = PlaylistInfo(
+        playlistId = 0,
+        playlistName = playlist.playlistName,
+        playlistDescription = playlist.playlistDescription,
+        artworkUrl512 = playlist.artworkUrl512!!,
+        trackIds = ArrayList(),
+        tracksNum = 0
+    )
 }
