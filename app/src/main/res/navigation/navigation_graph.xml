@@ -33,9 +33,9 @@
     </fragment>
     <fragment
         android:id="@+id/createPlaylistFragment"
-        android:name="com.example.playlistmaker.presentation.mediaScreen.playlists.createPlaylist.CreatePlaylistFragment"
+        android:name="com.example.playlistmaker.presentation.newPlaylistScreen.NewPlaylistFragment"
         android:label="fragment_create_playlist"
-        tools:layout="@layout/fragment_create_playlist" />
+        tools:layout="@layout/fragment_new_playlist" />
     <fragment
         android:id="@+id/playerFragment"
         android:name="com.example.playlistmaker.presentation.playerScreen.PlayerFragment"

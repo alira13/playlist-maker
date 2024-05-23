@@ -1,4 +1,4 @@
-package com.example.playlistmaker.presentation.mediaScreen.playlists.createPlaylist
+package com.example.playlistmaker.presentation.newPlaylistScreen
 
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
@@ -17,7 +17,7 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.example.playlistmaker.R
-import com.example.playlistmaker.databinding.FragmentCreatePlaylistBinding
+import com.example.playlistmaker.databinding.FragmentNewPlaylistBinding
 import com.example.playlistmaker.presentation.models.NewPlaylist
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -25,10 +25,10 @@ import java.io.File
 import java.io.FileOutputStream
 import java.util.Calendar
 
-class CreatePlaylistFragment : Fragment() {
-    var binding: FragmentCreatePlaylistBinding? = null
+class NewPlaylistFragment : Fragment() {
+    var binding: FragmentNewPlaylistBinding? = null
 
-    private val viewModel by viewModel<CreatePlaylistViewModel>()
+    private val viewModel by viewModel<NewPlaylistViewModel>()
 
     private var dialog: MaterialAlertDialogBuilder? = null
     private var playlistImageUri: Uri? = null
@@ -39,7 +39,7 @@ class CreatePlaylistFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
 
-        binding = FragmentCreatePlaylistBinding.inflate(inflater, container, false)
+        binding = FragmentNewPlaylistBinding.inflate(inflater, container, false)
 
         return binding!!.root
     }
