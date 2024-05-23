@@ -1,5 +1,6 @@
 package com.example.playlistmaker.presentation.ui
 
+import android.os.Environment
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.ImageView
@@ -9,6 +10,7 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.example.playlistmaker.R
 import com.example.playlistmaker.presentation.models.PlaylistInfo
+import java.io.File
 
 class PlaylistInGridViewHolder(parentView: ViewGroup) : RecyclerView.ViewHolder(
     LayoutInflater.from(parentView.context)
@@ -19,16 +21,23 @@ class PlaylistInGridViewHolder(parentView: ViewGroup) : RecyclerView.ViewHolder(
     private val songsNumber: TextView = itemView.findViewById(R.id.playlist_songs_number)
     private val image: ImageView = itemView.findViewById(R.id.playlist_image_iv)
 
-    fun bind(model: PlaylistInfo) {
+     fun bind(model: PlaylistInfo) {
         name.text = model.playlistName
         songsNumber.text = model.tracksNum.toString()
 
+        val filePath =
+            File(itemView.context.getExternalFilesDir(Environment.DIRECTORY_PICTURES), DIRECTORY)
+
         Glide
             .with(image)
-            .load(model.artworkUrl512)
+            .load(model.artworkUrl512.let { artworkUrl512 -> File(filePath, artworkUrl512) })
             .fitCenter()
             .placeholder(R.drawable.placeholder)
-            .transform(RoundedCorners(image.resources.getDimensionPixelSize(R.dimen.playlist_image_corner_radius)))
+            .transform(RoundedCorners(image.resources.getDimensionPixelSize(R.dimen.track_image_corner_radius)))
             .into(image)
+    }
+
+    companion object {
+        private const val DIRECTORY = "playlists_images"
     }
 }
