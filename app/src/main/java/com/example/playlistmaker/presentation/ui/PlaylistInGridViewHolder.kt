@@ -30,10 +30,10 @@ class PlaylistInGridViewHolder(parentView: ViewGroup) : RecyclerView.ViewHolder(
 
         Glide
             .with(image)
-            .load(model.artworkUrl512.let { artworkUrl512 -> File(filePath, artworkUrl512) })
+            .load(File(filePath, model.artworkUrl512))
             .fitCenter()
             .placeholder(R.drawable.placeholder)
-            .transform(RoundedCorners(image.resources.getDimensionPixelSize(R.dimen.track_image_corner_radius)))
+            .transform(RoundedCorners(image.resources.getDimensionPixelSize(R.dimen.player_track_image_corner_radius)))
             .into(image)
     }
 
