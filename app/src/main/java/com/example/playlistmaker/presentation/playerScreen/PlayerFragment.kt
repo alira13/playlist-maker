@@ -19,6 +19,7 @@ import com.example.playlistmaker.domain.models.Track
 import com.example.playlistmaker.presentation.mapper.TrackMapper
 import com.example.playlistmaker.presentation.mediaScreen.playlists.PlaylistsState
 import com.example.playlistmaker.presentation.models.PlaylistInfo
+import com.example.playlistmaker.presentation.rootScreen.RootActivity
 import com.example.playlistmaker.presentation.searchScreen.SearchFragment.Companion.TRACK_VALUE
 import com.example.playlistmaker.presentation.ui.PlaylistInStringAdapter
 import com.example.playlistmaker.presentation.ui.PlaylistItemClickListener
@@ -54,6 +55,9 @@ class PlayerFragment : Fragment(), PlaylistItemClickListener {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        (activity as? RootActivity)?.hideBottomNavigation()
+
         getTrack()
 
         //prepare
