@@ -18,6 +18,9 @@ import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
+import com.bumptech.glide.Glide
+import com.bumptech.glide.load.resource.bitmap.CenterCrop
+import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.example.playlistmaker.R
 import com.example.playlistmaker.databinding.FragmentNewPlaylistBinding
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
@@ -36,9 +39,7 @@ class NewPlaylistFragment : Fragment() {
     private var playlistImageUri: Uri? = null
 
     override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
+        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
         binding = FragmentNewPlaylistBinding.inflate(inflater, container, false)
         return binding!!.root
@@ -67,13 +68,20 @@ class NewPlaylistFragment : Fragment() {
     }
 
     private fun createPickMedia() {
-        pickMedia =
-            registerForActivityResult(ActivityResultContracts.PickVisualMedia()) { uri ->
-                if (uri != null) {
-                    binding?.playerTrackImage?.setImageURI(uri)
-                    playlistImageUri = uri
-                }
+        pickMedia = registerForActivityResult(ActivityResultContracts.PickVisualMedia()) { uri ->
+            if (uri != null) {
+                Glide.with(binding!!.playerTrackImage).load(uri).placeholder(R.drawable.placeholder)
+                    .transform(
+                        CenterCrop(),
+                        RoundedCorners(
+                            binding!!.playerTrackImage.resources.getDimensionPixelSize(
+                                R.dimen.player_track_image_corner_radius
+                            )
+                        )
+                    ).into(binding!!.playerTrackImage)
+                playlistImageUri = uri
             }
+        }
     }
 
     private fun createOnCloseDialog() {
@@ -103,10 +111,7 @@ class NewPlaylistFragment : Fragment() {
     }
 
     private fun onBackClick() {
-        if (playlistImageUri != null ||
-            !binding?.playlistNameTiEt?.text.isNullOrEmpty() ||
-            !binding?.descriptionTiEt?.text.isNullOrEmpty()
-        ) {
+        if (playlistImageUri != null || !binding?.playlistNameTiEt?.text.isNullOrEmpty() || !binding?.descriptionTiEt?.text.isNullOrEmpty()) {
             onCloseDialog?.show()
         } else {
             findNavController().navigateUp()
@@ -142,19 +147,16 @@ class NewPlaylistFragment : Fragment() {
 
     private fun savePlaylistImage(playlistImageName: String) {
         val filePath = File(
-            requireActivity().getExternalFilesDir(Environment.DIRECTORY_PICTURES),
-            DIRECTORY
+            requireActivity().getExternalFilesDir(Environment.DIRECTORY_PICTURES), DIRECTORY
         )
         if (!filePath.exists()) {
             filePath.mkdirs()
         }
 
         val file = File(filePath, playlistImageName)
-        val inputStream =
-            requireActivity().contentResolver.openInputStream(playlistImageUri!!)
+        val inputStream = requireActivity().contentResolver.openInputStream(playlistImageUri!!)
         val outputStream = FileOutputStream(file)
-        BitmapFactory
-            .decodeStream(inputStream)
+        BitmapFactory.decodeStream(inputStream)
             .compress(Bitmap.CompressFormat.JPEG, QUALITY, outputStream)
 
         inputStream!!.close()
