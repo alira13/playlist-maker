@@ -20,7 +20,6 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.example.playlistmaker.R
 import com.example.playlistmaker.databinding.FragmentNewPlaylistBinding
-import com.example.playlistmaker.presentation.models.NewPlaylist
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.io.File
@@ -120,16 +119,17 @@ class NewPlaylistFragment : Fragment() {
 
     private fun onCreateClick() {
         val playlistName = binding?.playlistNameTiEt?.text.toString()
-        val playlistDescription = binding?.descriptionTiEt?.text.toString()
 
-        var playlistImageName: String? = null
+        var playlistDescription = binding?.descriptionTiEt?.text.toString()
+        if (playlistDescription.isEmpty()) playlistDescription = ""
+
+        val playlistImageName: String?
         if (playlistImageUri != null) {
             playlistImageName = playlistName + Calendar.getInstance().time.toString() + ".jpg"
             savePlaylistImage(playlistImageName)
-        }
+        } else playlistImageName = ""
 
-        val playlist = NewPlaylist(playlistName, playlistDescription, playlistImageName)
-        viewModel.createNewPlayList(playlist)
+        viewModel.createNewPlayList(playlistName, playlistDescription, playlistImageName)
 
         val toast = Toast(context)
         toast.setGravity(Gravity.BOTTOM, 0, 0)
