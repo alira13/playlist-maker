@@ -29,6 +29,7 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
+import java.lang.Math.abs
 
 class PlayerFragment : Fragment(), PlaylistItemClickListener {
 
@@ -75,6 +76,26 @@ class PlayerFragment : Fragment(), PlaylistItemClickListener {
             state = BottomSheetBehavior.STATE_HIDDEN
             binding.shadowV.isVisible = false
         }
+        bottomSheetBehavior.addBottomSheetCallback(object :
+            BottomSheetBehavior.BottomSheetCallback() {
+
+            override fun onStateChanged(bottomSheet: View, newState: Int) {
+                when (newState) {
+                    BottomSheetBehavior.STATE_HIDDEN -> {
+                        binding.shadowV.visibility = View.GONE
+                    }
+
+                    else -> {
+                        binding.shadowV.visibility = View.VISIBLE
+                    }
+                }
+            }
+
+            override fun onSlide(bottomSheet: View, slideOffset: Float) {
+                binding.shadowV.alpha = 1 - abs(slideOffset)
+            }
+        })
+
         binding.playlerPlaylistsRv.adapter = adapter
         binding.addToPlaylistBtn.setOnClickListener {
             showPlaylists()
@@ -111,13 +132,22 @@ class PlayerFragment : Fragment(), PlaylistItemClickListener {
         }
 
         dialog = MaterialAlertDialogBuilder(requireContext()).apply {
-            //TODO Не работает
             setMessage(playerViewModel.playlistTrackState.value?.message)
 
             setPositiveButton("ОК") { _, _ ->
-                bottomSheetBehavior.state = BottomSheetBehavior.STATE_HIDDEN
+                hideBottomSheet()
+                binding.shadowV.isVisible = false
             }
         }
+    }
+
+
+    private fun hideBottomSheet() {
+        bottomSheetBehavior.state = BottomSheetBehavior.STATE_HIDDEN
+    }
+
+    private fun showBottomSheet() {
+        bottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
     }
 
     private fun getTrack(): Track {
@@ -149,11 +179,9 @@ class PlayerFragment : Fragment(), PlaylistItemClickListener {
     }
 
     private fun showPlaylists() {
-        bottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
-        binding.shadowV.visibility = View.VISIBLE
+        showBottomSheet()
 
         playerViewModel.getPlaylists()
-
         playerViewModel.playlistsState.observe(viewLifecycleOwner) {
             binding.playlerPlaylistsRv.isVisible = !it.isError
             when (it) {
