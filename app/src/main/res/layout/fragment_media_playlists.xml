@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.appcompat.widget.LinearLayoutCompat
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -23,25 +22,30 @@
         style="@style/EmptyMediaErrorTv"
         android:text="@string/empty_playlists_error" />
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/playlists_rv"
+    <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
-        app:spanCount="2"
-        tools:itemCount="3"
-        tools:listitem="@layout/playlist_view" />
+        android:layout_height="wrap_content">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/playlists_rv"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+            app:spanCount="2"
+            tools:itemCount="3"
+            tools:listitem="@layout/playlist_view" />
+    </androidx.core.widget.NestedScrollView>
 
     <TextView
         android:id="@+id/player_message_tv"
         android:layout_width="match_parent"
         android:layout_height="48dp"
+        android:layout_gravity="bottom"
         android:background="?attr/colorOnPrimary"
+        android:baselineAligned="false"
         android:fontFamily="@font/ys_font_family_regular"
         android:gravity="center"
         android:textColor="?attr/colorPrimary"
         android:textSize="@dimen/regular_text_size_16"
-        android:visibility="gone"
-        android:baselineAligned="false"
-        android:layout_gravity="bottom"/>
+        android:visibility="gone" />
 </androidx.appcompat.widget.LinearLayoutCompat>
