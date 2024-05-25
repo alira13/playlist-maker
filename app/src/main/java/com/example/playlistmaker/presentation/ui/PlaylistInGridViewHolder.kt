@@ -22,9 +22,9 @@ class PlaylistInGridViewHolder(parentView: ViewGroup) : RecyclerView.ViewHolder(
     private val songsNumber: TextView = itemView.findViewById(R.id.playlist_songs_number)
     private val image: ImageView = itemView.findViewById(R.id.playlist_image_iv)
 
-     fun bind(model: PlaylistInfo) {
+    fun bind(model: PlaylistInfo) {
         name.text = model.playlistName
-        songsNumber.text = model.tracksNum.toString()
+        songsNumber.text = getTrackAmount(model)
 
         val filePath =
             File(itemView.context.getExternalFilesDir(Environment.DIRECTORY_PICTURES), DIRECTORY)
@@ -35,8 +35,17 @@ class PlaylistInGridViewHolder(parentView: ViewGroup) : RecyclerView.ViewHolder(
             .placeholder(R.drawable.placeholder)
             .transform(
                 CenterCrop(),
-                RoundedCorners(image.resources.getDimensionPixelSize(R.dimen.player_track_image_corner_radius)))
+                RoundedCorners(image.resources.getDimensionPixelSize(R.dimen.player_track_image_corner_radius))
+            )
             .into(image)
+    }
+
+    private fun getTrackAmount(playlist: PlaylistInfo): String {
+        return itemView.resources.getQuantityString(
+            R.plurals.track_amount,
+            playlist.tracksNum,
+            playlist.tracksNum
+        )
     }
 
     companion object {

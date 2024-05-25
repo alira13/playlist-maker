@@ -21,7 +21,7 @@ class PlaylistInStringViewHolder(parentView: ViewGroup) : RecyclerView.ViewHolde
 
     fun bind(model: PlaylistInfo) {
         name.text = model.playlistName
-        songsNumber.text = model.tracksNum.toString()
+        songsNumber.text = getTrackAmount(model)
 
         Glide
             .with(image)
@@ -30,5 +30,13 @@ class PlaylistInStringViewHolder(parentView: ViewGroup) : RecyclerView.ViewHolde
             .placeholder(R.drawable.placeholder)
             .transform(RoundedCorners(image.resources.getDimensionPixelSize(R.dimen.playlist_image_corner_radius)))
             .into(image)
+    }
+
+    private fun getTrackAmount(playlist: PlaylistInfo): String {
+        return itemView.resources.getQuantityString(
+            R.plurals.track_amount,
+            playlist.tracksNum,
+            playlist.tracksNum
+        )
     }
 }
