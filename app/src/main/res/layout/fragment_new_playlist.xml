@@ -116,8 +116,9 @@
         android:textAllCaps="false"
         android:textColor="@color/YP_white"
         android:textSize="@dimen/medium_text_size_16"
+        android:enabled="false"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/right_guideline"
         app:layout_constraintStart_toStartOf="@+id/left_guideline"
-        app:tint="?attr/colorOnPrimary" />
+        android:backgroundTint="@color/button_enable_color"/>
 </androidx.constraintlayout.widget.ConstraintLayout>
