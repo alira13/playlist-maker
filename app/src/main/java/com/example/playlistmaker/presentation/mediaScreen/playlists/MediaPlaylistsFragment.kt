@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.GridLayoutManager
 import com.example.playlistmaker.R
 import com.example.playlistmaker.databinding.FragmentMediaPlaylistsBinding
 import com.example.playlistmaker.presentation.models.PlaylistInfo
+import com.example.playlistmaker.presentation.rootScreen.RootActivity
 import com.example.playlistmaker.presentation.ui.PlaylistAdapter
 import com.example.playlistmaker.presentation.ui.PlaylistItemClickListener
 import kotlinx.coroutines.delay
@@ -37,6 +38,8 @@ class MediaPlaylistsFragment : Fragment(), PlaylistItemClickListener {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        (activity as? RootActivity)?.showBottomNavigation()
 
         binding?.createPlaylistButtonBtn?.setOnClickListener {
             if (clickDebounce()) {
@@ -79,6 +82,11 @@ class MediaPlaylistsFragment : Fragment(), PlaylistItemClickListener {
             }
         }
         return current
+    }
+
+    override fun onResume() {
+        super.onResume()
+        (activity as? RootActivity)?.showBottomNavigation()
     }
 
     override fun onDestroyView() {

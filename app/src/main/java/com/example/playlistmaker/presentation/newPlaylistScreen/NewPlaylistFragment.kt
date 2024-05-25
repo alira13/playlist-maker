@@ -171,6 +171,10 @@ class NewPlaylistFragment : Fragment() {
         binding = null
     }
 
+    override fun onResume() {
+        super.onResume()
+        (activity as? RootActivity)?.hideBottomNavigation()
+    }
     companion object {
         private const val DIRECTORY = "playlists_images"
         private const val QUALITY = 100

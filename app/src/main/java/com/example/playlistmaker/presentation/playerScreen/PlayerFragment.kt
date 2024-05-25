@@ -189,6 +189,10 @@ class PlayerFragment : Fragment(), PlaylistItemClickListener {
         return current
     }
 
+    override fun onResume() {
+        super.onResume()
+        (activity as? RootActivity)?.hideBottomNavigation()
+    }
 
     override fun onPause() {
         super.onPause()
