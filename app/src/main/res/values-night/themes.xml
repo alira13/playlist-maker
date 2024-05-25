@@ -175,4 +175,8 @@
         <item name="android:backgroundTint">?attr/colorPrimary</item>
         <item name="android:textColor">?attr/colorOnPrimary</item>
     </style>
+
+    <style name="BottomsheetLineStyle">
+        <item name="android:backgroundTint">@color/YP_white</item>
+    </style>
 </resources>

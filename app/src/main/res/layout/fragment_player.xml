@@ -8,7 +8,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".presentation.playerScreen.PlayerFragment">
+    tools:context=".presentation.playerScreen.PlayerFragment"
+    android:background="?attr/colorPrimary">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -30,7 +31,7 @@
 
         <ImageButton
             android:id="@+id/back_button"
-
+            style="@style/BackBtn"
             android:layout_width="wrap_content"
             android:layout_height="@dimen/header_height"
             android:layout_gravity="start|center"
@@ -268,12 +269,12 @@
         app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">
 
         <View
+            style="@style/BottomsheetLineStyle"
             android:layout_width="40dp"
             android:layout_height="4dp"
             android:layout_gravity="center"
             android:layout_marginTop="10dp"
-            android:background="@drawable/rounded_rectangle_line"
-            android:backgroundTint="@color/YP_grey" />
+            android:background="@drawable/rounded_rectangle_line" />
 
         <TextView
             android:id="@+id/add_to_playlist_tv"
@@ -289,12 +290,13 @@
 
         <Button
             android:id="@+id/new_playlist_btn"
-            style="@style/NewPlaylistBtn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
             android:layout_gravity="center"
+            android:backgroundTint="?attr/colorOnPrimary"
             android:text="@string/new_playlist"
+            android:textColor="?attr/colorPrimary"
             android:visibility="visible" />
 
         <androidx.recyclerview.widget.RecyclerView
