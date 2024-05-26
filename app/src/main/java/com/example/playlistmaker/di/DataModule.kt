@@ -68,7 +68,7 @@ val dataModule = module {
     }
 
     single<PlaylistsRepository> {
-        PlaylistsRepositoryImpl(get(), get())
+        PlaylistsRepositoryImpl(get(), get(), get())
     }
 
     factory { Gson() }

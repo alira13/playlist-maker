@@ -1,5 +1,6 @@
 package com.example.playlistmaker.presentation.newPlaylistScreen
 
+import android.net.Uri
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.playlistmaker.domain.usecases.playlists.PlaylistsInteractor
@@ -10,14 +11,18 @@ class NewPlaylistViewModel(private val playlistsInteractor: PlaylistsInteractor)
     fun createNewPlayList(
         playlistName: String,
         playlistDescription: String,
-        playlistImageName: String
+        uri: Uri?
     ) {
-        val playListInfo = convertPlaylistInfo(
-            playlistName,
-            playlistDescription,
-            playlistImageName
-        )
+
         viewModelScope.launch {
+            val uriInternalStorage = playlistsInteractor.saveCoverToStorage(uri)
+
+            val playListInfo = convertPlaylistInfo(
+                playlistName,
+                playlistDescription,
+                uriInternalStorage.toString()
+            )
+
             playlistsInteractor.addToPlaylist(playListInfo)
         }
     }

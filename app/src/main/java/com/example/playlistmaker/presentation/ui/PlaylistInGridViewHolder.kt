@@ -1,6 +1,5 @@
 package com.example.playlistmaker.presentation.ui
 
-import android.os.Environment
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.ImageView
@@ -11,7 +10,6 @@ import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.example.playlistmaker.R
 import com.example.playlistmaker.presentation.models.PlaylistInfo
-import java.io.File
 
 class PlaylistInGridViewHolder(parentView: ViewGroup) : RecyclerView.ViewHolder(
     LayoutInflater.from(parentView.context)
@@ -26,12 +24,9 @@ class PlaylistInGridViewHolder(parentView: ViewGroup) : RecyclerView.ViewHolder(
         name.text = model.playlistName
         songsNumber.text = getTrackAmount(model)
 
-        val filePath =
-            File(itemView.context.getExternalFilesDir(Environment.DIRECTORY_PICTURES), DIRECTORY)
-
         Glide
             .with(image)
-            .load(File(filePath, model.artworkUrl512))
+            .load(model.artworkUrl512)
             .placeholder(R.drawable.placeholder)
             .transform(
                 CenterCrop(),
@@ -46,9 +41,5 @@ class PlaylistInGridViewHolder(parentView: ViewGroup) : RecyclerView.ViewHolder(
             playlist.tracksNum,
             playlist.tracksNum
         )
-    }
-
-    companion object {
-        private const val DIRECTORY = "playlists_images"
     }
 }

@@ -1,10 +1,7 @@
 package com.example.playlistmaker.presentation.newPlaylistScreen
 
-import android.graphics.Bitmap
-import android.graphics.BitmapFactory
 import android.net.Uri
 import android.os.Bundle
-import android.os.Environment
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.Gravity
@@ -26,9 +23,6 @@ import com.example.playlistmaker.databinding.FragmentNewPlaylistBinding
 import com.example.playlistmaker.presentation.rootScreen.RootActivity
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import org.koin.androidx.viewmodel.ext.android.viewModel
-import java.io.File
-import java.io.FileOutputStream
-import java.util.Calendar
 
 class NewPlaylistFragment : Fragment() {
     private val viewModel by viewModel<NewPlaylistViewModel>()
@@ -127,17 +121,9 @@ class NewPlaylistFragment : Fragment() {
 
     private fun onCreateClick() {
         val playlistName = binding?.playlistNameTiEt?.text.toString()
+        val playlistDescription = binding?.descriptionTiEt?.text.toString()
 
-        var playlistDescription = binding?.descriptionTiEt?.text.toString()
-        if (playlistDescription.isEmpty()) playlistDescription = ""
-
-        val playlistImageName: String?
-        if (playlistImageUri != null) {
-            playlistImageName = playlistName + Calendar.getInstance().time.toString() + ".jpg"
-            savePlaylistImage(playlistImageName)
-        } else playlistImageName = ""
-
-        viewModel.createNewPlayList(playlistName, playlistDescription, playlistImageName)
+        viewModel.createNewPlayList(playlistName, playlistDescription, playlistImageUri)
 
         val toast = Toast(context)
         toast.setGravity(Gravity.BOTTOM, 0, 0)
@@ -148,24 +134,6 @@ class NewPlaylistFragment : Fragment() {
         findNavController().navigateUp()
     }
 
-    private fun savePlaylistImage(playlistImageName: String) {
-        val filePath = File(
-            requireActivity().getExternalFilesDir(Environment.DIRECTORY_PICTURES), DIRECTORY
-        )
-        if (!filePath.exists()) {
-            filePath.mkdirs()
-        }
-
-        val file = File(filePath, playlistImageName)
-        val inputStream = requireActivity().contentResolver.openInputStream(playlistImageUri!!)
-        val outputStream = FileOutputStream(file)
-        BitmapFactory.decodeStream(inputStream)
-            .compress(Bitmap.CompressFormat.JPEG, QUALITY, outputStream)
-
-        inputStream!!.close()
-        outputStream.close()
-    }
-
     override fun onDestroyView() {
         super.onDestroyView()
         binding = null
@@ -174,9 +142,5 @@ class NewPlaylistFragment : Fragment() {
     override fun onResume() {
         super.onResume()
         (activity as? RootActivity)?.hideBottomNavigation()
-    }
-    companion object {
-        private const val DIRECTORY = "playlists_images"
-        private const val QUALITY = 100
     }
 }
