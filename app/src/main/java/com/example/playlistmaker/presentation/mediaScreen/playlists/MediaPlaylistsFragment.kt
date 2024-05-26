@@ -1,6 +1,7 @@
 package com.example.playlistmaker.presentation.mediaScreen.playlists
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -96,8 +97,13 @@ class MediaPlaylistsFragment : Fragment(), PlaylistItemClickListener {
 
     companion object {
         private const val CLICK_DEBOUNCE_DELAY = 1000L
+        const val PLAYLIST_INFO = "PLAYLIST_INFO"
     }
 
+
     override fun onClick(item: Playlist) {
-    }
+        val bundle = Bundle()
+        Log.d("MY", "$item")
+        bundle.putParcelable(PLAYLIST_INFO, item)
+        findNavController().navigate(R.id.action_mediaFragment_to_playlistInfoFragment, bundle)
 }

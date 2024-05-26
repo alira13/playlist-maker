@@ -57,7 +57,7 @@ class PlaylistInfoFragment : Fragment(), ItemClickListener {
             findNavController().navigateUp()
         }
 
-        //showPlaylistInfo()
+        showPlaylistInfo()
 
         dialog = MaterialAlertDialogBuilder(requireContext()).apply {
             //setMessage(playerViewModel.playlistTrackState.value?.message)
