@@ -7,6 +7,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
+import android.widget.TextView
+import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
@@ -24,7 +26,7 @@ import com.example.playlistmaker.presentation.searchScreen.SearchFragment.Compan
 import com.example.playlistmaker.presentation.ui.PlaylistInStringAdapter
 import com.example.playlistmaker.presentation.ui.PlaylistItemClickListener
 import com.google.android.material.bottomsheet.BottomSheetBehavior
-import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -43,8 +45,6 @@ class PlayerFragment : Fragment(), PlaylistItemClickListener {
 
     private val adapter = PlaylistInStringAdapter(this)
 
-    private var dialog: MaterialAlertDialogBuilder? = null
-
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -61,7 +61,6 @@ class PlayerFragment : Fragment(), PlaylistItemClickListener {
 
         getTrack()
 
-        //prepare
         playerViewModel.preparePlayer()
         setTrackInfo()
 
@@ -129,15 +128,6 @@ class PlayerFragment : Fragment(), PlaylistItemClickListener {
             binding.playControlButton.isEnabled = it.isButtonEnabled
             binding.playControlButton.setImageResource(it.buttonImage)
             binding.currentTrackTime.text = it.progress
-        }
-
-        dialog = MaterialAlertDialogBuilder(requireContext()).apply {
-            setMessage(playerViewModel.playlistTrackState.value?.message)
-
-            setPositiveButton("ОК") { _, _ ->
-                hideBottomSheet()
-                binding.shadowV.isVisible = false
-            }
         }
     }
 
@@ -231,8 +221,32 @@ class PlayerFragment : Fragment(), PlaylistItemClickListener {
         private const val CLICK_DEBOUNCE_DELAY_MILLIS = 1000L
     }
 
+    private fun showSnackbar(root: View, text: String) {
+        val snackbar = Snackbar.make(root, text, Snackbar.LENGTH_SHORT)
+        snackbar.setBackgroundTint(
+            ContextCompat.getColor(
+                root.context, R.color.YP_grey
+            )
+        )
+        snackbar.setTextColor(
+            ContextCompat.getColor(
+                root.context, R.color.YP_white
+            )
+        )
+        val textView =
+            snackbar.view.findViewById<TextView>(com.google.android.material.R.id.snackbar_text)
+        textView.textAlignment = View.TEXT_ALIGNMENT_CENTER
+        snackbar.show()
+    }
+
     override fun onClick(item: PlaylistInfo) {
         playerViewModel.onPlaylistItemClicked(item)
-        dialog?.show()
+
+        playerViewModel.playlistTrackState.observe(viewLifecycleOwner) {
+            showSnackbar(
+                requireView(), it.message
+            )
+        }
+        hideBottomSheet()
     }
 }

@@ -4,15 +4,15 @@ import android.net.Uri
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
-import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.WindowManager
-import android.widget.Toast
+import android.widget.TextView
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
@@ -22,13 +22,13 @@ import com.example.playlistmaker.R
 import com.example.playlistmaker.databinding.FragmentNewPlaylistBinding
 import com.example.playlistmaker.presentation.rootScreen.RootActivity
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.google.android.material.snackbar.Snackbar
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class NewPlaylistFragment : Fragment() {
     private val viewModel by viewModel<NewPlaylistViewModel>()
     private var binding: FragmentNewPlaylistBinding? = null
 
-    private var onCloseDialog: MaterialAlertDialogBuilder? = null
     private var pickMedia: ActivityResultLauncher<PickVisualMediaRequest>? = null
 
     private var playlistImageUri: Uri? = null
@@ -45,7 +45,6 @@ class NewPlaylistFragment : Fragment() {
 
         (activity as? RootActivity)?.hideBottomNavigation()
 
-        createOnCloseDialog()
         createPickMedia()
         addTextWatcher()
 
@@ -81,15 +80,18 @@ class NewPlaylistFragment : Fragment() {
         }
     }
 
-    private fun createOnCloseDialog() {
-        onCloseDialog = MaterialAlertDialogBuilder(requireContext()).apply {
+    private fun showDialog() {
+        MaterialAlertDialogBuilder(
+            requireContext(),
+            R.style.MyThemeOverlay_MaterialComponents_MaterialAlertDialog
+        ).apply {
             setTitle(getString(R.string.complete_playlist_creation))
             setMessage(getString(R.string.unsaved_data_losing))
             setPositiveButton(getString(R.string.complete)) { _, _ ->
                 findNavController().navigateUp()
             }
             setNegativeButton(getString(R.string.cancel)) { _, _ ->
-            }
+            }.show()
         }
     }
 
@@ -109,7 +111,7 @@ class NewPlaylistFragment : Fragment() {
 
     private fun onBackClick() {
         if (playlistImageUri != null || !binding?.playlistNameTiEt?.text.isNullOrEmpty() || !binding?.descriptionTiEt?.text.isNullOrEmpty()) {
-            onCloseDialog?.show()
+            showDialog()
         } else {
             findNavController().navigateUp()
         }
@@ -125,13 +127,33 @@ class NewPlaylistFragment : Fragment() {
 
         viewModel.createNewPlayList(playlistName, playlistDescription, playlistImageUri)
 
-        val toast = Toast(context)
-        toast.setGravity(Gravity.BOTTOM, 0, 0)
-        toast.duration = Toast.LENGTH_LONG
-        toast.setText("Плейлист $playlistName создан")
-        toast.show()
+        showSnackbar(
+            requireView(),
+            getString(R.string.playlist_created, playlistName)
+        )
 
         findNavController().navigateUp()
+    }
+
+    private fun showSnackbar(root: View, text: String) {
+        val snackbar =
+            Snackbar.make(root, text, Snackbar.LENGTH_SHORT)
+        snackbar.setBackgroundTint(
+            ContextCompat.getColor(
+                root.context,
+                R.color.YP_grey
+            )
+        )
+        snackbar.setTextColor(
+            ContextCompat.getColor(
+                root.context,
+                R.color.YP_white
+            )
+        )
+        val textView =
+            snackbar.view.findViewById<TextView>(com.google.android.material.R.id.snackbar_text)
+        textView.textAlignment = View.TEXT_ALIGNMENT_CENTER
+        snackbar.show()
     }
 
     override fun onDestroyView() {

@@ -48,7 +48,6 @@ class PlayerViewModel(
 
 
     fun getLikeState() {
-        //TODO Вот тут надо делать запрос к БД
         if (track.isFavorite) {
             _isFavorite.value = FavoriteTrackState.Favorite()
         } else {
@@ -164,15 +163,25 @@ class PlayerViewModel(
     fun onPlaylistItemClicked(playlist: PlaylistInfo) {
         viewModelScope.launch {
             val track = _screenStateLiveData.value!!
-            if (playlist.trackIds.contains(track.trackId)) _playlistTrackState.postValue(
-                PlaylistTrackState.Exist(playlist, track)
-            )
-            else {
+            if (playlist.trackIds.contains(track.trackId)) {
+                _playlistTrackState.postValue(
+                    PlaylistTrackState.Exist(
+                        playlist,
+                        track
+                    )
+                )
+
+            } else {
                 val trackIds = playlist.trackIds.toMutableList()
                 trackIds.add(track.trackId)
                 playlist.trackIds = trackIds.toList()
                 playlisInteractor.addToPlaylist(playlist)
-                PlaylistTrackState.NotExist(playlist, track)
+                _playlistTrackState.postValue(
+                    PlaylistTrackState.NotExist(
+                        playlist,
+                        track
+                    )
+                )
             }
         }
     }
