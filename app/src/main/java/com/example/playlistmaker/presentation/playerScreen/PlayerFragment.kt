@@ -19,6 +19,7 @@ import com.example.playlistmaker.R
 import com.example.playlistmaker.databinding.FragmentPlayerBinding
 import com.example.playlistmaker.domain.models.Track
 import com.example.playlistmaker.presentation.mapper.TrackMapper
+import com.example.playlistmaker.presentation.mediaScreen.playlists.PlaylistTrackState
 import com.example.playlistmaker.presentation.mediaScreen.playlists.PlaylistsState
 import com.example.playlistmaker.presentation.models.PlaylistInfo
 import com.example.playlistmaker.presentation.rootScreen.RootActivity
@@ -246,7 +247,10 @@ class PlayerFragment : Fragment(), PlaylistItemClickListener {
             showSnackbar(
                 requireView(), it.message
             )
+            when (it) {
+                is PlaylistTrackState.NotExist -> hideBottomSheet()
+                is PlaylistTrackState.Exist -> showBottomSheet()
+            }
         }
-        hideBottomSheet()
     }
 }
