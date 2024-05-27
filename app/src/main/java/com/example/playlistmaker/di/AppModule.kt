@@ -41,7 +41,7 @@ val appModule = module {
         NewPlaylistViewModel(playlistsInteractor = get())
     }
 
-    viewModel<PlaylistInfoViewModel> {
-        PlaylistInfoViewModel(get())
+    viewModel<PlaylistInfoViewModel> { params ->
+        PlaylistInfoViewModel(params.get(), playlistInfoInteractor = get())
     }
 }

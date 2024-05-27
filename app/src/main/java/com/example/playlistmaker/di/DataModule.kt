@@ -8,6 +8,7 @@ import com.example.playlistmaker.data.converters.PlaylistTrackDbConvertor
 import com.example.playlistmaker.data.converters.TrackDbConvertor
 import com.example.playlistmaker.data.db.AppDatabase
 import com.example.playlistmaker.data.db.favorites.FavoritesRepositoryImpl
+import com.example.playlistmaker.data.db.playlistInfo.PlaylistInfoRepositoryImpl
 import com.example.playlistmaker.data.db.playlists.PlaylistsRepositoryImpl
 import com.example.playlistmaker.data.externalNavigator.ExternalNavigatorImpl
 import com.example.playlistmaker.data.network.TrackRetrofitNetworkClient
@@ -20,6 +21,7 @@ import com.example.playlistmaker.data.sharedPreferences.AppSharedPreferences
 import com.example.playlistmaker.data.sharedPreferences.AppSharedPreferencesImpl
 import com.example.playlistmaker.domain.player.TrackPlayer
 import com.example.playlistmaker.domain.repository.FavoritesRepository
+import com.example.playlistmaker.domain.repository.PlaylistInfoRepository
 import com.example.playlistmaker.domain.repository.PlaylistsRepository
 import com.example.playlistmaker.domain.repository.SearchHistoryRepository
 import com.example.playlistmaker.domain.repository.SearchRepository
@@ -83,6 +85,10 @@ val dataModule = module {
     factory { TrackDbConvertor() }
 
     factory { PlaylistDbConverter(json = get()) }
+
+    single<PlaylistInfoRepository> {
+        PlaylistInfoRepositoryImpl(get(), get())
+    }
 
     factory { PlaylistTrackDbConvertor() }
 }
