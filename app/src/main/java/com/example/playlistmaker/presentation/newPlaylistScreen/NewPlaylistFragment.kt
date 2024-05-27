@@ -9,6 +9,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.WindowManager
 import android.widget.TextView
+import androidx.activity.addCallback
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
@@ -47,6 +48,7 @@ class NewPlaylistFragment : Fragment() {
 
         createPickMedia()
         addTextWatcher()
+        addOnBackPressedCallback()
 
         requireActivity().window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN)
 
@@ -54,12 +56,19 @@ class NewPlaylistFragment : Fragment() {
             onBackClick()
         }
 
+
         binding?.playerTrackImage?.setOnClickListener {
             onImageClick()
         }
 
         binding?.createButton?.setOnClickListener {
             onCreateClick()
+        }
+    }
+
+    private fun addOnBackPressedCallback() {
+        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner){
+            onBackClick()
         }
     }
 
