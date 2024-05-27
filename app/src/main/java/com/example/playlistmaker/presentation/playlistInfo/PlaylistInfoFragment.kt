@@ -64,6 +64,7 @@ class PlaylistInfoFragment : Fragment(), ItemClickListener {
 
         showPlaylistInfo()
 
+
         dialog = MaterialAlertDialogBuilder(requireContext()).apply {
             //setMessage(playerViewModel.playlistTrackState.value?.message)
 
@@ -86,8 +87,25 @@ class PlaylistInfoFragment : Fragment(), ItemClickListener {
             .placeholder(R.drawable.placeholder)
             .transform(RoundedCorners(binding.playlistInfoImageIv.resources.getDimensionPixelSize(R.dimen.player_track_image_corner_radius)))
             .into(binding.playlistInfoImageIv)
+        showTracks()
     }
 
+    private fun showTracks() {
+        playerViewModel.getTracksByIds()
+
+        playerViewModel.tracksState.observe(viewLifecycleOwner) {
+            binding.playlerPlaylistsRv.isVisible = it.isNotEmpty()
+            if(it.isNotEmpty()) adapter.items = it.toMutableList()
+        }
+    }
+
+    private fun hideBottomSheet() {
+        bottomSheetBehavior.state = BottomSheetBehavior.STATE_HIDDEN
+    }
+
+    private fun showBottomSheet() {
+        bottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
+    }
     private fun getPlaylist(): PlaylistInfo {
         val item = if (SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             arguments?.getParcelable(PLAYLIST_INFO)
