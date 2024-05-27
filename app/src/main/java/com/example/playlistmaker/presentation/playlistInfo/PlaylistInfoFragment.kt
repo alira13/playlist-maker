@@ -17,6 +17,7 @@ import com.example.playlistmaker.R
 import com.example.playlistmaker.databinding.FragmentPlaylistInfoBinding
 import com.example.playlistmaker.domain.models.Track
 import com.example.playlistmaker.presentation.models.PlaylistInfo
+import com.example.playlistmaker.presentation.rootScreen.RootActivity
 import com.example.playlistmaker.presentation.ui.ItemClickListener
 import com.example.playlistmaker.presentation.ui.TrackAdapter
 import com.google.android.material.bottomsheet.BottomSheetBehavior
@@ -46,6 +47,8 @@ class PlaylistInfoFragment : Fragment(), ItemClickListener {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        (activity as? RootActivity)?.hideBottomNavigation()
 
         bottomSheetBehavior = BottomSheetBehavior.from(binding.standardBottomSheet).apply {
             state = BottomSheetBehavior.STATE_HIDDEN
@@ -94,6 +97,11 @@ class PlaylistInfoFragment : Fragment(), ItemClickListener {
     override fun onClick(track: Track) {
         //playerViewModel.onPlaylistItemClicked(item)
         dialog?.show()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        (activity as? RootActivity)?.hideBottomNavigation()
     }
 
     companion object {
