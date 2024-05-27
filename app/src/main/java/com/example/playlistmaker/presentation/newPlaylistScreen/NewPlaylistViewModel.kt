@@ -23,7 +23,7 @@ class NewPlaylistViewModel(private val playlistsInteractor: PlaylistsInteractor)
                 uriInternalStorage.toString()
             )
 
-            playlistsInteractor.addToPlaylist(playListInfo)
+            playlistsInteractor.createPlaylist(playListInfo)
         }
     }
 

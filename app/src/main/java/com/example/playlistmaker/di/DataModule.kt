@@ -4,6 +4,7 @@ import android.content.Context
 import androidx.room.Room
 import com.example.playlistmaker.app.App.Companion.PLAYLIST_MAKER_PREFERENCES
 import com.example.playlistmaker.data.converters.PlaylistDbConverter
+import com.example.playlistmaker.data.converters.PlaylistTrackDbConvertor
 import com.example.playlistmaker.data.converters.TrackDbConvertor
 import com.example.playlistmaker.data.db.AppDatabase
 import com.example.playlistmaker.data.db.favorites.FavoritesRepositoryImpl
@@ -68,7 +69,7 @@ val dataModule = module {
     }
 
     single<PlaylistsRepository> {
-        PlaylistsRepositoryImpl(get(), get(), get())
+        PlaylistsRepositoryImpl(get(), get(), get(), get())
     }
 
     factory { Gson() }
@@ -82,4 +83,6 @@ val dataModule = module {
     factory { TrackDbConvertor() }
 
     factory { PlaylistDbConverter(json = get()) }
+
+    factory { PlaylistTrackDbConvertor() }
 }

@@ -175,7 +175,7 @@ class PlayerViewModel(
                 val trackIds = playlist.trackIds.toMutableList()
                 trackIds.add(track.trackId)
                 playlist.trackIds = trackIds.toList()
-                playlisInteractor.addToPlaylist(playlist)
+                playlisInteractor.addTrackToPlaylist(playlist, track)
                 _playlistTrackState.postValue(
                     PlaylistTrackState.NotExist(
                         playlist,
