@@ -15,8 +15,8 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.example.playlistmaker.R
 import com.example.playlistmaker.databinding.FragmentPlaylistInfoBinding
+import com.example.playlistmaker.domain.models.Playlist
 import com.example.playlistmaker.domain.models.Track
-import com.example.playlistmaker.presentation.models.PlaylistInfo
 import com.example.playlistmaker.presentation.rootScreen.RootActivity
 import com.example.playlistmaker.presentation.ui.ItemClickListener
 import com.example.playlistmaker.presentation.ui.TrackAdapter
@@ -106,11 +106,11 @@ class PlaylistInfoFragment : Fragment(), ItemClickListener {
     private fun showBottomSheet() {
         bottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
     }
-    private fun getPlaylist(): PlaylistInfo {
+    private fun getPlaylist(): Playlist {
         val item = if (SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             arguments?.getParcelable(PLAYLIST_INFO)
         } else {
-            arguments?.getParcelable<PlaylistInfo>(PLAYLIST_INFO)
+            arguments?.getParcelable<Playlist>(PLAYLIST_INFO)
         }
         Log.d("MY", ">> $item")
         return item!!

@@ -106,4 +106,5 @@ class MediaPlaylistsFragment : Fragment(), PlaylistItemClickListener {
         Log.d("MY", "$item")
         bundle.putParcelable(PLAYLIST_INFO, item)
         findNavController().navigate(R.id.action_mediaFragment_to_playlistInfoFragment, bundle)
+    }
 }
