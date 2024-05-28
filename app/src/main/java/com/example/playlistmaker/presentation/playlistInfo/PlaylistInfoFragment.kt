@@ -119,8 +119,8 @@ class PlaylistInfoFragment : Fragment(), ItemClickListener {
         //playerViewModel.onPlaylistItemClicked(item)
         val bundle = Bundle()
         bundle.putParcelable(SearchFragment.TRACK_VALUE, track)
-        findNavController().navigate(R.id.action_playlistInfoFragment_to_playerFragment)
-        dialog?.show()
+        findNavController().navigate(R.id.action_playlistInfoFragment_to_playerFragment, bundle)
+        //dialog?.show()
     }
 
     override fun onResume() {
