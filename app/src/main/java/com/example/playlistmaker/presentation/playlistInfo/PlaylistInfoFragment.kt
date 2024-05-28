@@ -17,28 +17,22 @@ import com.example.playlistmaker.R
 import com.example.playlistmaker.databinding.FragmentPlaylistInfoBinding
 import com.example.playlistmaker.domain.models.Playlist
 import com.example.playlistmaker.domain.models.Track
-import com.example.playlistmaker.presentation.playerScreen.PlayerFragment
 import com.example.playlistmaker.presentation.rootScreen.RootActivity
 import com.example.playlistmaker.presentation.searchScreen.SearchFragment
-import com.example.playlistmaker.presentation.ui.ItemClickListener
-import com.example.playlistmaker.presentation.ui.TrackAdapter
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
 
-class PlaylistInfoFragment : Fragment(), ItemClickListener {
+class PlaylistInfoFragment : Fragment(), TrackClickListener, TrackLongClickListener {
 
-    private val playerViewModel by viewModel<PlaylistInfoViewModel>{ parametersOf(getPlaylist()) }
+    private val playerViewModel by viewModel<PlaylistInfoViewModel> { parametersOf(getPlaylist()) }
 
     private lateinit var binding: FragmentPlaylistInfoBinding
 
     private lateinit var bottomSheetBehavior: BottomSheetBehavior<LinearLayout>
 
-    private val adapter = TrackAdapter(this)
-
-    private var dialog: MaterialAlertDialogBuilder? = null
-
+    private val adapter = PlaylistTrackInStringAdapter(this, this)
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -66,12 +60,7 @@ class PlaylistInfoFragment : Fragment(), ItemClickListener {
 
         showPlaylistInfo()
 
-        dialog = MaterialAlertDialogBuilder(requireContext()).apply {
-            //setMessage(playerViewModel.playlistTrackState.value?.message)
-            setPositiveButton("ОК") { _, _ ->
-                bottomSheetBehavior.state = BottomSheetBehavior.STATE_HIDDEN
-            }
-        }
+
     }
 
     private fun showPlaylistInfo() {
@@ -120,7 +109,6 @@ class PlaylistInfoFragment : Fragment(), ItemClickListener {
         val bundle = Bundle()
         bundle.putParcelable(SearchFragment.TRACK_VALUE, track)
         findNavController().navigate(R.id.action_playlistInfoFragment_to_playerFragment, bundle)
-        //dialog?.show()
     }
 
     override fun onResume() {
@@ -130,5 +118,20 @@ class PlaylistInfoFragment : Fragment(), ItemClickListener {
 
     companion object {
         const val PLAYLIST_INFO = "PLAYLIST_INFO"
+    }
+
+    override fun onLongClick(track: Track): Boolean {
+        MaterialAlertDialogBuilder(requireContext()).apply {
+            setTitle(getString(R.string.delete_track))
+            setMessage(getString(R.string.want_to_delete_track))
+            setPositiveButton(getString(R.string.delete)) { _, _ ->
+                //playerViewModel.deleteTrack(track)
+                //bottomSheetBehavior.state = BottomSheetBehavior.STATE_HIDDEN
+            }
+            setNegativeButton(R.string.cancel) { _, _ ->
+                //bottomSheetBehavior.state = BottomSheetBehavior.STATE_HIDDEN
+            }
+        }.show()
+        return true
     }
 }
