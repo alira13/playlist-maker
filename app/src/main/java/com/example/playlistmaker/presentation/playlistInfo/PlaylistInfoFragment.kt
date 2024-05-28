@@ -17,7 +17,9 @@ import com.example.playlistmaker.R
 import com.example.playlistmaker.databinding.FragmentPlaylistInfoBinding
 import com.example.playlistmaker.domain.models.Playlist
 import com.example.playlistmaker.domain.models.Track
+import com.example.playlistmaker.presentation.playerScreen.PlayerFragment
 import com.example.playlistmaker.presentation.rootScreen.RootActivity
+import com.example.playlistmaker.presentation.searchScreen.SearchFragment
 import com.example.playlistmaker.presentation.ui.ItemClickListener
 import com.example.playlistmaker.presentation.ui.TrackAdapter
 import com.google.android.material.bottomsheet.BottomSheetBehavior
@@ -64,16 +66,12 @@ class PlaylistInfoFragment : Fragment(), ItemClickListener {
 
         showPlaylistInfo()
 
-
         dialog = MaterialAlertDialogBuilder(requireContext()).apply {
             //setMessage(playerViewModel.playlistTrackState.value?.message)
-
             setPositiveButton("ОК") { _, _ ->
                 bottomSheetBehavior.state = BottomSheetBehavior.STATE_HIDDEN
             }
         }
-
-        playerViewModel.getTracksByIds()
     }
 
     private fun showPlaylistInfo() {
@@ -87,6 +85,7 @@ class PlaylistInfoFragment : Fragment(), ItemClickListener {
             .placeholder(R.drawable.placeholder)
             .transform(RoundedCorners(binding.playlistInfoImageIv.resources.getDimensionPixelSize(R.dimen.player_track_image_corner_radius)))
             .into(binding.playlistInfoImageIv)
+
         showTracks()
     }
 
@@ -118,6 +117,9 @@ class PlaylistInfoFragment : Fragment(), ItemClickListener {
 
     override fun onClick(track: Track) {
         //playerViewModel.onPlaylistItemClicked(item)
+        val bundle = Bundle()
+        bundle.putParcelable(SearchFragment.TRACK_VALUE, track)
+        findNavController().navigate(R.id.action_playlistInfoFragment_to_playerFragment)
         dialog?.show()
     }
 

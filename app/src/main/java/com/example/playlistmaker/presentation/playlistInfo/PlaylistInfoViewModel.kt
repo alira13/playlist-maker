@@ -23,7 +23,7 @@ class PlaylistInfoViewModel(
     fun getTracksByIds() {
         viewModelScope.launch {
             playlistInfoInteractor.getTracksByIds(playlist.trackIds).collect {
-                if (it.isEmpty()) {
+                if (it.isNotEmpty()) {
                     _tracksState.postValue(it)
                 }
             }
