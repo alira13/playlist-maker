@@ -53,7 +53,7 @@ class PlaylistInfoFragment : Fragment(), ItemClickListener {
         (activity as? RootActivity)?.hideBottomNavigation()
 
         bottomSheetBehavior = BottomSheetBehavior.from(binding.standardBottomSheet).apply {
-            state = BottomSheetBehavior.STATE_HIDDEN
+            state = BottomSheetBehavior.STATE_COLLAPSED
             binding.shadowV.isVisible = false
         }
         binding.playlerPlaylistsRv.adapter = adapter
