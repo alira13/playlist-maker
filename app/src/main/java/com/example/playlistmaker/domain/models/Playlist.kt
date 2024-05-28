@@ -1,6 +1,6 @@
-package com.example.playlistmaker.presentation.models
+package com.example.playlistmaker.domain.models
 
-data class PlaylistInfo(
+data class Playlist(
     var playlistId: Int,
     var playlistName: String,
     val playlistDescription: String,

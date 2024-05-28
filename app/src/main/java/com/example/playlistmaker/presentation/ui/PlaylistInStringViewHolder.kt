@@ -9,7 +9,7 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.example.playlistmaker.R
-import com.example.playlistmaker.presentation.models.PlaylistInfo
+import com.example.playlistmaker.domain.models.Playlist
 
 class PlaylistInStringViewHolder(parentView: ViewGroup) : RecyclerView.ViewHolder(
     LayoutInflater.from(parentView.context)
@@ -20,7 +20,7 @@ class PlaylistInStringViewHolder(parentView: ViewGroup) : RecyclerView.ViewHolde
     private val songsNumber: TextView = itemView.findViewById(R.id.playlist_in_string_track_num_tv)
     private val image: ImageView = itemView.findViewById(R.id.playlist_in_string_image_iv)
 
-    fun bind(model: PlaylistInfo) {
+    fun bind(model: Playlist) {
         name.text = model.playlistName
         songsNumber.text = getTrackAmount(model)
 
@@ -35,7 +35,7 @@ class PlaylistInStringViewHolder(parentView: ViewGroup) : RecyclerView.ViewHolde
             .into(image)
     }
 
-    private fun getTrackAmount(playlist: PlaylistInfo): String {
+    private fun getTrackAmount(playlist: Playlist): String {
         return itemView.resources.getQuantityString(
             R.plurals.track_amount,
             playlist.tracksNum,

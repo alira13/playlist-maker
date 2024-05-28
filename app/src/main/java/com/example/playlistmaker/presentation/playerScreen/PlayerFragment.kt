@@ -21,7 +21,7 @@ import com.example.playlistmaker.domain.models.Track
 import com.example.playlistmaker.presentation.mapper.TrackMapper
 import com.example.playlistmaker.presentation.mediaScreen.playlists.PlaylistTrackState
 import com.example.playlistmaker.presentation.mediaScreen.playlists.PlaylistsState
-import com.example.playlistmaker.presentation.models.PlaylistInfo
+import com.example.playlistmaker.domain.models.Playlist
 import com.example.playlistmaker.presentation.rootScreen.RootActivity
 import com.example.playlistmaker.presentation.searchScreen.SearchFragment.Companion.TRACK_VALUE
 import com.example.playlistmaker.presentation.ui.PlaylistInStringAdapter
@@ -240,7 +240,7 @@ class PlayerFragment : Fragment(), PlaylistItemClickListener {
         snackbar.show()
     }
 
-    override fun onClick(item: PlaylistInfo) {
+    override fun onClick(item: Playlist) {
         playerViewModel.onPlaylistItemClicked(item)
 
         playerViewModel.playlistTrackState.observe(viewLifecycleOwner) {

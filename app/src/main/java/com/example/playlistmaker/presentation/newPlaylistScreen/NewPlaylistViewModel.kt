@@ -4,7 +4,7 @@ import android.net.Uri
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.playlistmaker.domain.usecases.playlists.PlaylistsInteractor
-import com.example.playlistmaker.presentation.models.PlaylistInfo
+import com.example.playlistmaker.domain.models.Playlist
 import kotlinx.coroutines.launch
 
 class NewPlaylistViewModel(private val playlistsInteractor: PlaylistsInteractor) : ViewModel() {
@@ -31,7 +31,7 @@ class NewPlaylistViewModel(private val playlistsInteractor: PlaylistsInteractor)
         playlistName: String,
         playlistDescription: String,
         playlistImageName: String
-    ) = PlaylistInfo(
+    ) = Playlist(
         playlistId = 0,
         playlistName = playlistName,
         playlistDescription = playlistDescription,

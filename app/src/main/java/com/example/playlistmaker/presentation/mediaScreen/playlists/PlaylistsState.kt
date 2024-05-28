@@ -1,10 +1,10 @@
 package com.example.playlistmaker.presentation.mediaScreen.playlists
 
-import com.example.playlistmaker.presentation.models.PlaylistInfo
+import com.example.playlistmaker.domain.models.Playlist
 
-sealed class PlaylistsState(val isError: Boolean, playlists: List<PlaylistInfo>) {
+sealed class PlaylistsState(val isError: Boolean, playlists: List<Playlist>) {
 
-    data class ShowPlaylists(val playlists: List<PlaylistInfo>) : PlaylistsState(false, playlists)
+    data class ShowPlaylists(val playlists: List<Playlist>) : PlaylistsState(false, playlists)
 
     class EmptyPlaylists() : PlaylistsState(true, emptyList())
 }

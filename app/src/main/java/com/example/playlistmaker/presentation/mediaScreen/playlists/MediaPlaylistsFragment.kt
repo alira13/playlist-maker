@@ -11,7 +11,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.playlistmaker.R
 import com.example.playlistmaker.databinding.FragmentMediaPlaylistsBinding
-import com.example.playlistmaker.presentation.models.PlaylistInfo
+import com.example.playlistmaker.domain.models.Playlist
 import com.example.playlistmaker.presentation.rootScreen.RootActivity
 import com.example.playlistmaker.presentation.ui.PlaylistAdapter
 import com.example.playlistmaker.presentation.ui.PlaylistItemClickListener
@@ -98,6 +98,6 @@ class MediaPlaylistsFragment : Fragment(), PlaylistItemClickListener {
         private const val CLICK_DEBOUNCE_DELAY = 1000L
     }
 
-    override fun onClick(playlist: PlaylistInfo) {
+    override fun onClick(item: Playlist) {
     }
 }

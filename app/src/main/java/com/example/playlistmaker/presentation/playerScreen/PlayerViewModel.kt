@@ -10,7 +10,7 @@ import com.example.playlistmaker.domain.usecases.player.PlayerInteractor
 import com.example.playlistmaker.domain.usecases.playlists.PlaylistsInteractor
 import com.example.playlistmaker.presentation.mediaScreen.playlists.PlaylistTrackState
 import com.example.playlistmaker.presentation.mediaScreen.playlists.PlaylistsState
-import com.example.playlistmaker.presentation.models.PlaylistInfo
+import com.example.playlistmaker.domain.models.Playlist
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -160,7 +160,7 @@ class PlayerViewModel(
         releasePlayer()
     }
 
-    fun onPlaylistItemClicked(playlist: PlaylistInfo) {
+    fun onPlaylistItemClicked(playlist: Playlist) {
         viewModelScope.launch {
             val track = _screenStateLiveData.value!!
             if (playlist.trackIds.contains(track.trackId)) {

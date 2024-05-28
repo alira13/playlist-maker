@@ -2,14 +2,14 @@ package com.example.playlistmaker.presentation.ui
 
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.example.playlistmaker.presentation.models.PlaylistInfo
+import com.example.playlistmaker.domain.models.Playlist
 
 
 class PlaylistInStringAdapter(
     private val onItemClickListener: PlaylistItemClickListener
 ) : RecyclerView.Adapter<PlaylistInStringViewHolder>() {
 
-    var items: MutableList<PlaylistInfo> = mutableListOf()
+    var items: MutableList<Playlist> = mutableListOf()
         set(value) {
             field = value
             notifyDataSetChanged()

@@ -10,7 +10,7 @@ import com.example.playlistmaker.data.converters.PlaylistTrackDbConvertor
 import com.example.playlistmaker.data.db.AppDatabase
 import com.example.playlistmaker.domain.models.Track
 import com.example.playlistmaker.domain.repository.PlaylistsRepository
-import com.example.playlistmaker.presentation.models.PlaylistInfo
+import com.example.playlistmaker.domain.models.Playlist
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import java.io.File
@@ -22,25 +22,25 @@ class PlaylistsRepositoryImpl(
     private val trackDbConvertor: PlaylistTrackDbConvertor,
     private val application: Application
 ) : PlaylistsRepository {
-    override suspend fun addToPlaylist(playlist: PlaylistInfo, track: Track) {
+    override suspend fun addToPlaylist(playlist: Playlist, track: Track) {
         val playlistEntity = playlistDbConvertor.map(playlist)
         val trackEntity = trackDbConvertor.map(track)
         appDatabase.getPlaylistTracks().addTrack(trackEntity)
         appDatabase.getPlaylistDao().addToPlaylists(playlistEntity)
     }
 
-    override suspend fun createPlaylist(playlist: PlaylistInfo) {
+    override suspend fun createPlaylist(playlist: Playlist) {
         val playlistEntity = playlistDbConvertor.map(playlist)
         appDatabase.getPlaylistDao().addToPlaylists(playlistEntity)
     }
 
-    override fun getPlaylists(): Flow<List<PlaylistInfo>> = flow {
+    override fun getPlaylists(): Flow<List<Playlist>> = flow {
         val trackEntity = appDatabase.getPlaylistDao().getPlaylists().reversed()
         val tracks = convertFromPlaylistEntity(trackEntity)
         emit(tracks)
     }
 
-    private fun convertFromPlaylistEntity(tracks: List<PlaylistEntity>): List<PlaylistInfo> {
+    private fun convertFromPlaylistEntity(tracks: List<PlaylistEntity>): List<Playlist> {
         return tracks.map { track -> playlistDbConvertor.map(track) }
     }
 
