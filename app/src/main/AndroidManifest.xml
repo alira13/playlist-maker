@@ -31,6 +31,14 @@
             android:exported="false"
             android:screenOrientation="portrait" />
         <activity
+            android:name=".presentation.playlistInfo.PlaylistInfoFragment"
+            android:exported="false"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".presentation.newPlaylistScreen.NewPlaylistFragment"
+            android:exported="false"
+            android:screenOrientation="portrait" />
+        <activity
             android:name=".presentation.rootScreen.RootActivity"
             android:exported="true"
             android:screenOrientation="portrait"

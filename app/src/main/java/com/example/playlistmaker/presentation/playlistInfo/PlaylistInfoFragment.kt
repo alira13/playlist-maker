@@ -8,6 +8,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
+import android.widget.TextView
+import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
@@ -21,6 +23,7 @@ import com.example.playlistmaker.presentation.rootScreen.RootActivity
 import com.example.playlistmaker.presentation.searchScreen.SearchFragment
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.google.android.material.snackbar.Snackbar
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
 
@@ -58,6 +61,10 @@ class PlaylistInfoFragment : Fragment(), TrackClickListener, TrackLongClickListe
             findNavController().navigateUp()
         }
 
+        binding.playlistShareBtn.setOnClickListener {
+            sharePlaylist()
+        }
+
         Log.d("MY", "renderState")
         viewModel.getPlaylistInfo()
         Log.d("MY", ">>renderState")
@@ -79,8 +86,16 @@ class PlaylistInfoFragment : Fragment(), TrackClickListener, TrackLongClickListe
     private fun showPlaylistInfo(playlistInfo: PlaylistInfo) {
         binding.playlistName.text = playlistInfo.playlist.playlistName
         binding.playlistDescription.text = playlistInfo.playlist.playlistDescription
-        //binding.totalDuration.text
-        binding.tracksNum.text = playlistInfo.tracks!!.count().toString()
+        binding.totalDuration.text = resources.getQuantityString(
+            R.plurals.total_minutes,
+            playlistInfo.totalDuration,
+            playlistInfo.totalDuration
+        )
+        binding.tracksNum.text = resources.getQuantityString(
+            R.plurals.track_amount,
+            playlistInfo.tracks!!.count(),
+            playlistInfo.tracks!!.count()
+        )
 
         Glide.with(binding.playlistInfoImageIv).load(playlistInfo.playlist.artworkUrl512)
             .fitCenter()
@@ -95,12 +110,30 @@ class PlaylistInfoFragment : Fragment(), TrackClickListener, TrackLongClickListe
     private fun showEmptyPlaylistInfo(playlistInfo: PlaylistInfo) {
     }
 
+    private fun showSnackbar(root: View, text: String) {
+        val snackbar = Snackbar.make(root, text, Snackbar.LENGTH_SHORT)
+        snackbar.setBackgroundTint(
+            ContextCompat.getColor(
+                root.context, R.color.YP_grey
+            )
+        )
+        snackbar.setTextColor(
+            ContextCompat.getColor(
+                root.context, R.color.YP_white
+            )
+        )
+        val textView =
+            snackbar.view.findViewById<TextView>(com.google.android.material.R.id.snackbar_text)
+        textView.textAlignment = View.TEXT_ALIGNMENT_CENTER
+        snackbar.show()
+    }
+
     private fun showNoApplicationFound() {
 
     }
 
     private fun showNothingToShare() {
-
+        showSnackbar(requireView(), getString(R.string.nothing_to_share))
     }
 
     private fun sharePlaylist() {

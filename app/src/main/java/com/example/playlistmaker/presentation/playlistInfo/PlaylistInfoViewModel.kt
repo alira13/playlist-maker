@@ -6,11 +6,13 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.playlistmaker.R
 import com.example.playlistmaker.domain.models.Playlist
 import com.example.playlistmaker.domain.models.Track
 import com.example.playlistmaker.domain.usecases.playlists.PlaylistInfoInteractor
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
+import java.util.Locale
 
 class PlaylistInfoViewModel(
     private var playlist: Playlist,
@@ -82,5 +84,34 @@ class PlaylistInfoViewModel(
     }
 
     fun sharePlaylist(context: Context) {
+        if (tracks.isEmpty()) {
+            _state.value = PlaylistInfoState.NothingToShare(feedbackWasShown = false)
+            return
+        }
+        val playlistDescription = buildString {
+            appendLine(context.getString(R.string.playlist, playlist.playlistName))
+            if (playlist.playlistDescription.isNotEmpty()) {
+                appendLine(playlist.playlistDescription)
+            }
+            appendLine(
+                context.resources.getQuantityString(
+                    R.plurals.track_amount,
+                    tracks.size,
+                    tracks.size
+                )
+            )
+            tracks.forEachIndexed { index, track ->
+                appendLine("${index + 1}. ${track.artistName} - ${track.trackName} (${getTime(track.trackTime)})")
+            }
+        }
+        try {
+            playlistInfoInteractor.sharePlaylist(playlistDescription)
+        } catch (t: Throwable) {
+            _state.value = PlaylistInfoState.NoApplicationFound(feedbackWasShown = false)
+        }
+    }
+
+    private fun getTime(trackTime: Long): String {
+        return java.text.SimpleDateFormat("mm:ss", Locale.getDefault()).format(trackTime)
     }
 }
