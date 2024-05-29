@@ -8,7 +8,7 @@ import com.example.playlistmaker.data.converters.PlaylistTrackDbConvertor
 import com.example.playlistmaker.data.converters.TrackDbConvertor
 import com.example.playlistmaker.data.db.AppDatabase
 import com.example.playlistmaker.data.db.favorites.FavoritesRepositoryImpl
-import com.example.playlistmaker.data.db.playlistInfo.PlaylistInfoRepositoryImpl
+import com.example.playlistmaker.data.db.playlists.PlaylistInfoRepositoryImpl
 import com.example.playlistmaker.data.db.playlists.PlaylistsRepositoryImpl
 import com.example.playlistmaker.data.externalNavigator.ExternalNavigatorImpl
 import com.example.playlistmaker.data.network.TrackRetrofitNetworkClient
@@ -87,7 +87,7 @@ val dataModule = module {
     factory { PlaylistDbConverter(json = get()) }
 
     single<PlaylistInfoRepository> {
-        PlaylistInfoRepositoryImpl(get(), get())
+        PlaylistInfoRepositoryImpl(get(), get(), get(), get())
     }
 
     factory { PlaylistTrackDbConvertor() }

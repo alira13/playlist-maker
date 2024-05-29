@@ -26,7 +26,7 @@ import org.koin.core.parameter.parametersOf
 
 class PlaylistInfoFragment : Fragment(), TrackClickListener, TrackLongClickListener {
 
-    private val playerViewModel by viewModel<PlaylistInfoViewModel> { parametersOf(getPlaylist()) }
+    private val viewModel by viewModel<PlaylistInfoViewModel> { parametersOf(getPlaylistFromView()) }
 
     private lateinit var binding: FragmentPlaylistInfoBinding
 
@@ -58,43 +58,60 @@ class PlaylistInfoFragment : Fragment(), TrackClickListener, TrackLongClickListe
             findNavController().navigateUp()
         }
 
-        showPlaylistInfo()
-
-
+        Log.d("MY", "renderState")
+        viewModel.getPlaylistInfo()
+        Log.d("MY", ">>renderState")
+        viewModel.state.observe(viewLifecycleOwner) {
+            renderState(it)
+        }
     }
 
-    private fun showPlaylistInfo() {
-        val playlist = getPlaylist()
-        binding.playlistName.text = playlist.playlistName
-        binding.playlistDescription.text = playlist.playlistDescription.orEmpty()
-        //binding.totalDuration.text
-        binding.tracksNum.text = playlist.tracksNum.toString()
+    private fun renderState(state: PlaylistInfoState) {
+        when (state) {
+            is PlaylistInfoState.NotEmpty -> showPlaylistInfo(state.playlistInfo)
+            is PlaylistInfoState.Empty -> showEmptyPlaylistInfo(state.playlistInfo)
+            is PlaylistInfoState.PlaylistDeleted -> findNavController().navigateUp()
+            is PlaylistInfoState.NoApplicationFound -> if (!state.feedbackWasShown) showNoApplicationFound()
+            is PlaylistInfoState.NothingToShare -> if (!state.feedbackWasShown) showNothingToShare()
+        }
+    }
 
-        Glide.with(binding.playlistInfoImageIv).load(playlist.artworkUrl512).fitCenter()
+    private fun showPlaylistInfo(playlistInfo: PlaylistInfo) {
+        binding.playlistName.text = playlistInfo.playlist.playlistName
+        binding.playlistDescription.text = playlistInfo.playlist.playlistDescription
+        //binding.totalDuration.text
+        binding.tracksNum.text = playlistInfo.tracks!!.count().toString()
+
+        Glide.with(binding.playlistInfoImageIv).load(playlistInfo.playlist.artworkUrl512)
+            .fitCenter()
             .placeholder(R.drawable.placeholder)
             .transform(RoundedCorners(binding.playlistInfoImageIv.resources.getDimensionPixelSize(R.dimen.player_track_image_corner_radius)))
             .into(binding.playlistInfoImageIv)
 
-        showTracks()
+        binding.playlerPlaylistsRv.isVisible = true
+        adapter.items = playlistInfo.tracks.toMutableList()
     }
 
-    private fun showTracks() {
-        playerViewModel.getTracksByIds()
-
-        playerViewModel.tracksState.observe(viewLifecycleOwner) {
-            binding.playlerPlaylistsRv.isVisible = it.isNotEmpty()
-            if(it.isNotEmpty()) adapter.items = it.toMutableList()
-        }
+    private fun showEmptyPlaylistInfo(playlistInfo: PlaylistInfo) {
     }
 
-    private fun hideBottomSheet() {
-        bottomSheetBehavior.state = BottomSheetBehavior.STATE_HIDDEN
+    private fun showNoApplicationFound() {
+
     }
 
-    private fun showBottomSheet() {
-        bottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
+    private fun showNothingToShare() {
+
     }
-    private fun getPlaylist(): Playlist {
+
+    private fun sharePlaylist() {
+        viewModel.sharePlaylist(requireContext())
+    }
+
+    private fun editPlaylist() {
+    }
+
+
+    private fun getPlaylistFromView(): Playlist {
         val item = if (SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             arguments?.getParcelable(PLAYLIST_INFO)
         } else {
@@ -104,20 +121,15 @@ class PlaylistInfoFragment : Fragment(), TrackClickListener, TrackLongClickListe
         return item!!
     }
 
-    override fun onClick(track: Track) {
-        //playerViewModel.onPlaylistItemClicked(item)
-        val bundle = Bundle()
-        bundle.putParcelable(SearchFragment.TRACK_VALUE, track)
-        findNavController().navigate(R.id.action_playlistInfoFragment_to_playerFragment, bundle)
-    }
-
     override fun onResume() {
         super.onResume()
         (activity as? RootActivity)?.hideBottomNavigation()
     }
 
-    companion object {
-        const val PLAYLIST_INFO = "PLAYLIST_INFO"
+    override fun onClick(track: Track) {
+        val bundle = Bundle()
+        bundle.putParcelable(SearchFragment.TRACK_VALUE, track)
+        findNavController().navigate(R.id.action_playlistInfoFragment_to_playerFragment, bundle)
     }
 
     override fun onLongClick(track: Track): Boolean {
@@ -125,13 +137,15 @@ class PlaylistInfoFragment : Fragment(), TrackClickListener, TrackLongClickListe
             setTitle(getString(R.string.delete_track))
             setMessage(getString(R.string.want_to_delete_track))
             setPositiveButton(getString(R.string.delete)) { _, _ ->
-                //playerViewModel.deleteTrack(track)
-                //bottomSheetBehavior.state = BottomSheetBehavior.STATE_HIDDEN
+                viewModel.deleteTrack(track)
             }
             setNegativeButton(R.string.cancel) { _, _ ->
-                //bottomSheetBehavior.state = BottomSheetBehavior.STATE_HIDDEN
             }
         }.show()
         return true
+    }
+
+    companion object {
+        const val PLAYLIST_INFO = "PLAYLIST_INFO"
     }
 }
