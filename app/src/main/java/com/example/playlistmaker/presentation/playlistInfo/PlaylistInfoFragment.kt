@@ -226,7 +226,10 @@ class PlaylistInfoFragment : Fragment(), TrackClickListener, TrackLongClickListe
     }
 
     private fun deletePlaylist(){
-        MaterialAlertDialogBuilder(requireContext()).apply {
+        MaterialAlertDialogBuilder(
+            requireContext(),
+            R.style.MyThemeOverlay_MaterialComponents_MaterialAlertDialog
+        ).apply {
             setTitle(R.string.delete_playlist)
             setMessage(getString(R.string.want_to_delete_playlist))
             setPositiveButton(getString(R.string.yes)) { _, _ ->
@@ -272,7 +275,9 @@ class PlaylistInfoFragment : Fragment(), TrackClickListener, TrackLongClickListe
     }
 
     override fun onLongClick(track: Track): Boolean {
-        MaterialAlertDialogBuilder(requireContext()).apply {
+        MaterialAlertDialogBuilder(requireContext(),
+            R.style.MyThemeOverlay_MaterialComponents_MaterialAlertDialog
+        ).apply {
             setTitle(getString(R.string.delete_track))
             setMessage(getString(R.string.want_to_delete_track))
             setPositiveButton(getString(R.string.delete)) { _, _ ->

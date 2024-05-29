@@ -88,6 +88,7 @@ class MediaPlaylistsFragment : Fragment(), PlaylistItemClickListener {
     override fun onResume() {
         super.onResume()
         (activity as? RootActivity)?.showBottomNavigation()
+        viewModel.getState()
     }
 
     override fun onDestroyView() {
