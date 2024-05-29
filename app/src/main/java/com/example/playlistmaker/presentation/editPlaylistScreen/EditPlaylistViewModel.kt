@@ -3,12 +3,17 @@ package com.example.playlistmaker.presentation.editPlaylistScreen
 import android.net.Uri
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.playlistmaker.domain.usecases.playlists.PlaylistsInteractor
 import com.example.playlistmaker.domain.models.Playlist
+import com.example.playlistmaker.domain.usecases.playlists.PlaylistInfoInteractor
+import com.example.playlistmaker.domain.usecases.playlists.PlaylistsInteractor
 import kotlinx.coroutines.launch
 
-class EditPlaylistViewModel(private val playlistsInteractor: PlaylistsInteractor) : ViewModel() {
-    fun createNewPlayList(
+class EditPlaylistViewModel(
+    private val playlistsInteractor: PlaylistsInteractor,
+    private val playlistsInfoInteractor: PlaylistInfoInteractor,
+    private val playlist: Playlist
+) : ViewModel() {
+    fun updatePlaylist(
         playlistName: String,
         playlistDescription: String,
         uri: Uri?
@@ -17,26 +22,13 @@ class EditPlaylistViewModel(private val playlistsInteractor: PlaylistsInteractor
         viewModelScope.launch {
             val uriInternalStorage = playlistsInteractor.saveCoverToStorage(uri)
 
-            val playListInfo = convertPlaylistInfo(
-                playlistName,
-                playlistDescription,
-                uriInternalStorage.toString()
+            val newPlaylist = playlist.copy(
+                playlistName = playlistName,
+                playlistDescription = playlistDescription,
+                artworkUrl512 = uriInternalStorage.toString()
             )
 
-            playlistsInteractor.createPlaylist(playListInfo)
+            playlistsInfoInteractor.updatePlaylist(newPlaylist)
         }
     }
-
-    private fun convertPlaylistInfo(
-        playlistName: String,
-        playlistDescription: String,
-        playlistImageName: String
-    ) = Playlist(
-        playlistId = 0,
-        playlistName = playlistName,
-        playlistDescription = playlistDescription,
-        artworkUrl512 = playlistImageName,
-        trackIds = ArrayList(),
-        tracksNum = 0
-    )
 }

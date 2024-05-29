@@ -1,9 +1,11 @@
 package com.example.playlistmaker.presentation.editPlaylistScreen
 
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -21,19 +23,23 @@ import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.example.playlistmaker.R
 import com.example.playlistmaker.databinding.FragmentEditPlaylistBinding
+import com.example.playlistmaker.domain.models.Playlist
+import com.example.playlistmaker.presentation.playlistInfo.PlaylistInfoFragment
 import com.example.playlistmaker.presentation.rootScreen.RootActivity
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.snackbar.Snackbar
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import org.koin.core.parameter.parametersOf
 
 class EditPlaylistFragment : Fragment() {
-    private val viewModel by viewModel<EditPlaylistViewModel>()
+    private val viewModel by viewModel<EditPlaylistViewModel>{ parametersOf(getPlaylistFromView()) }
     private var binding: FragmentEditPlaylistBinding? = null
 
     private var pickMedia: ActivityResultLauncher<PickVisualMediaRequest>? = null
 
     private var playlistImageUri: Uri? = null
 
+    private var playlist: Playlist? = null
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
@@ -45,10 +51,12 @@ class EditPlaylistFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         (activity as? RootActivity)?.hideBottomNavigation()
-
         createPickMedia()
         addTextWatcher()
         addOnBackPressedCallback()
+
+        getPlaylistFromView()
+        showPlaylistInfo()
 
         requireActivity().window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN)
 
@@ -56,14 +64,34 @@ class EditPlaylistFragment : Fragment() {
             onBackClick()
         }
 
-
         binding?.playerTrackImage?.setOnClickListener {
             onImageClick()
         }
 
         binding?.createButton?.setOnClickListener {
-            onCreateClick()
+            onUpdateClick()
         }
+    }
+
+    private fun getPlaylistFromView(): Playlist {
+        playlist = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            arguments?.getParcelable(PlaylistInfoFragment.PLAYLIST_INFO)
+        } else {
+            arguments?.getParcelable<Playlist>(PlaylistInfoFragment.PLAYLIST_INFO)
+        }
+        Log.d("MY", ">> $playlist")
+        return playlist!!
+    }
+
+    private fun showPlaylistInfo() {
+        binding?.playlistNameTiEt?.setText(playlist!!.playlistName)
+        binding?.descriptionTiEt?.setText(playlist!!.playlistDescription)
+
+        Glide.with(binding!!.playerTrackImage).load(playlist!!.artworkUrl512)
+            .fitCenter()
+            .placeholder(R.drawable.placeholder)
+            .transform(RoundedCorners(binding!!.playerTrackImage.resources.getDimensionPixelSize(R.dimen.player_track_image_corner_radius)))
+            .into(binding!!.playerTrackImage)
     }
 
     private fun addOnBackPressedCallback() {
@@ -130,15 +158,15 @@ class EditPlaylistFragment : Fragment() {
         pickMedia?.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
     }
 
-    private fun onCreateClick() {
+    private fun onUpdateClick() {
         val playlistName = binding?.playlistNameTiEt?.text.toString()
         val playlistDescription = binding?.descriptionTiEt?.text.toString()
 
-        viewModel.createNewPlayList(playlistName, playlistDescription, playlistImageUri)
+        viewModel.updatePlaylist(playlistName, playlistDescription, playlistImageUri)
 
         showSnackbar(
             requireView(),
-            getString(R.string.playlist_created, playlistName)
+            getString(R.string.playlist_updated, playlistName)
         )
 
         findNavController().navigateUp()

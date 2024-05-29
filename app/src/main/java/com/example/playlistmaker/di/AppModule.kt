@@ -47,6 +47,6 @@ val appModule = module {
     }
 
     viewModel<EditPlaylistViewModel> { params ->
-        EditPlaylistViewModel(playlistsInteractor = get())
+        EditPlaylistViewModel(get(), get(), params.get())
     }
 }

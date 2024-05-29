@@ -44,7 +44,7 @@ class PlaylistInfoFragment : Fragment(), TrackClickListener, TrackLongClickListe
 
     private val playlistAdapter = PlaylistInStringAdapter(this)
 
-
+    private var playlist: Playlist? = null
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -204,10 +204,10 @@ class PlaylistInfoFragment : Fragment(), TrackClickListener, TrackLongClickListe
 
     }
     private fun editPlaylist() {
-        //val bundle = Bundle()
-        //bundle.putParcelable(PLAYLIST_INFO, playlist)
+        val bundle = Bundle()
+        bundle.putParcelable(PLAYLIST_INFO, playlist)
         findNavController().navigate(
-            R.id.action_playlistInfoFragment_to_editPlaylistFragment
+            R.id.action_playlistInfoFragment_to_editPlaylistFragment, bundle
         )
     }
 
@@ -217,13 +217,13 @@ class PlaylistInfoFragment : Fragment(), TrackClickListener, TrackLongClickListe
     }
 
     private fun getPlaylistFromView(): Playlist {
-        val item = if (SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+        playlist = if (SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             arguments?.getParcelable(PLAYLIST_INFO)
         } else {
             arguments?.getParcelable<Playlist>(PLAYLIST_INFO)
         }
-        Log.d("MY", ">> $item")
-        return item!!
+        Log.d("MY", ">> $playlist")
+        return playlist!!
     }
 
     override fun onResume() {

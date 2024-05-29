@@ -59,4 +59,5 @@
     <string name="no">Нет</string>
     <string name="edit">Редактировать</string>
     <string name="save">Сохранить</string>
+    <string name="playlist_updated">Плейлист %1$s обновлен</string>
 </resources>
