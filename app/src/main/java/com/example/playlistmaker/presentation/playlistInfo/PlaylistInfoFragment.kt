@@ -135,7 +135,14 @@ class PlaylistInfoFragment : Fragment(), TrackClickListener, TrackLongClickListe
 
     private fun showPlaylistInfo(playlistInfo: PlaylistInfo) {
         binding.playlistName.text = playlistInfo.playlist.playlistName
-        binding.playlistDescription.text = playlistInfo.playlist.playlistDescription
+        //В дизайне не указано, как должно быть, сделала на свое усмотрение
+        if (playlistInfo.playlist.playlistDescription.isEmpty())
+            binding.playlistDescription.isVisible = false
+        else {
+            binding.playlistDescription.isVisible = true
+            binding.playlistDescription.text = playlistInfo.playlist.playlistDescription
+        }
+
         binding.totalDuration.text = resources.getQuantityString(
             R.plurals.total_minutes,
             playlistInfo.totalDuration,
@@ -161,7 +168,14 @@ class PlaylistInfoFragment : Fragment(), TrackClickListener, TrackLongClickListe
 
     private fun showEmptyPlaylistInfo(playlistInfo: PlaylistInfo) {
         binding.playlistName.text = playlistInfo.playlist.playlistName
-        binding.playlistDescription.text = playlistInfo.playlist.playlistDescription
+        //В дизайне не указано, как должно быть, сделала на свое усмотрение
+        if (playlistInfo.playlist.playlistDescription.isEmpty())
+            binding.playlistDescription.isVisible = false
+        else {
+            binding.playlistDescription.isVisible = true
+            binding.playlistDescription.text = playlistInfo.playlist.playlistDescription
+        }
+
         binding.totalDuration.text = resources.getQuantityString(
             R.plurals.total_minutes,
             playlistInfo.totalDuration,
