@@ -85,12 +85,38 @@ class PlaylistInfoFragment : Fragment(), TrackClickListener, TrackLongClickListe
             openMenu()
         }
 
-        Log.d("MY", "renderState")
         viewModel.getPlaylistInfo()
-        Log.d("MY", ">>renderState")
         viewModel.state.observe(viewLifecycleOwner) {
             renderState(it)
         }
+
+        binding.sharePlaylistTv.setOnClickListener {
+            sharePlaylist()
+        }
+
+        binding.deletePlaylistTv.setOnClickListener {
+            deletePlaylist()
+        }
+
+        menuBottomSheetBehavior.addBottomSheetCallback(object :
+            BottomSheetBehavior.BottomSheetCallback() {
+
+            override fun onStateChanged(bottomSheet: View, newState: Int) {
+                when (newState) {
+                    BottomSheetBehavior.STATE_HIDDEN -> {
+                        binding.shadowV.visibility = View.GONE
+                    }
+
+                    else -> {
+                        binding.shadowV.visibility = View.VISIBLE
+                    }
+                }
+            }
+
+            override fun onSlide(bottomSheet: View, slideOffset: Float) {
+                binding.shadowV.alpha = 1 - Math.abs(slideOffset)
+            }
+        })
     }
 
     private fun renderState(state: PlaylistInfoState) {
@@ -161,6 +187,18 @@ class PlaylistInfoFragment : Fragment(), TrackClickListener, TrackLongClickListe
         viewModel.sharePlaylist(requireContext())
     }
 
+    private fun deletePlaylist(){
+        MaterialAlertDialogBuilder(requireContext()).apply {
+            setTitle(R.string.delete_playlist)
+            setMessage(getString(R.string.want_to_delete_playlist))
+            setPositiveButton(getString(R.string.yes)) { _, _ ->
+                viewModel.deletePlaylist()
+            }
+            setNegativeButton(R.string.no) { _, _ ->
+            }
+        }.show()
+
+    }
     private fun editPlaylist() {
     }
 
@@ -205,10 +243,12 @@ class PlaylistInfoFragment : Fragment(), TrackClickListener, TrackLongClickListe
 
     private fun hideMenuBottomSheet() {
         menuBottomSheetBehavior.state = BottomSheetBehavior.STATE_HIDDEN
+        binding.shadowV.isVisible = false
     }
 
     private fun showMenuBottomSheet() {
         menuBottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
+        binding.shadowV.isVisible = true
     }
 
     private fun hideBottomSheet() {
