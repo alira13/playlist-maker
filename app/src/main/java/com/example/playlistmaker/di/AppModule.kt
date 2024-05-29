@@ -1,5 +1,6 @@
 package com.example.playlistmaker.di
 
+import com.example.playlistmaker.presentation.editPlaylistScreen.EditPlaylistViewModel
 import com.example.playlistmaker.presentation.mediaScreen.favorites.MediaFavoritesViewModel
 import com.example.playlistmaker.presentation.mediaScreen.playlists.MediaPlaylistsViewModel
 import com.example.playlistmaker.presentation.newPlaylistScreen.NewPlaylistViewModel
@@ -43,5 +44,9 @@ val appModule = module {
 
     viewModel<PlaylistInfoViewModel> { params ->
         PlaylistInfoViewModel(params.get(), playlistInfoInteractor = get())
+    }
+
+    viewModel<EditPlaylistViewModel> { params ->
+        EditPlaylistViewModel(playlistsInteractor = get())
     }
 }

@@ -98,6 +98,10 @@ class PlaylistInfoFragment : Fragment(), TrackClickListener, TrackLongClickListe
             deletePlaylist()
         }
 
+        binding.editPlaylistTv.setOnClickListener {
+            editPlaylist()
+        }
+
         menuBottomSheetBehavior.addBottomSheetCallback(object :
             BottomSheetBehavior.BottomSheetCallback() {
 
@@ -200,6 +204,11 @@ class PlaylistInfoFragment : Fragment(), TrackClickListener, TrackLongClickListe
 
     }
     private fun editPlaylist() {
+        //val bundle = Bundle()
+        //bundle.putParcelable(PLAYLIST_INFO, playlist)
+        findNavController().navigate(
+            R.id.action_playlistInfoFragment_to_editPlaylistFragment
+        )
     }
 
     private fun openMenu() {
