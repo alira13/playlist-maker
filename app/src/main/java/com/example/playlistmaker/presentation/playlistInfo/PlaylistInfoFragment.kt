@@ -156,9 +156,29 @@ class PlaylistInfoFragment : Fragment(), TrackClickListener, TrackLongClickListe
         binding.playlerPlaylistsRv.isVisible = true
         adapter.items = playlistInfo.tracks.toMutableList()
         playlistAdapter.items = listOf(playlistInfo.playlist).toMutableList()
+        binding.playerMessageTv.isVisible = false
     }
 
     private fun showEmptyPlaylistInfo(playlistInfo: PlaylistInfo) {
+        binding.playlistName.text = playlistInfo.playlist.playlistName
+        binding.playlistDescription.text = playlistInfo.playlist.playlistDescription
+        binding.totalDuration.text = resources.getQuantityString(
+            R.plurals.total_minutes,
+            playlistInfo.totalDuration,
+            playlistInfo.totalDuration
+        )
+        binding.tracksNum.text = resources.getQuantityString(
+            R.plurals.track_amount,
+            0,
+            0
+        )
+
+        Glide.with(binding.playlistInfoImageIv).load(playlistInfo.playlist.artworkUrl512)
+            .fitCenter()
+            .placeholder(R.drawable.placeholder)
+            .transform(RoundedCorners(binding.playlistInfoImageIv.resources.getDimensionPixelSize(R.dimen.player_track_image_corner_radius)))
+            .into(binding.playlistInfoImageIv)
+        binding.playerMessageTv.isVisible = true
     }
 
     private fun showSnackbar(root: View, text: String) {

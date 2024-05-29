@@ -188,11 +188,11 @@
             android:layout_width="match_parent"
             android:layout_height="48dp"
             android:layout_gravity="bottom|center"
-            android:background="?attr/colorOnPrimary"
             android:fontFamily="@font/ys_font_family_regular"
             android:gravity="center"
-            android:textColor="?attr/colorPrimary"
+            android:textColor="?attr/colorOnPrimary"
             android:textSize="@dimen/regular_text_size_16"
+            android:text="@string/no_tracks"
             android:visibility="gone" />
     </LinearLayout>
 
