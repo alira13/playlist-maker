@@ -61,10 +61,13 @@ class MediaPlaylistsFragment : Fragment(), PlaylistItemClickListener {
         binding?.emptyPlaylistsErrorTv?.isVisible = state.isError
         when (state) {
             is PlaylistsState.ShowPlaylists -> {
+                binding?.playlistsRv?.isVisible = true
                 adapter.items = state.playlists.toMutableList()
             }
 
-            else -> {}
+            is PlaylistsState.EmptyPlaylists -> {
+                binding?.playlistsRv?.isVisible = false
+            }
         }
     }
 
