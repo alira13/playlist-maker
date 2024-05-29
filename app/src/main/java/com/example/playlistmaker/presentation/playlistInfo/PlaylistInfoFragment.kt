@@ -21,13 +21,16 @@ import com.example.playlistmaker.domain.models.Playlist
 import com.example.playlistmaker.domain.models.Track
 import com.example.playlistmaker.presentation.rootScreen.RootActivity
 import com.example.playlistmaker.presentation.searchScreen.SearchFragment
+import com.example.playlistmaker.presentation.ui.PlaylistInStringAdapter
+import com.example.playlistmaker.presentation.ui.PlaylistItemClickListener
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.snackbar.Snackbar
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
 
-class PlaylistInfoFragment : Fragment(), TrackClickListener, TrackLongClickListener {
+class PlaylistInfoFragment : Fragment(), TrackClickListener, TrackLongClickListener,
+    PlaylistItemClickListener {
 
     private val viewModel by viewModel<PlaylistInfoViewModel> { parametersOf(getPlaylistFromView()) }
 
@@ -35,7 +38,12 @@ class PlaylistInfoFragment : Fragment(), TrackClickListener, TrackLongClickListe
 
     private lateinit var bottomSheetBehavior: BottomSheetBehavior<LinearLayout>
 
+    private lateinit var menuBottomSheetBehavior: BottomSheetBehavior<LinearLayout>
+
     private val adapter = PlaylistTrackInStringAdapter(this, this)
+
+    private val playlistAdapter = PlaylistInStringAdapter(this)
+
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -55,7 +63,15 @@ class PlaylistInfoFragment : Fragment(), TrackClickListener, TrackLongClickListe
             state = BottomSheetBehavior.STATE_COLLAPSED
             binding.shadowV.isVisible = false
         }
+
+        menuBottomSheetBehavior = BottomSheetBehavior.from(binding.moreBottomSheet).apply {
+            state = BottomSheetBehavior.STATE_HIDDEN
+            binding.shadowV.isVisible = false
+        }
+
         binding.playlerPlaylistsRv.adapter = adapter
+
+        binding.currentPlaylistRv.adapter = playlistAdapter
 
         binding.backButton.setOnClickListener {
             findNavController().navigateUp()
@@ -63,6 +79,10 @@ class PlaylistInfoFragment : Fragment(), TrackClickListener, TrackLongClickListe
 
         binding.playlistShareBtn.setOnClickListener {
             sharePlaylist()
+        }
+
+        binding.menuBtn.setOnClickListener {
+            openMenu()
         }
 
         Log.d("MY", "renderState")
@@ -105,6 +125,7 @@ class PlaylistInfoFragment : Fragment(), TrackClickListener, TrackLongClickListe
 
         binding.playlerPlaylistsRv.isVisible = true
         adapter.items = playlistInfo.tracks.toMutableList()
+        playlistAdapter.items = listOf(playlistInfo.playlist).toMutableList()
     }
 
     private fun showEmptyPlaylistInfo(playlistInfo: PlaylistInfo) {
@@ -143,6 +164,10 @@ class PlaylistInfoFragment : Fragment(), TrackClickListener, TrackLongClickListe
     private fun editPlaylist() {
     }
 
+    private fun openMenu() {
+        hideBottomSheet()
+        showMenuBottomSheet()
+    }
 
     private fun getPlaylistFromView(): Playlist {
         val item = if (SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
@@ -178,7 +203,27 @@ class PlaylistInfoFragment : Fragment(), TrackClickListener, TrackLongClickListe
         return true
     }
 
+    private fun hideMenuBottomSheet() {
+        menuBottomSheetBehavior.state = BottomSheetBehavior.STATE_HIDDEN
+    }
+
+    private fun showMenuBottomSheet() {
+        menuBottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
+    }
+
+    private fun hideBottomSheet() {
+        bottomSheetBehavior.state = BottomSheetBehavior.STATE_HIDDEN
+    }
+
+    private fun showBottomSheet() {
+        Log.d("MY", "Show")
+        bottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
+    }
+
     companion object {
         const val PLAYLIST_INFO = "PLAYLIST_INFO"
+    }
+
+    override fun onClick(item: Playlist) {
     }
 }
