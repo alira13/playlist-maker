@@ -26,7 +26,7 @@
         <item name="android:layout_gravity">start</item>
         <item name="android:gravity">center</item>
         <item name="android:textColor">?attr/colorOnPrimary</item>
-        <item name="android:textSize">@dimen/regular_text_size</item>
+        <item name="android:textSize">@dimen/regular_text_size_16</item>
         <item name="android:fontFamily">@font/ys_font_family_regular</item>
     </style>
 
@@ -67,5 +67,40 @@
         <item name="android:textColor">?attr/colorOnPrimary</item>
         <item name="android:textSize">@dimen/medium_text_size_14</item>
         <item name="android:fontFamily">@font/ys_font_family_regular</item>
+    </style>
+
+    <style name="PlaylistTextInputStyle" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="fontFamily">@font/ys_font_family_regular</item>
+
+        <item name="android:textColorHint">@color/YP_grey</item>
+        <item name="hintTextColor">@color/text_input_layout_stroke_color</item>
+        <item name="boxStrokeColor">@color/text_input_layout_stroke_color</item>
+
+        <item name="boxCornerRadiusBottomEnd">8dp</item>
+        <item name="boxCornerRadiusBottomStart">8dp</item>
+        <item name="boxCornerRadiusTopEnd">8dp</item>
+        <item name="boxCornerRadiusTopStart">8dp</item>
+    </style>
+
+    <style name="MyThemeOverlay.MaterialComponents.MaterialAlertDialog" parent="@style/ThemeOverlay.MaterialComponents.MaterialAlertDialog">
+        <item name="materialAlertDialogTitleTextStyle">@style/MaterialAlertDialogText</item>
+        <item name="buttonBarPositiveButtonStyle">@style/PositiveButtonStyle</item>
+        <item name="buttonBarNegativeButtonStyle">@style/NegativeButtonStyle</item>
+    </style>
+
+    <style name="PositiveButtonStyle" parent="@style/Widget.MaterialComponents.Button.TextButton.Dialog">
+        <item name="android:textColor">@color/YP_dark_blue</item>
+        <item name="backgroundTint">@android:color/transparent</item>
+    </style>
+
+    <style name="NegativeButtonStyle" parent="@style/Widget.MaterialComponents.Button.TextButton.Dialog">
+        <item name="android:textColor">@color/YP_dark_blue</item>
+        <item name="backgroundTint">@android:color/transparent</item>
+    </style>
+
+    <style name="MaterialAlertDialogText" parent="@style/MaterialAlertDialog.MaterialComponents.Title.Text">
+        <item name="android:textColor">@color/YP_grey</item>
     </style>
 </resources>

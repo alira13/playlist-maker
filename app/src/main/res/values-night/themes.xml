@@ -51,7 +51,7 @@
         <item name="android:layout_height">match_parent</item>
         <item name="android:paddingLeft">36dp</item>
         <item name="android:layout_gravity">start|center</item>
-        <item name="android:textSize">@dimen/regular_text_size</item>
+        <item name="android:textSize">@dimen/regular_text_size_16</item>
         <item name="android:layout_marginVertical">8dp</item>
         <item name="android:fontFamily">@font/ys_font_family_regular</item>
         <item name="android:background">@drawable/rectangle</item>
@@ -69,13 +69,13 @@
         <item name="android:layout_gravity">start|center</item>
     </style>
 
-    <style name="TrackViewEditTextRegular">
-        <item name="android:textSize">@dimen/regular_text_size</item>
+    <style name="ListItemEditTextRegular">
+        <item name="android:textSize">@dimen/regular_text_size_16</item>
         <item name="android:fontFamily">@font/ys_font_family_regular</item>
         <item name="android:textColor">?attr/colorOnPrimary</item>
     </style>
 
-    <style name="TrackViewEditTextSmall">
+    <style name="ListItemEditTextSmall">
         <item name="android:textSize">@dimen/small_text_size</item>
         <item name="android:fontFamily">@font/ys_font_family_regular</item>
         <item name="android:textColor">?attr/colorOnPrimary</item>
@@ -169,5 +169,14 @@
     <style name="MyBottomNavigationView.TextAppearance" parent="TextAppearance.MaterialComponents.Caption">
         <item name="android:textSize">12sp</item>
         <item name="fontFamily">@font/ys_font_family_regular</item>
+    </style>
+
+    <style name="NewPlaylistBtn">
+        <item name="android:backgroundTint">?attr/colorPrimary</item>
+        <item name="android:textColor">?attr/colorOnPrimary</item>
+    </style>
+
+    <style name="BottomsheetLineStyle">
+        <item name="android:backgroundTint">@color/YP_white</item>
     </style>
 </resources>

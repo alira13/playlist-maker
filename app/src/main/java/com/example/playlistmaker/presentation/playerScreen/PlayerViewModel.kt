@@ -7,12 +7,18 @@ import androidx.lifecycle.viewModelScope
 import com.example.playlistmaker.domain.models.Track
 import com.example.playlistmaker.domain.player.PlayerListener
 import com.example.playlistmaker.domain.usecases.player.PlayerInteractor
+import com.example.playlistmaker.domain.usecases.playlists.PlaylistsInteractor
+import com.example.playlistmaker.presentation.mediaScreen.playlists.PlaylistTrackState
+import com.example.playlistmaker.presentation.mediaScreen.playlists.PlaylistsState
+import com.example.playlistmaker.domain.models.Playlist
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 class PlayerViewModel(
-    private val track: Track, private val playerInteractor: PlayerInteractor
+    private val track: Track,
+    private val playerInteractor: PlayerInteractor,
+    private val playlisInteractor: PlaylistsInteractor
 ) : ViewModel() {
 
     private var _screenStateLiveData = MutableLiveData<Track>(track)
@@ -23,6 +29,12 @@ class PlayerViewModel(
 
     private var _isFavorite = MutableLiveData<FavoriteTrackState>()
     var isLiked: LiveData<FavoriteTrackState> = _isFavorite
+
+    private var _playlistsState = MutableLiveData<PlaylistsState>()
+    var playlistsState: LiveData<PlaylistsState> = _playlistsState
+
+    private var _playlistTrackState = MutableLiveData<PlaylistTrackState>()
+    var playlistTrackState: LiveData<PlaylistTrackState> = _playlistTrackState
 
     private var timerJob: Job? = null
 
@@ -86,6 +98,19 @@ class PlayerViewModel(
         _playerState.postValue(PlayerState.Default())
     }
 
+
+    fun getPlaylists() {
+        viewModelScope.launch {
+            playlisInteractor.getPlaylists().collect {
+                if (it.isEmpty()) {
+                    _playlistsState.postValue(PlaylistsState.EmptyPlaylists())
+                } else {
+                    _playlistsState.postValue(PlaylistsState.ShowPlaylists(it))
+                }
+            }
+        }
+    }
+
     private fun startTimer() {
         timerJob?.cancel()
         timerJob = viewModelScope.launch {
@@ -133,6 +158,32 @@ class PlayerViewModel(
     override fun onCleared() {
         super.onCleared()
         releasePlayer()
+    }
+
+    fun onPlaylistItemClicked(playlist: Playlist) {
+        viewModelScope.launch {
+            val track = _screenStateLiveData.value!!
+            if (playlist.trackIds.contains(track.trackId)) {
+                _playlistTrackState.postValue(
+                    PlaylistTrackState.Exist(
+                        playlist,
+                        track
+                    )
+                )
+
+            } else {
+                val trackIds = playlist.trackIds.toMutableList()
+                trackIds.add(track.trackId)
+                playlist.trackIds = trackIds.toList()
+                playlisInteractor.addTrackToPlaylist(playlist, track)
+                _playlistTrackState.postValue(
+                    PlaylistTrackState.NotExist(
+                        playlist,
+                        track
+                    )
+                )
+            }
+        }
     }
 
     companion object {

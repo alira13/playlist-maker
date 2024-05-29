@@ -1,6 +1,5 @@
-package com.example.playlistmaker.presentation.mediaScreen
+package com.example.playlistmaker.presentation.mediaScreen.favorites
 
-import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -8,9 +7,11 @@ import android.view.ViewGroup
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
+import com.example.playlistmaker.R
 import com.example.playlistmaker.databinding.FragmentMediaFavoritesBinding
 import com.example.playlistmaker.domain.models.Track
-import com.example.playlistmaker.presentation.playerScreen.PlayerActivity
+import com.example.playlistmaker.presentation.rootScreen.RootActivity
 import com.example.playlistmaker.presentation.ui.ItemClickListener
 import com.example.playlistmaker.presentation.ui.TrackAdapter
 import kotlinx.coroutines.delay
@@ -36,6 +37,8 @@ class MediaFavoritesFragment : Fragment(), ItemClickListener {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        (activity as? RootActivity)?.showBottomNavigation()
+
         binding?.trackListRv?.adapter = trackAdapter
 
         playerViewModel.getState()
@@ -49,8 +52,10 @@ class MediaFavoritesFragment : Fragment(), ItemClickListener {
 
     override fun onResume() {
         super.onResume()
+        (activity as? RootActivity)?.showBottomNavigation()
         playerViewModel.getState()
     }
+
 
     override fun onDestroyView() {
         super.onDestroyView()
@@ -59,10 +64,12 @@ class MediaFavoritesFragment : Fragment(), ItemClickListener {
 
     override fun onClick(track: Track) {
         if (clickDebounce()) {
-            Intent(requireContext(), PlayerActivity::class.java).apply {
-                putExtra(TRACK_VALUE, track)
-                startActivity(this)
-            }
+            val bundle = Bundle()
+            bundle.putParcelable(TRACK_VALUE, track)
+            findNavController().navigate(
+                R.id.action_mediaFragment_to_playerFragment,
+                bundle
+            )
         }
     }
 
@@ -80,6 +87,6 @@ class MediaFavoritesFragment : Fragment(), ItemClickListener {
 
     companion object {
         const val TRACK_VALUE = "TRACK_VALUE"
-        private const val CLICK_DEBOUNCE_DELAY = 1000L
+        private const val CLICK_DEBOUNCE_DELAY = 500L
     }
 }

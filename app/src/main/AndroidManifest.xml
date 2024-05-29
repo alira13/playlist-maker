@@ -27,7 +27,7 @@
             android:exported="false"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".presentation.playerScreen.PlayerActivity"
+            android:name=".presentation.playerScreen.PlayerFragment"
             android:exported="false"
             android:screenOrientation="portrait" />
         <activity
@@ -37,7 +37,6 @@
             android:windowSoftInputMode="adjustNothing">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>

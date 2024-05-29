@@ -1,6 +1,7 @@
 package com.example.playlistmaker.presentation.rootScreen
 
 import android.os.Bundle
+import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
@@ -16,7 +17,6 @@ class RootActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-
         viewModel.initTheme()
 
         // Привязываем вёрстку к экрану
@@ -28,5 +28,13 @@ class RootActivity : AppCompatActivity() {
         val navController = navHostFragment.navController
 
         binding?.bottomNavigationView?.setupWithNavController(navController)
+    }
+
+    fun showBottomNavigation() {
+        binding!!.bottomNavigationView.visibility = View.VISIBLE
+    }
+
+    fun hideBottomNavigation() {
+        binding!!.bottomNavigationView.visibility = View.GONE
     }
 }
