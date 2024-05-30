@@ -1,6 +1,7 @@
 package com.example.playlistmaker.data.db.playlists
 
 import com.example.playlistmaker.data.converters.PlaylistDbConverter
+import com.example.playlistmaker.data.converters.PlaylistTrackDbConvertor
 import com.example.playlistmaker.data.converters.TrackDbConvertor
 import com.example.playlistmaker.data.db.AppDatabase
 import com.example.playlistmaker.data.db.favorites.TrackEntity
@@ -15,6 +16,7 @@ class PlaylistInfoRepositoryImpl(
     private val appDatabase: AppDatabase,
     private val playlistDbConverter: PlaylistDbConverter,
     private val trackDbConverter: TrackDbConvertor,
+    private val playlistTrackDbConverter: PlaylistTrackDbConvertor,
     private val externalNavigator: ExternalNavigator
 ) : PlaylistInfoRepository {
 
@@ -48,7 +50,7 @@ class PlaylistInfoRepositoryImpl(
             it.trackIds.contains(Regex(track.trackId.toString()))
         }
         if (playlists.isEmpty()) {
-            appDatabase.getTrackDao().deleteTrack(trackDbConverter.map(track))
+            appDatabase.getPlaylistTracks().deleteTrack(playlistTrackDbConverter.map(track))
         }
     }
 

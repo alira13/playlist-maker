@@ -87,7 +87,7 @@ val dataModule = module {
     factory { PlaylistDbConverter(json = get()) }
 
     single<PlaylistInfoRepository> {
-        PlaylistInfoRepositoryImpl(get(), get(), get(), get())
+        PlaylistInfoRepositoryImpl(get(), get(), get(), get(), get())
     }
 
     factory { PlaylistTrackDbConvertor() }
