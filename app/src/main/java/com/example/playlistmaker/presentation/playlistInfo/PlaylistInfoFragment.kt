@@ -218,11 +218,14 @@ class PlaylistInfoFragment : Fragment(), TrackClickListener, TrackLongClickListe
     }
 
     private fun showNothingToShare() {
+        //hideBottomSheet()
+        //binding.standardBottomSheet.isVisible = false
         showSnackbar(requireView(), getString(R.string.nothing_to_share))
     }
 
     private fun sharePlaylist() {
         viewModel.sharePlaylist(requireContext())
+        hideMenuBottomSheet()
     }
 
     private fun deletePlaylist(){
@@ -282,6 +285,8 @@ class PlaylistInfoFragment : Fragment(), TrackClickListener, TrackLongClickListe
             setMessage(getString(R.string.want_to_delete_track))
             setPositiveButton(getString(R.string.delete)) { _, _ ->
                 viewModel.deleteTrack(track)
+
+
             }
             setNegativeButton(R.string.cancel) { _, _ ->
             }
