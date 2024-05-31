@@ -28,7 +28,7 @@ class PlaylistInfoRepositoryImpl(
 
     override fun getTracks(tracksId: List<Int>): Flow<List<Track>> {
         return flow {
-            val allTracks = appDatabase.getPlaylistTracks().getTracks()
+            val allTracks = appDatabase.getPlaylistTracks().getTracks().reversed()
             val trackByIds = allTracks.filter { tracksId.contains(it.trackId) }
             val tracks = convertFromTrackEntity(trackByIds)
             emit(tracks)
