@@ -1,7 +1,6 @@
 package com.example.playlistmaker.presentation.playlistInfo
 
 import android.content.Context
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -24,8 +23,8 @@ class PlaylistInfoViewModel(
 
     private var tracks: List<Track> = emptyList()
 
-    private fun getPlaylist(): Playlist {
-        return playlist
+    private suspend fun getPlaylist(): Playlist {
+        return playlistInfoInteractor.getPlaylist(playlist.playlistId).first()
     }
 
     suspend fun getTracks(): List<Track> {
@@ -36,23 +35,17 @@ class PlaylistInfoViewModel(
         viewModelScope.launch {
             playlist = getPlaylist()
             tracks = getTracks()
-            Log.d("MY", "playlist $playlist")
-            Log.d("MY", "tracks $tracks")
             if (tracks.isEmpty()) {
-                Log.d("MY", "Empty")
                 val info = PlaylistInfo(
                     playlist = playlist,
                     tracks = null
                 )
-                Log.d("MY", "info ${info.toString()}")
                 _state.postValue(
                     PlaylistInfoState.Empty(
                         info
                     )
                 )
-                Log.d("MY", "Empty $playlist")
             } else {
-                Log.d("MY", "NotEmpty $playlist")
                 _state.postValue(
                     PlaylistInfoState.NotEmpty(
                         PlaylistInfo(
@@ -67,7 +60,7 @@ class PlaylistInfoViewModel(
 
     fun deleteTrack(track: Track) {
         val newTracksIds = playlist.trackIds.toMutableList()
-        newTracksIds.remove(track.trackId)
+        newTracksIds.remove((track.trackId))
         val updatedPlaylist = playlist.copy(trackIds = newTracksIds)
         viewModelScope.launch {
             playlistInfoInteractor.updatePlaylist(updatedPlaylist)

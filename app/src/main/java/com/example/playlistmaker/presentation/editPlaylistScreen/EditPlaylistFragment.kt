@@ -5,7 +5,6 @@ import android.os.Build
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -32,14 +31,15 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
 
 class EditPlaylistFragment : Fragment() {
-    private val viewModel by viewModel<EditPlaylistViewModel>{ parametersOf(getPlaylistFromView()) }
+    private val viewModel by viewModel<EditPlaylistViewModel> { parametersOf(getPlaylistFromView()) }
     private var binding: FragmentEditPlaylistBinding? = null
 
     private var pickMedia: ActivityResultLauncher<PickVisualMediaRequest>? = null
 
-    private var playlistImageUri: Uri? = null
+    private var newImageUri: Uri? = null
 
-    private var playlist: Playlist? = null
+    private var currentUri: String? = null
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
@@ -55,8 +55,9 @@ class EditPlaylistFragment : Fragment() {
         addTextWatcher()
         addOnBackPressedCallback()
 
-        getPlaylistFromView()
-        showPlaylistInfo()
+        viewModel.state.observe(viewLifecycleOwner) {
+            renderState(it)
+        }
 
         requireActivity().window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN)
 
@@ -74,25 +75,35 @@ class EditPlaylistFragment : Fragment() {
     }
 
     private fun getPlaylistFromView(): Playlist {
-        playlist = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+        val playlist = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             arguments?.getParcelable(PlaylistInfoFragment.PLAYLIST_INFO)
         } else {
             arguments?.getParcelable<Playlist>(PlaylistInfoFragment.PLAYLIST_INFO)
         }
-        Log.d("MY", ">> $playlist")
+        if (playlist != null) {
+            currentUri = playlist.artworkUrl512
+        }
         return playlist!!
     }
 
-    private fun showPlaylistInfo() {
-        binding?.playlistNameTiEt?.setText(playlist!!.playlistName)
-        binding?.descriptionTiEt?.setText(playlist!!.playlistDescription)
+    private fun renderState(state: EditPlaylistState) {
+        when (state) {
+            is EditPlaylistState.Current -> showPlaylistInfo(state.playlistInfo)
+            is EditPlaylistState.Edited -> showPlaylistInfo(state.playlistInfo)
+        }
+    }
 
-        Glide.with(binding!!.playerTrackImage).load(playlist!!.artworkUrl512)
+    private fun showPlaylistInfo(stateData: Playlist) {
+        currentUri = stateData.artworkUrl512
+        binding?.playlistNameTiEt?.setText(stateData.playlistName)
+        binding?.descriptionTiEt?.setText(stateData.playlistDescription)
+        Glide.with(binding!!.playerTrackImage).load(stateData.artworkUrl512)
             .fitCenter()
             .placeholder(R.drawable.placeholder)
             .transform(RoundedCorners(binding!!.playerTrackImage.resources.getDimensionPixelSize(R.dimen.player_track_image_corner_radius)))
             .into(binding!!.playerTrackImage)
     }
+
 
     private fun addOnBackPressedCallback() {
         requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner) {
@@ -112,7 +123,7 @@ class EditPlaylistFragment : Fragment() {
                             )
                         )
                     ).into(binding!!.playerTrackImage)
-                playlistImageUri = uri
+                newImageUri = uri
             }
         }
     }
@@ -147,7 +158,7 @@ class EditPlaylistFragment : Fragment() {
     }
 
     private fun onBackClick() {
-        if (playlistImageUri != null || !binding?.playlistNameTiEt?.text.isNullOrEmpty() || !binding?.descriptionTiEt?.text.isNullOrEmpty()) {
+        if (newImageUri != null || !binding?.playlistNameTiEt?.text.isNullOrEmpty() || !binding?.descriptionTiEt?.text.isNullOrEmpty()) {
             showDialog()
         } else {
             findNavController().navigateUp()
@@ -162,7 +173,7 @@ class EditPlaylistFragment : Fragment() {
         val playlistName = binding?.playlistNameTiEt?.text.toString()
         val playlistDescription = binding?.descriptionTiEt?.text.toString()
 
-        viewModel.updatePlaylist(playlistName, playlistDescription, playlistImageUri)
+        viewModel.updatePlaylist(playlistName, playlistDescription, newImageUri)
 
         showSnackbar(
             requireView(),

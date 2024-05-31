@@ -3,7 +3,6 @@ package com.example.playlistmaker.presentation.playlistInfo
 import android.os.Build
 import android.os.Build.VERSION.SDK_INT
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -40,7 +39,7 @@ class PlaylistInfoFragment : Fragment(), TrackClickListener, TrackLongClickListe
 
     private lateinit var menuBottomSheetBehavior: BottomSheetBehavior<LinearLayout>
 
-    private val adapter = PlaylistTrackInStringAdapter(this, this)
+    private val trackAdapter = PlaylistTrackInStringAdapter(this, this)
 
     private val playlistAdapter = PlaylistInStringAdapter(this)
 
@@ -69,7 +68,7 @@ class PlaylistInfoFragment : Fragment(), TrackClickListener, TrackLongClickListe
             binding.shadowV.isVisible = false
         }
 
-        binding.playlerPlaylistsRv.adapter = adapter
+        binding.playlerPlaylistsRv.adapter = trackAdapter
 
         binding.currentPlaylistRv.adapter = playlistAdapter
 
@@ -86,6 +85,7 @@ class PlaylistInfoFragment : Fragment(), TrackClickListener, TrackLongClickListe
         }
 
         viewModel.getPlaylistInfo()
+
         viewModel.state.observe(viewLifecycleOwner) {
             renderState(it)
         }
@@ -102,6 +102,10 @@ class PlaylistInfoFragment : Fragment(), TrackClickListener, TrackLongClickListe
             editPlaylist()
         }
 
+        addMenuBottomSheetCallback()
+    }
+
+    private fun addMenuBottomSheetCallback() {
         menuBottomSheetBehavior.addBottomSheetCallback(object :
             BottomSheetBehavior.BottomSheetCallback() {
 
@@ -135,7 +139,7 @@ class PlaylistInfoFragment : Fragment(), TrackClickListener, TrackLongClickListe
 
     private fun showPlaylistInfo(playlistInfo: PlaylistInfo) {
         binding.playlistName.text = playlistInfo.playlist.playlistName
-        //В дизайне не указано, как должно быть, сделала на свое усмотрение
+
         if (playlistInfo.playlist.playlistDescription.isEmpty())
             binding.playlistDescription.isVisible = false
         else {
@@ -161,14 +165,13 @@ class PlaylistInfoFragment : Fragment(), TrackClickListener, TrackLongClickListe
             .into(binding.playlistInfoImageIv)
 
         binding.playlerPlaylistsRv.isVisible = true
-        adapter.items = playlistInfo.tracks.toMutableList()
-        playlistAdapter.items = listOf(playlistInfo.playlist).toMutableList()
+        trackAdapter.items = playlistInfo.tracks.toMutableList()
         binding.playerMessageTv.isVisible = false
     }
 
     private fun showEmptyPlaylistInfo(playlistInfo: PlaylistInfo) {
         binding.playlistName.text = playlistInfo.playlist.playlistName
-        //В дизайне не указано, как должно быть, сделала на свое усмотрение
+
         if (playlistInfo.playlist.playlistDescription.isEmpty())
             binding.playlistDescription.isVisible = false
         else {
@@ -193,6 +196,7 @@ class PlaylistInfoFragment : Fragment(), TrackClickListener, TrackLongClickListe
             .transform(RoundedCorners(binding.playlistInfoImageIv.resources.getDimensionPixelSize(R.dimen.player_track_image_corner_radius)))
             .into(binding.playlistInfoImageIv)
         binding.playerMessageTv.isVisible = true
+        trackAdapter.items = emptyList<Track>().toMutableList()
     }
 
     private fun showSnackbar(root: View, text: String) {
@@ -249,6 +253,10 @@ class PlaylistInfoFragment : Fragment(), TrackClickListener, TrackLongClickListe
         findNavController().navigate(
             R.id.action_playlistInfoFragment_to_editPlaylistFragment, bundle
         )
+        viewModel.getPlaylistInfo()
+        viewModel.state.observe(viewLifecycleOwner) {
+            renderState(it)
+        }
     }
 
     private fun openMenu() {
@@ -262,13 +270,14 @@ class PlaylistInfoFragment : Fragment(), TrackClickListener, TrackLongClickListe
         } else {
             arguments?.getParcelable<Playlist>(PLAYLIST_INFO)
         }
-        Log.d("MY", ">> $playlist")
         return playlist!!
     }
 
     override fun onResume() {
         super.onResume()
         (activity as? RootActivity)?.hideBottomNavigation()
+        getPlaylistFromView()
+        viewModel.getPlaylistInfo()
     }
 
     override fun onClick(track: Track) {
@@ -285,8 +294,6 @@ class PlaylistInfoFragment : Fragment(), TrackClickListener, TrackLongClickListe
             setMessage(getString(R.string.want_to_delete_track))
             setPositiveButton(getString(R.string.delete)) { _, _ ->
                 viewModel.deleteTrack(track)
-
-
             }
             setNegativeButton(R.string.cancel) { _, _ ->
             }
@@ -309,7 +316,6 @@ class PlaylistInfoFragment : Fragment(), TrackClickListener, TrackLongClickListe
     }
 
     private fun showBottomSheet() {
-        Log.d("MY", "Show")
         bottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
     }
 
