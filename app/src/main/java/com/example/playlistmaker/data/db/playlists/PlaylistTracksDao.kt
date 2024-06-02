@@ -13,8 +13,11 @@ interface PlaylistTracksDao {
     suspend fun addTrack(track: PlaylistTrackEntity)
 
     @Query("SELECT * FROM playlist_track_table")
-    suspend fun getTracks(): List<TrackEntity>
+    suspend fun getTracks(): List<PlaylistTrackEntity>
 
     @Delete
     suspend fun deleteTrack(track: PlaylistTrackEntity)
+
+    @Query("SELECT * FROM playlist_track_table where trackId = :trackId")
+    suspend fun getTrackById(trackId: Int): PlaylistTrackEntity
 }

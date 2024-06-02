@@ -28,10 +28,12 @@ class PlaylistInfoRepositoryImpl(
 
     override fun getTracks(tracksId: List<Int>): Flow<List<Track>> {
         return flow {
-            val allTracks = appDatabase.getPlaylistTracks().getTracks().reversed()
-            val trackByIds = allTracks.filter { tracksId.contains(it.trackId) }
-            val tracks = convertFromTrackEntity(trackByIds)
-            emit(tracks)
+            val tracks = mutableListOf<Track>()
+            for (id in tracksId){
+                val playlistTrackEntity = appDatabase.getPlaylistTracks().getTrackById(id)
+                tracks.add(playlistTrackDbConverter.map(playlistTrackEntity))
+            }
+            emit(tracks.reversed())
         }
     }
 
