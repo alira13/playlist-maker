@@ -60,10 +60,13 @@ class MediaPlaylistsFragment : Fragment(), PlaylistItemClickListener {
         binding?.emptyPlaylistsErrorTv?.isVisible = state.isError
         when (state) {
             is PlaylistsState.ShowPlaylists -> {
+                binding?.playlistsRv?.isVisible = true
                 adapter.items = state.playlists.toMutableList()
             }
 
-            else -> {}
+            is PlaylistsState.EmptyPlaylists -> {
+                binding?.playlistsRv?.isVisible = false
+            }
         }
     }
 
@@ -87,6 +90,7 @@ class MediaPlaylistsFragment : Fragment(), PlaylistItemClickListener {
     override fun onResume() {
         super.onResume()
         (activity as? RootActivity)?.showBottomNavigation()
+        viewModel.getState()
     }
 
     override fun onDestroyView() {
@@ -96,8 +100,13 @@ class MediaPlaylistsFragment : Fragment(), PlaylistItemClickListener {
 
     companion object {
         private const val CLICK_DEBOUNCE_DELAY = 1000L
+        const val PLAYLIST_INFO = "PLAYLIST_INFO"
     }
 
+
     override fun onClick(item: Playlist) {
+        val bundle = Bundle()
+        bundle.putParcelable(PLAYLIST_INFO, item)
+        findNavController().navigate(R.id.action_mediaFragment_to_playlistInfoFragment, bundle)
     }
 }
