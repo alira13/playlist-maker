@@ -1,4 +1,4 @@
-package com.example.playlistmaker.presentation.rootScreen
+package com.example.playlistmaker.presentation.mainScreen
 
 import android.os.Bundle
 import android.view.View
@@ -9,32 +9,31 @@ import com.example.playlistmaker.R
 import com.example.playlistmaker.databinding.ActivityRootBinding
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class RootActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity() {
 
     private var binding: ActivityRootBinding? = null
 
-    private val viewModel by viewModel<RootViewModel>()
+    private val viewModel by viewModel<MainViewModel>()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         viewModel.initTheme()
 
-        // Привязываем вёрстку к экрану
         binding = ActivityRootBinding.inflate(layoutInflater)
         setContentView(binding?.root)
 
         val navHostFragment =
-            supportFragmentManager.findFragmentById(R.id.container_view) as NavHostFragment
+            supportFragmentManager.findFragmentById(R.id.content_fcv) as NavHostFragment
         val navController = navHostFragment.navController
 
-        binding?.bottomNavigationView?.setupWithNavController(navController)
+        binding?.navigationBnv?.setupWithNavController(navController)
     }
 
     fun showBottomNavigation() {
-        binding!!.bottomNavigationView.visibility = View.VISIBLE
+        binding!!.navigationBnv.visibility = View.VISIBLE
     }
 
     fun hideBottomNavigation() {
-        binding!!.bottomNavigationView.visibility = View.GONE
+        binding!!.navigationBnv.visibility = View.GONE
     }
 }

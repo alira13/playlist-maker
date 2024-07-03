@@ -18,7 +18,7 @@ import com.example.playlistmaker.R
 import com.example.playlistmaker.databinding.FragmentPlaylistInfoBinding
 import com.example.playlistmaker.domain.models.Playlist
 import com.example.playlistmaker.domain.models.Track
-import com.example.playlistmaker.presentation.rootScreen.RootActivity
+import com.example.playlistmaker.presentation.mainScreen.MainActivity
 import com.example.playlistmaker.presentation.searchScreen.SearchFragment
 import com.example.playlistmaker.presentation.ui.PlaylistInStringAdapter
 import com.example.playlistmaker.presentation.ui.PlaylistItemClickListener
@@ -56,7 +56,7 @@ class PlaylistInfoFragment : Fragment(), TrackClickListener, TrackLongClickListe
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        (activity as? RootActivity)?.hideBottomNavigation()
+        (activity as? MainActivity)?.hideBottomNavigation()
 
         bottomSheetBehavior = BottomSheetBehavior.from(binding.standardBottomSheet).apply {
             state = BottomSheetBehavior.STATE_COLLAPSED
@@ -275,7 +275,7 @@ class PlaylistInfoFragment : Fragment(), TrackClickListener, TrackLongClickListe
 
     override fun onResume() {
         super.onResume()
-        (activity as? RootActivity)?.hideBottomNavigation()
+        (activity as? MainActivity)?.hideBottomNavigation()
         getPlaylistFromView()
         viewModel.getPlaylistInfo()
     }

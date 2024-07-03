@@ -11,7 +11,7 @@ import androidx.navigation.fragment.findNavController
 import com.example.playlistmaker.R
 import com.example.playlistmaker.databinding.FragmentMediaFavoritesBinding
 import com.example.playlistmaker.domain.models.Track
-import com.example.playlistmaker.presentation.rootScreen.RootActivity
+import com.example.playlistmaker.presentation.mainScreen.MainActivity
 import com.example.playlistmaker.presentation.ui.ItemClickListener
 import com.example.playlistmaker.presentation.ui.TrackAdapter
 import kotlinx.coroutines.delay
@@ -37,7 +37,7 @@ class MediaFavoritesFragment : Fragment(), ItemClickListener {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        (activity as? RootActivity)?.showBottomNavigation()
+        (activity as? MainActivity)?.showBottomNavigation()
 
         binding?.trackListRv?.adapter = trackAdapter
 
@@ -52,7 +52,7 @@ class MediaFavoritesFragment : Fragment(), ItemClickListener {
 
     override fun onResume() {
         super.onResume()
-        (activity as? RootActivity)?.showBottomNavigation()
+        (activity as? MainActivity)?.showBottomNavigation()
         playerViewModel.getState()
     }
 

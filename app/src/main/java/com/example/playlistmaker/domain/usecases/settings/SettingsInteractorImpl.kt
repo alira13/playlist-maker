@@ -9,11 +9,11 @@ class SettingsInteractorImpl(private val settingsRepository: SettingsRepository)
         settingsRepository.initTheme()
     }
 
-    override fun getThemeSettings(): ThemeSettings {
+    override fun getTheme(): ThemeSettings {
         return settingsRepository.getThemeSettings()
     }
 
-    override fun updateThemeSetting(settings: ThemeSettings) {
+    override fun updateTheme(settings: ThemeSettings) {
         settingsRepository.updateThemeSetting(settings)
     }
 }

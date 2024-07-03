@@ -24,7 +24,7 @@ import com.example.playlistmaker.R
 import com.example.playlistmaker.databinding.FragmentEditPlaylistBinding
 import com.example.playlistmaker.domain.models.Playlist
 import com.example.playlistmaker.presentation.playlistInfo.PlaylistInfoFragment
-import com.example.playlistmaker.presentation.rootScreen.RootActivity
+import com.example.playlistmaker.presentation.mainScreen.MainActivity
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.snackbar.Snackbar
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -50,7 +50,7 @@ class EditPlaylistFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        (activity as? RootActivity)?.hideBottomNavigation()
+        (activity as? MainActivity)?.hideBottomNavigation()
         createPickMedia()
         addTextWatcher()
         addOnBackPressedCallback()
@@ -211,6 +211,6 @@ class EditPlaylistFragment : Fragment() {
 
     override fun onResume() {
         super.onResume()
-        (activity as? RootActivity)?.hideBottomNavigation()
+        (activity as? MainActivity)?.hideBottomNavigation()
     }
 }

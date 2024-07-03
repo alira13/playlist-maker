@@ -21,7 +21,7 @@ import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.example.playlistmaker.R
 import com.example.playlistmaker.databinding.FragmentNewPlaylistBinding
-import com.example.playlistmaker.presentation.rootScreen.RootActivity
+import com.example.playlistmaker.presentation.mainScreen.MainActivity
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.snackbar.Snackbar
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -44,7 +44,7 @@ class NewPlaylistFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        (activity as? RootActivity)?.hideBottomNavigation()
+        (activity as? MainActivity)?.hideBottomNavigation()
 
         createPickMedia()
         addTextWatcher()
@@ -172,6 +172,6 @@ class NewPlaylistFragment : Fragment() {
 
     override fun onResume() {
         super.onResume()
-        (activity as? RootActivity)?.hideBottomNavigation()
+        (activity as? MainActivity)?.hideBottomNavigation()
     }
 }

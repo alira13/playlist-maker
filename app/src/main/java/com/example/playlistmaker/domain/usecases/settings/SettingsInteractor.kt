@@ -4,6 +4,6 @@ import com.example.playlistmaker.domain.models.ThemeSettings
 
 interface SettingsInteractor {
     fun initTheme()
-    fun getThemeSettings(): ThemeSettings
-    fun updateThemeSetting(settings: ThemeSettings)
+    fun getTheme(): ThemeSettings
+    fun updateTheme(settings: ThemeSettings)
 }

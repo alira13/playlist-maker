@@ -6,7 +6,7 @@ import com.example.playlistmaker.presentation.mediaScreen.playlists.MediaPlaylis
 import com.example.playlistmaker.presentation.newPlaylistScreen.NewPlaylistViewModel
 import com.example.playlistmaker.presentation.playerScreen.PlayerViewModel
 import com.example.playlistmaker.presentation.playlistInfo.PlaylistInfoViewModel
-import com.example.playlistmaker.presentation.rootScreen.RootViewModel
+import com.example.playlistmaker.presentation.mainScreen.MainViewModel
 import com.example.playlistmaker.presentation.searchScreen.SearchViewModel
 import com.example.playlistmaker.presentation.settingsScreen.SettingsViewModel
 import org.koin.androidx.viewmodel.dsl.viewModel
@@ -26,8 +26,8 @@ val appModule = module {
         SettingsViewModel(settingsInteractor = get(), sharingInteractor = get())
     }
 
-    viewModel<RootViewModel> {
-        RootViewModel(settingsInteractor = get())
+    viewModel<MainViewModel> {
+        MainViewModel(settingsInteractor = get())
     }
 
     viewModel<MediaFavoritesViewModel> {

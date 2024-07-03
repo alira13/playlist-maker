@@ -152,7 +152,7 @@
         <item name="tabTextColor">?attr/colorOnPrimary</item>
     </style>
 
-    <style name="MenuStyle" parent="Widget.MaterialComponents.BottomNavigationView.Colored">
+    <style name="NavigationStyle" parent="Widget.MaterialComponents.BottomNavigationView.Colored">
         <item name="android:background">?attr/colorPrimary</item>
         <item name="itemIconTint">@color/item_state_color</item>
         <item name="itemTextColor">@color/item_state_color</item>

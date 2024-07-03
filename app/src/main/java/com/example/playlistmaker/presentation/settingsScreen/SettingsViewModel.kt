@@ -11,11 +11,11 @@ class SettingsViewModel(
 ) : ViewModel() {
 
     fun getThemeSettings(): ThemeSettings {
-        return settingsInteractor.getThemeSettings()
+        return settingsInteractor.getTheme()
     }
 
     fun updateThemeSetting(settings: ThemeSettings) {
-        settingsInteractor.updateThemeSetting(settings)
+        settingsInteractor.updateTheme(settings)
     }
 
     fun shareApp() {
