@@ -1,5 +1,6 @@
 package com.example.playlistmaker.data.network
 
+import android.util.Log
 import com.example.playlistmaker.data.dto.NetworkResponse
 import com.example.playlistmaker.data.dto.TrackNetworkResponse
 import com.example.playlistmaker.data.repository.TrackNetworkClient
@@ -9,6 +10,7 @@ class TrackRetrofitNetworkClient : TrackNetworkClient {
         val trackResponse: NetworkResponse
         try {
             val response = RetrofitClient.api.search(track)
+            Log.d("MY_LOG", "${response.results}")
             return if (response != null) {
                 if (response.results.isEmpty()) {
                     trackResponse = NetworkResponse()

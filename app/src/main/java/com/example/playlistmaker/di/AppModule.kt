@@ -1,14 +1,14 @@
 package com.example.playlistmaker.di
 
-import com.example.playlistmaker.presentation.editPlaylistScreen.EditPlaylistViewModel
-import com.example.playlistmaker.presentation.mainScreen.MainViewModel
-import com.example.playlistmaker.presentation.mediaScreen.favorites.MediaFavoritesViewModel
-import com.example.playlistmaker.presentation.mediaScreen.playlists.MediaPlaylistsViewModel
-import com.example.playlistmaker.presentation.newPlaylistScreen.NewPlaylistViewModel
-import com.example.playlistmaker.presentation.playerScreen.PlayerViewModel
-import com.example.playlistmaker.presentation.playlistInfo.PlaylistInfoViewModel
-import com.example.playlistmaker.presentation.searchScreen.SearchViewModel
-import com.example.playlistmaker.presentation.settingsScreen.SettingsViewModel
+import com.example.playlistmaker.presentation.screenEditPlaylist.EditPlaylistViewModel
+import com.example.playlistmaker.presentation.screenMain.MainViewModel
+import com.example.playlistmaker.presentation.screenMedia.favorites.MediaFavoritesViewModel
+import com.example.playlistmaker.presentation.screenMedia.playlists.MediaPlaylistsViewModel
+import com.example.playlistmaker.presentation.screenNewPlaylist.NewPlaylistViewModel
+import com.example.playlistmaker.presentation.screenPlayer.PlayerViewModel
+import com.example.playlistmaker.presentation.screenPlaylistInfo.PlaylistInfoViewModel
+import com.example.playlistmaker.presentation.screenSearch.SearchViewModel
+import com.example.playlistmaker.presentation.screenSettings.SettingsViewModel
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 

@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     style="@style/SecondaryScreenLayoutStyle"
-    tools:context=".presentation.mediaScreen.MediaFragment">
+    tools:context=".presentation.screenMedia.MediaFragment">
 
     <LinearLayout
         android:id="@+id/media_header_ll"
