@@ -61,4 +61,8 @@
     <string name="save">Сохранить</string>
     <string name="playlist_updated">Плейлист %1$s обновлен</string>
     <string name="no_tracks">В этом плейлисте нет треков</string>
+    <string name="playlist_name_label">Имя плейлиста</string>
+    <string name="year_example_label">2024</string>
+    <string name="minutes_example_label">300 минут</string>
+    <string name="track_number_label">96 треков</string>
 </resources>

@@ -60,7 +60,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:fontFamily="@font/ys_font_family_medium"
-            android:text="Имя плейлиста"
+            android:text="@string/playlist_name_label"
             android:textSize="@dimen/medium_text_size_22"
             app:layout_constraintBottom_toTopOf="@+id/playlist_description"
             app:layout_constraintStart_toStartOf="@+id/left_guideline"
@@ -74,7 +74,7 @@
             android:layout_marginTop="8dp"
             android:layout_marginBottom="8dp"
             android:fontFamily="@font/ys_font_family_medium"
-            android:text="2024"
+            android:text="@string/year_example_label"
             android:textSize="@dimen/medium_text_size_14"
             app:layout_constraintStart_toStartOf="@+id/left_guideline"
             app:layout_constraintTop_toBottomOf="@+id/playlist_name" />
@@ -100,7 +100,7 @@
                 android:maxLines="1"
                 android:textColor="@color/YP_black"
                 app:drawableEndCompat="@drawable/dot"
-                android:text="300 минут"
+                android:text="@string/minutes_example_label"
                 app:drawableTint="@color/YP_black" />
 
             <TextView
@@ -112,7 +112,7 @@
                 android:layout_weight="0"
                 android:maxLines="1"
                 android:textColor="@color/YP_black"
-                android:text="96 треков" />
+                android:text="@string/track_number_label" />
         </LinearLayout>
 
         <ImageButton
@@ -144,7 +144,7 @@
             app:srcCompat="@drawable/more"
             android:layout_marginTop="8dp"
             android:layout_marginBottom="8dp"
-            android:layout_marginLeft="12dp"/>
+            android:layout_marginStart="12dp"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
