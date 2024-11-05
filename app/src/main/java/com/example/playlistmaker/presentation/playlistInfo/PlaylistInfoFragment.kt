@@ -218,7 +218,7 @@ class PlaylistInfoFragment : Fragment(), TrackClickListener, TrackLongClickListe
     }
 
     private fun showNoApplicationFound() {
-
+        showSnackbar(requireView(), getString(R.string.msg_app_not_found))
     }
 
     private fun showNothingToShare() {

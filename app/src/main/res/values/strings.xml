@@ -57,6 +57,7 @@
     <string name="msg_no_internet_connection">Проблемы со связью \n\nЗагрузка не удалась. Проверьте подключение к интернету</string>
     <string name="msg_no_tracks">В этом плейлисте нет треков</string>
     <string name="msg_nothing_to_share">В этом плейлисте нет списка треков, которым можно поделиться</string>
+    <string name="msg_app_not_found">Не найдено ни одного приложения</string>
     <string name="msg_playlist_created">Плейлист %1$s создан</string>
     <string name="msg_playlist_updated">Плейлист %1$s обновлен</string>
     <string name="msg_tracks_not_found">Ничего не нашлось</string>
