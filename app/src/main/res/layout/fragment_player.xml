@@ -318,7 +318,7 @@
                 android:layout_height="wrap_content"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                 tools:itemCount="5"
-                tools:listitem="@layout/playlist_in_string_view" />
+                tools:listitem="@layout/view_playlist_in_string" />
         </androidx.core.widget.NestedScrollView>
 
         <TextView

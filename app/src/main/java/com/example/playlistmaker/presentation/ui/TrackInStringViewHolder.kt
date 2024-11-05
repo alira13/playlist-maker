@@ -15,7 +15,7 @@ import java.util.Locale
 
 class TrackInStringViewHolder(parentView: ViewGroup) : RecyclerView.ViewHolder(
     LayoutInflater.from(parentView.context)
-        .inflate(R.layout.track_view, parentView, false)
+        .inflate(R.layout.view_track, parentView, false)
 ) {
 
     private val trackName: TextView = itemView.findViewById(R.id.track_name)
@@ -28,7 +28,6 @@ class TrackInStringViewHolder(parentView: ViewGroup) : RecyclerView.ViewHolder(
         artistName.text = model.artistName
         trackTime.text = SimpleDateFormat("mm:ss", Locale.getDefault()).format(model.trackTime)
 
-        val roundedCornersValue = 2f
         Glide
             .with(trackImage)
             .load(model.artworkUrl100)

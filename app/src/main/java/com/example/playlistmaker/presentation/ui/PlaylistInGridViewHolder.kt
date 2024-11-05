@@ -13,7 +13,7 @@ import com.example.playlistmaker.domain.models.Playlist
 
 class PlaylistInGridViewHolder(parentView: ViewGroup) : RecyclerView.ViewHolder(
     LayoutInflater.from(parentView.context)
-        .inflate(R.layout.playlist_view, parentView, false)
+        .inflate(R.layout.view_playlist, parentView, false)
 ) {
 
     private val name: TextView = itemView.findViewById(R.id.playlist_name_tv)

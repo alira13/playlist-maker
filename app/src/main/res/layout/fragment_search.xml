@@ -59,7 +59,7 @@
         android:layout_height="wrap_content"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         tools:itemCount="5"
-        tools:listitem="@layout/track_view" />
+        tools:listitem="@layout/view_track" />
 
     <TextView
         android:id="@+id/empty_list_error_tv"
@@ -105,7 +105,7 @@
             android:visibility="gone"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             tools:itemCount="10"
-            tools:listitem="@layout/track_view" />
+            tools:listitem="@layout/view_track" />
     </ScrollView>
 
     <Button
