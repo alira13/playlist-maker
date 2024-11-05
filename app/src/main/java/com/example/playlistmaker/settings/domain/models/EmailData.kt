@@ -1,4 +1,4 @@
-package com.example.playlistmaker.domain.models
+package com.example.playlistmaker.settings.domain.models
 
 data class EmailData(
     val email: String,

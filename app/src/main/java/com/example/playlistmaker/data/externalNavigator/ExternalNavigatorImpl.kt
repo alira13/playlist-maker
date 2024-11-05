@@ -3,8 +3,8 @@ package com.example.playlistmaker.data.externalNavigator
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
-import com.example.playlistmaker.domain.models.EmailData
-import com.example.playlistmaker.domain.usecases.settings.ExternalNavigator
+import com.example.playlistmaker.settings.domain.models.EmailData
+import com.example.playlistmaker.settings.domain.usecases.ExternalNavigator
 
 class ExternalNavigatorImpl(private val context: Context) : ExternalNavigator {
     override fun shareLink(link: String) {

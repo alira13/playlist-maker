@@ -10,10 +10,10 @@ import com.example.playlistmaker.domain.usecases.search.SearchHistoryInteractor
 import com.example.playlistmaker.domain.usecases.search.SearchHistoryInteractorImpl
 import com.example.playlistmaker.domain.usecases.search.SearchInteractor
 import com.example.playlistmaker.domain.usecases.search.SearchInteractorImpl
-import com.example.playlistmaker.domain.usecases.settings.SettingsInteractor
-import com.example.playlistmaker.domain.usecases.settings.SettingsInteractorImpl
-import com.example.playlistmaker.domain.usecases.settings.SharingInteractor
-import com.example.playlistmaker.domain.usecases.settings.SharingInteractorImpl
+import com.example.playlistmaker.settings.domain.usecases.SettingsInteractor
+import com.example.playlistmaker.settings.domain.usecases.SettingsInteractorImpl
+import com.example.playlistmaker.settings.domain.usecases.SharingInteractor
+import com.example.playlistmaker.settings.domain.usecases.SharingInteractorImpl
 import org.koin.dsl.module
 
 val domainModule = module {

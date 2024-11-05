@@ -1,4 +1,4 @@
-package com.example.playlistmaker.domain.usecases.settings
+package com.example.playlistmaker.settings.domain.usecases
 
 interface SharingInteractor {
     fun shareApp()

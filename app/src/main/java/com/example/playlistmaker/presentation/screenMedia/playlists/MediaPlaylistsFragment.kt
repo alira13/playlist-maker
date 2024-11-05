@@ -12,7 +12,7 @@ import androidx.recyclerview.widget.GridLayoutManager
 import com.example.playlistmaker.R
 import com.example.playlistmaker.databinding.FragmentMediaPlaylistsBinding
 import com.example.playlistmaker.domain.models.Playlist
-import com.example.playlistmaker.presentation.screenMain.MainActivity
+import com.example.playlistmaker.core.presentation.MainActivity
 import com.example.playlistmaker.presentation.ui.PlaylistAdapter
 import com.example.playlistmaker.presentation.ui.PlaylistItemClickListener
 import kotlinx.coroutines.delay

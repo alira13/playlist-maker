@@ -6,7 +6,7 @@ import com.example.playlistmaker.data.db.AppDatabase
 import com.example.playlistmaker.domain.models.Playlist
 import com.example.playlistmaker.domain.models.Track
 import com.example.playlistmaker.domain.repository.PlaylistInfoRepository
-import com.example.playlistmaker.domain.usecases.settings.ExternalNavigator
+import com.example.playlistmaker.settings.domain.usecases.ExternalNavigator
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 

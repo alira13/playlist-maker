@@ -1,6 +1,6 @@
-package com.example.playlistmaker.domain.usecases.settings
+package com.example.playlistmaker.settings.domain.usecases
 
-import com.example.playlistmaker.domain.models.ThemeSettings
+import com.example.playlistmaker.settings.domain.models.ThemeSettings
 
 interface SettingsInteractor {
     fun initTheme()

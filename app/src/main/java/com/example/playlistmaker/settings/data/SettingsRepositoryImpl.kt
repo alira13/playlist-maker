@@ -1,8 +1,8 @@
-package com.example.playlistmaker.data.repository
+package com.example.playlistmaker.settings.data
 
-import com.example.playlistmaker.data.sharedPreferences.AppSharedPreferences
-import com.example.playlistmaker.domain.models.ThemeSettings
-import com.example.playlistmaker.domain.repository.SettingsRepository
+import com.example.playlistmaker.core.data.AppSharedPreferences
+import com.example.playlistmaker.settings.domain.models.ThemeSettings
+import com.example.playlistmaker.settings.domain.repository.SettingsRepository
 
 class SettingsRepositoryImpl(private val appSharedPreferences: AppSharedPreferences) :
     SettingsRepository {

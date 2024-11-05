@@ -1,6 +1,6 @@
-package com.example.playlistmaker.domain.usecases.settings
+package com.example.playlistmaker.settings.domain.usecases
 
-import com.example.playlistmaker.domain.models.EmailData
+import com.example.playlistmaker.settings.domain.models.EmailData
 
 interface ExternalNavigator {
     fun shareLink(link: String)

@@ -1,4 +1,4 @@
-package com.example.playlistmaker.presentation.screenSettings
+package com.example.playlistmaker.settings.presentation
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -6,8 +6,8 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.example.playlistmaker.databinding.FragmentSettingsBinding
-import com.example.playlistmaker.domain.models.ThemeSettings
-import com.example.playlistmaker.presentation.screenMain.MainActivity
+import com.example.playlistmaker.settings.domain.models.ThemeSettings
+import com.example.playlistmaker.core.presentation.MainActivity
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class SettingsFragment : Fragment() {

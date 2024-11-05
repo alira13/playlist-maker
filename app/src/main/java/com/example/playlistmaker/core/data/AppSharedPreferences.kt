@@ -1,4 +1,4 @@
-package com.example.playlistmaker.data.sharedPreferences
+package com.example.playlistmaker.core.data
 
 import com.example.playlistmaker.domain.models.Track
 

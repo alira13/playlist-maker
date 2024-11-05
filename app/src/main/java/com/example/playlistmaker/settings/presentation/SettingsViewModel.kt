@@ -1,9 +1,9 @@
-package com.example.playlistmaker.presentation.screenSettings
+package com.example.playlistmaker.settings.presentation
 
 import androidx.lifecycle.ViewModel
-import com.example.playlistmaker.domain.models.ThemeSettings
-import com.example.playlistmaker.domain.usecases.settings.SettingsInteractor
-import com.example.playlistmaker.domain.usecases.settings.SharingInteractor
+import com.example.playlistmaker.settings.domain.models.ThemeSettings
+import com.example.playlistmaker.settings.domain.usecases.SettingsInteractor
+import com.example.playlistmaker.settings.domain.usecases.SharingInteractor
 
 class SettingsViewModel(
     private val sharingInteractor: SharingInteractor,

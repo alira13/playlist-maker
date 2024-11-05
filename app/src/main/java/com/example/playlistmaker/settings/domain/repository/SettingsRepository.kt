@@ -1,6 +1,6 @@
-package com.example.playlistmaker.domain.repository
+package com.example.playlistmaker.settings.domain.repository
 
-import com.example.playlistmaker.domain.models.ThemeSettings
+import com.example.playlistmaker.settings.domain.models.ThemeSettings
 
 interface SettingsRepository {
     fun initTheme()

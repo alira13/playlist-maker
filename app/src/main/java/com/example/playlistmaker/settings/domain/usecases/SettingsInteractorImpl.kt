@@ -1,7 +1,7 @@
-package com.example.playlistmaker.domain.usecases.settings
+package com.example.playlistmaker.settings.domain.usecases
 
-import com.example.playlistmaker.domain.models.ThemeSettings
-import com.example.playlistmaker.domain.repository.SettingsRepository
+import com.example.playlistmaker.settings.domain.models.ThemeSettings
+import com.example.playlistmaker.settings.domain.repository.SettingsRepository
 
 class SettingsInteractorImpl(private val settingsRepository: SettingsRepository) :
     SettingsInteractor {
