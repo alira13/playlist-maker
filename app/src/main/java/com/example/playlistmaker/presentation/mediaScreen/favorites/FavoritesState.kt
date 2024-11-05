@@ -6,5 +6,5 @@ sealed class FavoritesState(val isEmpty: Boolean, val tracks: List<Track>) {
 
     class NotEmpty(tracks: List<Track>) : FavoritesState(false, tracks)
 
-    class IsEmpty() : FavoritesState(true, emptyList())
+    class IsEmpty : FavoritesState(true, emptyList())
 }

@@ -1,4 +1,4 @@
-package com.example.playlistmaker.domain.usecases.playlists
+package com.example.playlistmaker.domain.usecases.playlistInfo
 
 import com.example.playlistmaker.domain.models.Playlist
 import com.example.playlistmaker.domain.models.Track

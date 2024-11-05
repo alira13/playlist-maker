@@ -15,11 +15,6 @@ class PlaylistInStringAdapter(
             notifyDataSetChanged()
         }
 
-    fun clearItems() {
-        items.clear()
-        notifyDataSetChanged()
-    }
-
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PlaylistInStringViewHolder {
         return PlaylistInStringViewHolder(parent)
     }

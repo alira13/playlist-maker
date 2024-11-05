@@ -32,7 +32,6 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
-import java.lang.Math.abs
 
 class PlayerFragment : Fragment(), PlaylistItemClickListener {
 
@@ -92,7 +91,7 @@ class PlayerFragment : Fragment(), PlaylistItemClickListener {
             }
 
             override fun onSlide(bottomSheet: View, slideOffset: Float) {
-                binding.shadowV.alpha = 1 - abs(slideOffset)
+                binding.shadowV.alpha = 1 - kotlin.math.abs(slideOffset)
             }
         })
 

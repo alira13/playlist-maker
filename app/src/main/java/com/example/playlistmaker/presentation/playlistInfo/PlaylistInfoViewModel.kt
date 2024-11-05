@@ -8,7 +8,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.playlistmaker.R
 import com.example.playlistmaker.domain.models.Playlist
 import com.example.playlistmaker.domain.models.Track
-import com.example.playlistmaker.domain.usecases.playlists.PlaylistInfoInteractor
+import com.example.playlistmaker.domain.usecases.playlistInfo.PlaylistInfoInteractor
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import java.util.Locale

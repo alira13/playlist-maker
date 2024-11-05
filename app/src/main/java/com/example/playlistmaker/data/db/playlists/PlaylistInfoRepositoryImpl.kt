@@ -2,9 +2,7 @@ package com.example.playlistmaker.data.db.playlists
 
 import com.example.playlistmaker.data.converters.PlaylistDbConverter
 import com.example.playlistmaker.data.converters.PlaylistTrackDbConvertor
-import com.example.playlistmaker.data.converters.TrackDbConvertor
 import com.example.playlistmaker.data.db.AppDatabase
-import com.example.playlistmaker.data.db.favorites.TrackEntity
 import com.example.playlistmaker.domain.models.Playlist
 import com.example.playlistmaker.domain.models.Track
 import com.example.playlistmaker.domain.repository.PlaylistInfoRepository
@@ -15,7 +13,6 @@ import kotlinx.coroutines.flow.flow
 class PlaylistInfoRepositoryImpl(
     private val appDatabase: AppDatabase,
     private val playlistDbConverter: PlaylistDbConverter,
-    private val trackDbConverter: TrackDbConvertor,
     private val playlistTrackDbConverter: PlaylistTrackDbConvertor,
     private val externalNavigator: ExternalNavigator
 ) : PlaylistInfoRepository {
@@ -35,10 +32,6 @@ class PlaylistInfoRepositoryImpl(
             }
             emit(tracks.reversed())
         }
-    }
-
-    private fun convertFromTrackEntity(tracks: List<TrackEntity>): List<Track> {
-        return tracks.map { track -> trackDbConverter.map(track) }
     }
 
     override suspend fun updatePlaylist(playlist: Playlist) {

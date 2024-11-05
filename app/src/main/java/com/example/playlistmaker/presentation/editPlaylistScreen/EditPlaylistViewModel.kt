@@ -6,7 +6,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.playlistmaker.domain.models.Playlist
-import com.example.playlistmaker.domain.usecases.playlists.PlaylistInfoInteractor
+import com.example.playlistmaker.domain.usecases.playlistInfo.PlaylistInfoInteractor
 import com.example.playlistmaker.domain.usecases.playlists.PlaylistsInteractor
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
@@ -41,11 +41,10 @@ class EditPlaylistViewModel(
     ) {
 
         viewModelScope.launch {
-            val artworkUrl512: String
-            if (uri != null)
-                artworkUrl512 = playlistsInteractor.saveCoverToStorage(uri).toString()
+            val artworkUrl512: String = if (uri != null)
+                playlistsInteractor.saveCoverToStorage(uri).toString()
             else
-                artworkUrl512 = playlist.artworkUrl512
+                playlist.artworkUrl512
 
             val newPlaylist = playlist.copy(
                 playlistName = playlistName,

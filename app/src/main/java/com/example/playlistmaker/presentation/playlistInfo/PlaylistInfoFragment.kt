@@ -27,6 +27,7 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.snackbar.Snackbar
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
+import kotlin.math.abs
 
 class PlaylistInfoFragment : Fragment(), TrackClickListener, TrackLongClickListener,
     PlaylistItemClickListener {
@@ -48,7 +49,7 @@ class PlaylistInfoFragment : Fragment(), TrackClickListener, TrackLongClickListe
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         binding = FragmentPlaylistInfoBinding.inflate(inflater, container, false)
         return binding.root
     }
@@ -122,7 +123,7 @@ class PlaylistInfoFragment : Fragment(), TrackClickListener, TrackLongClickListe
             }
 
             override fun onSlide(bottomSheet: View, slideOffset: Float) {
-                binding.shadowV.alpha = 1 - Math.abs(slideOffset)
+                binding.shadowV.alpha = 1 - abs(slideOffset)
             }
         })
     }
@@ -155,7 +156,7 @@ class PlaylistInfoFragment : Fragment(), TrackClickListener, TrackLongClickListe
         binding.tracksNum.text = resources.getQuantityString(
             R.plurals.track_amount,
             playlistInfo.tracks!!.count(),
-            playlistInfo.tracks!!.count()
+            playlistInfo.tracks.count()
         )
 
         Glide.with(binding.playlistInfoImageIv).load(playlistInfo.playlist.artworkUrl512)
@@ -268,7 +269,7 @@ class PlaylistInfoFragment : Fragment(), TrackClickListener, TrackLongClickListe
         playlist = if (SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             arguments?.getParcelable(PLAYLIST_INFO)
         } else {
-            arguments?.getParcelable<Playlist>(PLAYLIST_INFO)
+            arguments?.getParcelable(PLAYLIST_INFO)
         }
         return playlist!!
     }
@@ -313,10 +314,6 @@ class PlaylistInfoFragment : Fragment(), TrackClickListener, TrackLongClickListe
 
     private fun hideBottomSheet() {
         bottomSheetBehavior.state = BottomSheetBehavior.STATE_HIDDEN
-    }
-
-    private fun showBottomSheet() {
-        bottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
     }
 
     companion object {

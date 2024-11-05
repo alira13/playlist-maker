@@ -21,7 +21,7 @@ class PlayerViewModel(
     private val playlisInteractor: PlaylistsInteractor
 ) : ViewModel() {
 
-    private var _screenStateLiveData = MutableLiveData<Track>(track)
+    private var _screenStateLiveData = MutableLiveData(track)
     var screenStateLiveData: LiveData<Track> = _screenStateLiveData
 
     private var _playerState = MutableLiveData<PlayerState>()
@@ -47,7 +47,7 @@ class PlayerViewModel(
     }
 
 
-    fun getLikeState() {
+    private fun getLikeState() {
         if (track.isFavorite) {
             _isFavorite.value = FavoriteTrackState.Favorite()
         } else {

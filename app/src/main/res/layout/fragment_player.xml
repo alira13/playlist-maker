@@ -262,7 +262,7 @@
         android:id="@+id/shadow_v"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/YP_transperent_grey"
+        android:background="@color/YP_transparent_grey"
         android:visibility="gone" />
 
     <LinearLayout

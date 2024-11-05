@@ -2,9 +2,9 @@ package com.example.playlistmaker.presentation.playerScreen
 
 import com.example.playlistmaker.R
 
-sealed class FavoriteTrackState(val isButtonEnabled: Boolean, val buttonImage: Int) {
+sealed class FavoriteTrackState(val buttonImage: Int) {
 
-    class Favorite() : FavoriteTrackState(true, R.drawable.liked_button)
+    class Favorite : FavoriteTrackState(R.drawable.liked_button)
 
-    class NotFavorite() : FavoriteTrackState(false, R.drawable.notlike_button)
+    class NotFavorite : FavoriteTrackState(R.drawable.notlike_button)
 }
