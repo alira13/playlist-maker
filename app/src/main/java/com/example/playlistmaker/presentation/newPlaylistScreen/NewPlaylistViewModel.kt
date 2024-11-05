@@ -3,8 +3,8 @@ package com.example.playlistmaker.presentation.newPlaylistScreen
 import android.net.Uri
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.playlistmaker.domain.usecases.playlists.PlaylistsInteractor
 import com.example.playlistmaker.domain.models.Playlist
+import com.example.playlistmaker.domain.usecases.playlists.PlaylistsInteractor
 import kotlinx.coroutines.launch
 
 class NewPlaylistViewModel(private val playlistsInteractor: PlaylistsInteractor) : ViewModel() {

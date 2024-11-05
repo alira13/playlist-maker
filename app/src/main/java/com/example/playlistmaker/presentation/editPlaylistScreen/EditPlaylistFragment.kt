@@ -23,8 +23,8 @@ import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.example.playlistmaker.R
 import com.example.playlistmaker.databinding.FragmentEditPlaylistBinding
 import com.example.playlistmaker.domain.models.Playlist
-import com.example.playlistmaker.presentation.playlistInfo.PlaylistInfoFragment
 import com.example.playlistmaker.presentation.mainScreen.MainActivity
+import com.example.playlistmaker.presentation.playlistInfo.PlaylistInfoFragment
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.snackbar.Snackbar
 import org.koin.androidx.viewmodel.ext.android.viewModel

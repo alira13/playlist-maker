@@ -4,13 +4,13 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.playlistmaker.domain.models.Playlist
 import com.example.playlistmaker.domain.models.Track
 import com.example.playlistmaker.domain.player.PlayerListener
 import com.example.playlistmaker.domain.usecases.player.PlayerInteractor
 import com.example.playlistmaker.domain.usecases.playlists.PlaylistsInteractor
 import com.example.playlistmaker.presentation.mediaScreen.playlists.PlaylistTrackState
 import com.example.playlistmaker.presentation.mediaScreen.playlists.PlaylistsState
-import com.example.playlistmaker.domain.models.Playlist
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch

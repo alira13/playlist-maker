@@ -2,8 +2,8 @@ package com.example.playlistmaker.di
 
 import com.example.playlistmaker.domain.usecases.player.PlayerInteractor
 import com.example.playlistmaker.domain.usecases.player.PlayerInteractorImpl
-import com.example.playlistmaker.domain.usecases.playlists.PlaylistInfoInteractorImpl
 import com.example.playlistmaker.domain.usecases.playlists.PlaylistInfoInteractor
+import com.example.playlistmaker.domain.usecases.playlists.PlaylistInfoInteractorImpl
 import com.example.playlistmaker.domain.usecases.playlists.PlaylistInteractorImpl
 import com.example.playlistmaker.domain.usecases.playlists.PlaylistsInteractor
 import com.example.playlistmaker.domain.usecases.search.SearchHistoryInteractor
