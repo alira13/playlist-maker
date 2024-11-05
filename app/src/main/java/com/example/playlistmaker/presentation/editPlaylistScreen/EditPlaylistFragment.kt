@@ -133,12 +133,12 @@ class EditPlaylistFragment : Fragment() {
             requireContext(),
             R.style.MyThemeOverlay_MaterialComponents_MaterialAlertDialog
         ).apply {
-            setTitle(getString(R.string.complete_playlist_creation))
-            setMessage(getString(R.string.unsaved_data_losing))
-            setPositiveButton(getString(R.string.complete)) { _, _ ->
+            setTitle(getString(R.string.msg_complete_playlist_creation))
+            setMessage(getString(R.string.msg_unsaved_data_losing))
+            setPositiveButton(getString(R.string.btn_complete)) { _, _ ->
                 findNavController().navigateUp()
             }
-            setNegativeButton(getString(R.string.cancel)) { _, _ ->
+            setNegativeButton(getString(R.string.btn_cancel)) { _, _ ->
             }.show()
         }
     }
@@ -177,7 +177,7 @@ class EditPlaylistFragment : Fragment() {
 
         showSnackbar(
             requireView(),
-            getString(R.string.playlist_updated, playlistName)
+            getString(R.string.msg_playlist_updated, playlistName)
         )
 
         findNavController().navigateUp()

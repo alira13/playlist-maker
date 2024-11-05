@@ -8,14 +8,14 @@
     <LinearLayout style="@style/HeaderStyle">
         <TextView
             style="@style/header_tv"
-            android:text="@string/settings_label" />
+            android:text="@string/title_settings" />
     </LinearLayout>
 
     <FrameLayout style="@style/SettingsFrameLayoutStyle">
 
         <TextView
             style="@style/SettingsListText"
-            android:text="@string/dark_theme_label" />
+            android:text="@string/lbl_dark_theme" />
 
         <Switch
             android:id="@+id/night_mode_switch"
@@ -27,11 +27,12 @@
 
         <TextView
             style="@style/SettingsListText"
-            android:text="@string/share_app_label" />
+            android:text="@string/lbl_share_app" />
 
         <ImageButton
             android:id="@+id/share_btn"
             style="@style/SettingsListButton"
+            android:contentDescription="@string/desc_share_app"
             android:src="@drawable/share" />
     </FrameLayout>
 
@@ -39,11 +40,12 @@
 
         <TextView
             style="@style/SettingsListText"
-            android:text="@string/support_label" />
+            android:text="@string/lbl_support" />
 
         <ImageButton
             android:id="@+id/support_btn"
             style="@style/SettingsListButton"
+            android:contentDescription="@string/desc_support"
             android:src="@drawable/support" />
     </FrameLayout>
 
@@ -51,11 +53,12 @@
 
         <TextView
             style="@style/SettingsListText"
-            android:text="@string/user_agreement_label" />
+            android:text="@string/lbl_user_agreement" />
 
         <ImageButton
             android:id="@+id/agreement_btn"
             style="@style/SettingsListButton"
+            android:contentDescription="@string/desc_agreement"
             android:src="@drawable/arrow_forward" />
     </FrameLayout>
 

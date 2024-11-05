@@ -27,6 +27,7 @@
         android:layout_height="@dimen/header_height"
         android:layout_gravity="start|center"
         android:background="@null"
+        android:contentDescription="@string/desc_back"
         app:layout_constraintDimensionRatio="1:1"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
@@ -39,7 +40,7 @@
         android:fontFamily="@font/ys_font_family_medium"
         android:gravity="center|start"
 
-        android:text="@string/edit"
+        android:text="@string/title_edit"
         android:textColor="?attr/colorOnPrimary"
         android:textSize="@dimen/medium_text_size_22"
         app:layout_constraintEnd_toStartOf="@+id/right_guideline"
@@ -51,6 +52,7 @@
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:background="@drawable/playlist_image_special_border"
+        android:contentDescription="@string/desc_track_icon"
         android:scaleType="centerCrop"
         android:src="@drawable/playlist_image_placeholder"
         app:layout_constraintBottom_toTopOf="@+id/playlist_name_til"
@@ -63,7 +65,7 @@
         android:id="@+id/playlist_name_til"
         style="@style/PlaylistTextInputStyle"
         android:layout_marginTop="40dp"
-        android:hint="@string/playlist_name"
+        android:hint="@string/hint_playlist_name"
 
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/right_guideline"
@@ -86,7 +88,7 @@
         style="@style/PlaylistTextInputStyle"
 
         android:layout_marginTop="16dp"
-        android:hint="@string/playlist_description"
+        android:hint="@string/hint_playlist_description"
         app:layout_constraintEnd_toEndOf="parent"
 
         app:layout_constraintEnd_toStartOf="@+id/right_guideline"
@@ -113,7 +115,7 @@
         android:backgroundTint="@color/button_enable_color"
         android:enabled="false"
         android:scaleType="centerCrop"
-        android:text="@string/save"
+        android:text="@string/btn_save"
         android:textAllCaps="false"
         android:textColor="@color/YP_white"
         android:textSize="@dimen/medium_text_size_16"

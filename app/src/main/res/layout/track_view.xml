@@ -11,6 +11,7 @@
         android:layout_width="@dimen/search_track_image_size"
         android:layout_height="@dimen/search_track_image_size"
         android:layout_marginVertical="@dimen/search_margin_8"
+        android:contentDescription="@string/desc_track_icon"
         tools:src="@drawable/placeholder" />
 
     <LinearLayout
@@ -63,5 +64,6 @@
         android:layout_width="@dimen/arrow_forward_image_size"
         android:layout_height="@dimen/arrow_forward_image_size"
         android:layout_gravity="end|center"
+        android:contentDescription="@string/desc_arrow_forward"
         android:src="@drawable/arrow_forward" />
 </LinearLayout>

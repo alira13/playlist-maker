@@ -15,12 +15,12 @@
         android:layout_gravity="center|top"
         android:layout_marginTop="16dp"
         android:layout_marginBottom="16dp"
-        android:text="@string/create_playlist" />
+        android:text="@string/btn_new_playlist" />
 
     <TextView
         android:id="@+id/empty_playlists_error_tv"
         style="@style/EmptyMediaErrorTv"
-        android:text="@string/empty_playlists_error" />
+        android:text="@string/msg_empty_playlists_error" />
 
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"

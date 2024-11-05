@@ -29,8 +29,8 @@ class MediaFragment : Fragment() {
 
         tabMediator = TabLayoutMediator(binding!!.tabLayout, binding!!.viewPager) { tab, position ->
             when (position) {
-                0 -> tab.text = getString(R.string.media_favorites_tab)
-                1 -> tab.text = getString(R.string.media_playlists_tab)
+                0 -> tab.text = getString(R.string.tab_media_favorites)
+                1 -> tab.text = getString(R.string.tab_media_playlists)
             }
         }
         tabMediator?.attach()

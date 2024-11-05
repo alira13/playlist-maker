@@ -10,6 +10,7 @@
         android:layout_width="@dimen/search_track_image_size"
         android:layout_height="@dimen/search_track_image_size"
         android:layout_marginVertical="@dimen/search_margin_8"
+        android:contentDescription="@string/desc_playlist_icon"
         tools:src="@drawable/placeholder" />
 
     <LinearLayout

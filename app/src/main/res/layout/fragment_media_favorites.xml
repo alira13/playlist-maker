@@ -17,6 +17,6 @@
     <TextView
         android:id="@+id/empty_media_error_tv"
         style="@style/EmptyMediaErrorTv"
-        android:text="@string/empty_media_error"
+        android:text="@string/msg_empty_media_error"
         android:visibility="gone"/>
 </FrameLayout>

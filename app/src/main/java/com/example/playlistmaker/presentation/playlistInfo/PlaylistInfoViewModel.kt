@@ -82,7 +82,7 @@ class PlaylistInfoViewModel(
             return
         }
         val playlistDescription = buildString {
-            appendLine(context.getString(R.string.playlist, playlist.playlistName))
+            appendLine(context.getString(R.string.lbl_playlist, playlist.playlistName))
             if (playlist.playlistDescription.isNotEmpty()) {
                 appendLine(playlist.playlistDescription)
             }

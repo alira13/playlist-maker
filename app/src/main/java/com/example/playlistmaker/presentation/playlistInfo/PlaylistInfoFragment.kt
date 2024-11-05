@@ -141,10 +141,10 @@ class PlaylistInfoFragment : Fragment(), TrackClickListener, TrackLongClickListe
         binding.playlistName.text = playlistInfo.playlist.playlistName
 
         if (playlistInfo.playlist.playlistDescription.isEmpty())
-            binding.playlistDescription.isVisible = false
+            binding.playlist.isVisible = false
         else {
-            binding.playlistDescription.isVisible = true
-            binding.playlistDescription.text = playlistInfo.playlist.playlistDescription
+            binding.playlist.isVisible = true
+            binding.playlist.text = playlistInfo.playlist.playlistDescription
         }
 
         binding.totalDuration.text = resources.getQuantityString(
@@ -173,10 +173,10 @@ class PlaylistInfoFragment : Fragment(), TrackClickListener, TrackLongClickListe
         binding.playlistName.text = playlistInfo.playlist.playlistName
 
         if (playlistInfo.playlist.playlistDescription.isEmpty())
-            binding.playlistDescription.isVisible = false
+            binding.playlist.isVisible = false
         else {
-            binding.playlistDescription.isVisible = true
-            binding.playlistDescription.text = playlistInfo.playlist.playlistDescription
+            binding.playlist.isVisible = true
+            binding.playlist.text = playlistInfo.playlist.playlistDescription
         }
 
         binding.totalDuration.text = resources.getQuantityString(
@@ -224,7 +224,7 @@ class PlaylistInfoFragment : Fragment(), TrackClickListener, TrackLongClickListe
     private fun showNothingToShare() {
         //hideBottomSheet()
         //binding.standardBottomSheet.isVisible = false
-        showSnackbar(requireView(), getString(R.string.nothing_to_share))
+        showSnackbar(requireView(), getString(R.string.msg_nothing_to_share))
     }
 
     private fun sharePlaylist() {
@@ -237,12 +237,12 @@ class PlaylistInfoFragment : Fragment(), TrackClickListener, TrackLongClickListe
             requireContext(),
             R.style.MyThemeOverlay_MaterialComponents_MaterialAlertDialog
         ).apply {
-            setTitle(R.string.delete_playlist)
-            setMessage(getString(R.string.want_to_delete_playlist))
-            setPositiveButton(getString(R.string.yes)) { _, _ ->
+            setTitle(R.string.lbl_delete_playlist)
+            setMessage(getString(R.string.msg_want_to_delete_playlist))
+            setPositiveButton(getString(R.string.btn_yes)) { _, _ ->
                 viewModel.deletePlaylist()
             }
-            setNegativeButton(R.string.no) { _, _ ->
+            setNegativeButton(R.string.btn_no) { _, _ ->
             }
         }.show()
 
@@ -290,12 +290,12 @@ class PlaylistInfoFragment : Fragment(), TrackClickListener, TrackLongClickListe
         MaterialAlertDialogBuilder(requireContext(),
             R.style.MyThemeOverlay_MaterialComponents_MaterialAlertDialog
         ).apply {
-            setTitle(getString(R.string.delete_track))
-            setMessage(getString(R.string.want_to_delete_track))
-            setPositiveButton(getString(R.string.delete)) { _, _ ->
+            setTitle(getString(R.string.lbl_delete_track))
+            setMessage(getString(R.string.msg_want_to_delete_track))
+            setPositiveButton(getString(R.string.btn_delete)) { _, _ ->
                 viewModel.deleteTrack(track)
             }
-            setNegativeButton(R.string.cancel) { _, _ ->
+            setNegativeButton(R.string.btn_cancel) { _, _ ->
             }
         }.show()
         return true

@@ -35,6 +35,7 @@
             android:layout_height="@dimen/header_height"
             android:layout_gravity="start|center"
             android:background="@null"
+            android:contentDescription="@string/desc_back"
             app:tint="@color/YP_black"
             app:layout_constraintDimensionRatio="1:1"
             app:layout_constraintStart_toStartOf="@+id/left_guideline"
@@ -45,6 +46,7 @@
             android:id="@+id/playlist_info_image_iv"
             android:layout_width="0dp"
             android:layout_height="0dp"
+            android:contentDescription="@string/desc_playlist_icon"
             android:scaleType="centerCrop"
             android:src="@drawable/placeholder"
             app:layout_constraintBottom_toTopOf="@+id/playlist_name"
@@ -60,21 +62,21 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:fontFamily="@font/ys_font_family_medium"
-            android:text="@string/playlist_name_label"
+            android:text="@string/lbl_playlist_name"
             android:textSize="@dimen/medium_text_size_22"
-            app:layout_constraintBottom_toTopOf="@+id/playlist_description"
+            app:layout_constraintBottom_toTopOf="@+id/playlist"
             app:layout_constraintStart_toStartOf="@+id/left_guideline"
             app:layout_constraintTop_toBottomOf="@+id/playlist_info_image_iv" />
 
         <TextView
-            android:id="@+id/playlist_description"
+            android:id="@+id/playlist"
             android:textColor="@color/YP_black"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:layout_marginBottom="8dp"
             android:fontFamily="@font/ys_font_family_medium"
-            android:text="@string/year_example_label"
+            android:text="@string/hint_year_example"
             android:textSize="@dimen/medium_text_size_14"
             app:layout_constraintStart_toStartOf="@+id/left_guideline"
             app:layout_constraintTop_toBottomOf="@+id/playlist_name" />
@@ -86,7 +88,7 @@
             android:layout_marginTop="8dp"
             android:layout_marginBottom="8dp"
             app:layout_constraintStart_toStartOf="@+id/left_guideline"
-            app:layout_constraintTop_toBottomOf="@+id/playlist_description">
+            app:layout_constraintTop_toBottomOf="@+id/playlist">
 
             <TextView
                 android:id="@+id/total_duration"
@@ -100,7 +102,7 @@
                 android:maxLines="1"
                 android:textColor="@color/YP_black"
                 app:drawableEndCompat="@drawable/dot"
-                android:text="@string/minutes_example_label"
+                android:text="@string/hint_minutes_example"
                 app:drawableTint="@color/YP_black" />
 
             <TextView
@@ -112,7 +114,7 @@
                 android:layout_weight="0"
                 android:maxLines="1"
                 android:textColor="@color/YP_black"
-                android:text="@string/track_number_label" />
+                android:text="@string/hint_track_number" />
         </LinearLayout>
 
         <ImageButton
@@ -121,6 +123,7 @@
             android:layout_height="24dp"
             android:layout_gravity="start|center"
             android:background="@null"
+            android:contentDescription="@string/desc_share_playlist"
             app:tint="@color/YP_black"
             app:layout_constraintDimensionRatio="1:1"
             app:layout_constraintStart_toStartOf="@+id/left_guideline"
@@ -136,6 +139,7 @@
             android:layout_height="24dp"
             android:layout_gravity="start|center"
             android:background="@null"
+            android:contentDescription="@string/desc_menu"
             app:tint="@color/YP_black"
             app:layout_constraintBottom_toBottomOf="@+id/playlist_share_btn"
             app:layout_constraintTop_toTopOf="@+id/playlist_share_btn"
@@ -192,7 +196,7 @@
             android:gravity="center"
             android:textColor="?attr/colorOnPrimary"
             android:textSize="@dimen/regular_text_size_16"
-            android:text="@string/no_tracks"
+            android:text="@string/msg_no_tracks"
             android:visibility="gone" />
     </LinearLayout>
 
@@ -233,7 +237,7 @@
             android:layout_gravity="bottom|center"
             android:fontFamily="@font/ys_font_family_regular"
             android:gravity="start"
-            android:text="@string/share"
+            android:text="@string/lbl_share"
             android:textColor="?attr/colorOnPrimary"
             android:textSize="@dimen/regular_text_size_16"
             android:visibility="visible" />
@@ -245,7 +249,7 @@
             android:layout_gravity="bottom|center"
             android:fontFamily="@font/ys_font_family_regular"
             android:gravity="start"
-            android:text="@string/edit_info"
+            android:text="@string/lbl_edit_info"
             android:textColor="?attr/colorOnPrimary"
             android:textSize="@dimen/regular_text_size_16"
             android:visibility="visible" />
@@ -257,7 +261,7 @@
             android:layout_gravity="bottom|center"
             android:fontFamily="@font/ys_font_family_regular"
             android:gravity="start"
-            android:text="@string/delete_playlist"
+            android:text="@string/lbl_delete_playlist"
             android:textColor="?attr/colorOnPrimary"
             android:textSize="@dimen/regular_text_size_16" />
     </LinearLayout>

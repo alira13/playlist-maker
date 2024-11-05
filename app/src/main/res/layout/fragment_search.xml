@@ -11,7 +11,7 @@
 
         <TextView
             style="@style/header_tv"
-            android:text="@string/search_label" />
+            android:text="@string/title_search" />
     </LinearLayout>
 
     <FrameLayout
@@ -23,7 +23,7 @@
             android:id="@+id/search_request_et"
             style="@style/SearchRequestEt"
             android:autofillHints="name"
-            android:hint="@string/search_label"
+            android:hint="@string/title_search"
             android:singleLine="true" />
 
         <ImageView
@@ -31,6 +31,7 @@
             style="@style/ClearSearchRequestIv"
             android:layout_gravity="start|center"
             android:layout_marginStart="12dp"
+            android:contentDescription="@string/desc_search"
             android:src="@drawable/search" />
 
         <ImageView
@@ -38,6 +39,7 @@
             style="@style/ClearSearchRequestIv"
             android:layout_gravity="end|center"
             android:layout_marginEnd="12dp"
+            android:contentDescription="@string/desc_clear_search"
             android:src="@drawable/close"
             android:visibility="gone" />
     </FrameLayout>
@@ -62,13 +64,13 @@
     <TextView
         android:id="@+id/empty_list_error_tv"
         style="@style/EmptyListErrorTv"
-        android:text="@string/tracks_not_found"
+        android:text="@string/msg_tracks_not_found"
         android:visibility="gone" />
 
     <TextView
         android:id="@+id/connection_error_tv"
         style="@style/ConnectionErrorTv"
-        android:text="@string/no_internet_connection"
+        android:text="@string/msg_no_internet_connection"
         android:visibility="gone" />
 
     <Button
@@ -80,7 +82,7 @@
         android:layout_marginTop="24dp"
         android:enabled="true"
         android:fontFamily="@font/ys_font_family_medium"
-        android:text="@string/refresh"
+        android:text="@string/btn_refresh"
         android:textAllCaps="false"
         android:textSize="@dimen/medium_text_size_14"
         android:visibility="gone" />
@@ -88,7 +90,7 @@
     <TextView
         android:id="@+id/track_history_tv"
         style="@style/TrackHistoryTv"
-        android:text="@string/search_history_text"
+        android:text="@string/lbl_last_search"
         android:visibility="gone" />
 
     <ScrollView
@@ -117,7 +119,7 @@
         android:layout_marginBottom="24dp"
         android:enabled="true"
         android:fontFamily="@font/ys_font_family_medium"
-        android:text="@string/clear_history_text"
+        android:text="@string/btn_clear_history"
         android:textAllCaps="false"
         android:textSize="@dimen/medium_text_size_14"
         android:visibility="gone"

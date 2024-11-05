@@ -12,7 +12,7 @@
 
         <TextView
             style="@style/header_tv"
-            android:text="@string/media_label" />
+            android:text="@string/title_media" />
     </LinearLayout>
 
 
