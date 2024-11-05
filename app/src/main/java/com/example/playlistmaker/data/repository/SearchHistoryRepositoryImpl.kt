@@ -2,8 +2,8 @@ package com.example.playlistmaker.data.repository
 
 import com.example.playlistmaker.data.db.AppDatabase
 import com.example.playlistmaker.core.data.AppSharedPreferences
-import com.example.playlistmaker.domain.models.Track
-import com.example.playlistmaker.domain.repository.SearchHistoryRepository
+import com.example.playlistmaker.core.domain.models.Track
+import com.example.playlistmaker.screenSearch.domain.repository.SearchHistoryRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 

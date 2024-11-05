@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".presentation.screenMedia.playlists.MediaPlaylistsFragment">
+    tools:context=".screenMedia.presentation.playlists.MediaPlaylistsFragment">
 
     <Button
         android:id="@+id/create_playlist_button_btn"

@@ -2,7 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     style="@style/SecondaryScreenLayoutStyle"
-    tools:context=".settings.presentation.SettingsFragment">
+    tools:context=".screenSettings.presentation.SettingsFragment">
 
 
     <LinearLayout style="@style/HeaderStyle">

@@ -1,6 +1,6 @@
 package com.example.playlistmaker.core.data
 
-import com.example.playlistmaker.domain.models.Track
+import com.example.playlistmaker.core.domain.models.Track
 
 interface AppSharedPreferences {
     fun initTheme()

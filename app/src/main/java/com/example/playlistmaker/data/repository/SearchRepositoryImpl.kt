@@ -2,9 +2,9 @@ package com.example.playlistmaker.data.repository
 
 import com.example.playlistmaker.data.db.AppDatabase
 import com.example.playlistmaker.data.dto.TrackNetworkResponse
-import com.example.playlistmaker.domain.models.Resource
-import com.example.playlistmaker.domain.models.Track
-import com.example.playlistmaker.domain.repository.SearchRepository
+import com.example.playlistmaker.screenSearch.domain.models.Resource
+import com.example.playlistmaker.core.domain.models.Track
+import com.example.playlistmaker.screenSearch.domain.repository.SearchRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 

@@ -1,8 +1,8 @@
 package com.example.playlistmaker.data.player
 
 import android.media.MediaPlayer
-import com.example.playlistmaker.domain.player.PlayerListener
-import com.example.playlistmaker.domain.player.TrackPlayer
+import com.example.playlistmaker.screenPlayer.domain.PlayerListener
+import com.example.playlistmaker.screenPlayer.domain.TrackPlayer
 import java.text.SimpleDateFormat
 import java.util.Locale
 

@@ -8,9 +8,9 @@ import android.os.Environment
 import com.example.playlistmaker.data.converters.PlaylistDbConverter
 import com.example.playlistmaker.data.converters.PlaylistTrackDbConvertor
 import com.example.playlistmaker.data.db.AppDatabase
-import com.example.playlistmaker.domain.models.Playlist
-import com.example.playlistmaker.domain.models.Track
-import com.example.playlistmaker.domain.repository.PlaylistsRepository
+import com.example.playlistmaker.core.domain.models.Playlist
+import com.example.playlistmaker.core.domain.models.Track
+import com.example.playlistmaker.screenSearch.domain.repository.PlaylistsRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import java.io.File

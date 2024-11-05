@@ -8,7 +8,7 @@
     android:layout_height="match_parent"
     android:background="?attr/colorPrimary"
     android:orientation="vertical"
-    tools:context=".presentation.screenPlayer.PlayerFragment">
+    tools:context=".screenPlayer.presentation.PlayerFragment">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"

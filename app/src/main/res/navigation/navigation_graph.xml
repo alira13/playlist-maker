@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/searchFragment"
-        android:name="com.example.playlistmaker.presentation.screenSearch.SearchFragment"
+        android:name="com.example.playlistmaker.screenSearch.presentation.SearchFragment"
         android:label="fragment_search"
         tools:layout="@layout/fragment_search" >
         <action
@@ -16,12 +16,12 @@
     </fragment>
     <fragment
         android:id="@+id/settingsFragment"
-        android:name="com.example.playlistmaker.settings.presentation.SettingsFragment"
+        android:name="com.example.playlistmaker.screenSettings.presentation.SettingsFragment"
         android:label="fragment_settings"
         tools:layout="@layout/fragment_settings" />
     <fragment
         android:id="@+id/mediaFragment"
-        android:name="com.example.playlistmaker.presentation.screenMedia.MediaFragment"
+        android:name="com.example.playlistmaker.screenMedia.presentation.MediaFragment"
         android:label="fragment_media"
         tools:layout="@layout/fragment_media" >
         <action
@@ -36,12 +36,12 @@
     </fragment>
     <fragment
         android:id="@+id/createPlaylistFragment"
-        android:name="com.example.playlistmaker.presentation.screenNewPlaylist.NewPlaylistFragment"
+        android:name="com.example.playlistmaker.screenNewPlaylist.NewPlaylistFragment"
         android:label="fragment_create_playlist"
         tools:layout="@layout/fragment_new_playlist" />
     <fragment
         android:id="@+id/playerFragment"
-        android:name="com.example.playlistmaker.presentation.screenPlayer.PlayerFragment"
+        android:name="com.example.playlistmaker.screenPlayer.presentation.PlayerFragment"
         android:label="fragment_player"
         tools:layout="@layout/fragment_player" >
         <action
@@ -50,17 +50,17 @@
     </fragment>
     <fragment
         android:id="@+id/mediaPlaylistsFragment"
-        android:name="com.example.playlistmaker.presentation.screenMedia.playlists.MediaPlaylistsFragment"
+        android:name="com.example.playlistmaker.screenMedia.presentation.playlists.MediaPlaylistsFragment"
         android:label="fragment_media_playlists"
         tools:layout="@layout/fragment_media_playlists" />
     <fragment
         android:id="@+id/mediaFavoritesFragment"
-        android:name="com.example.playlistmaker.presentation.screenMedia.favorites.MediaFavoritesFragment"
+        android:name="com.example.playlistmaker.screenMedia.presentation.favorites.MediaFavoritesFragment"
         android:label="fragment_media_favorites"
         tools:layout="@layout/fragment_media_favorites" />
     <fragment
         android:id="@+id/playlistInfoFragment"
-        android:name="com.example.playlistmaker.presentation.screenPlaylistInfo.PlaylistInfoFragment"
+        android:name="com.example.playlistmaker.screenPlaylistInfo.presentation.PlaylistInfoFragment"
         android:label="PlaylistInfoFragment" >
         <action
             android:id="@+id/action_playlistInfoFragment_to_playerFragment"
@@ -71,7 +71,7 @@
      </fragment>
     <fragment
         android:id="@+id/editPlaylistFragment"
-        android:name="com.example.playlistmaker.presentation.screenEditPlaylist.EditPlaylistFragment"
+        android:name="com.example.playlistmaker.screenEditPlaylist.EditPlaylistFragment"
         android:label="fragment_edit_playlist"
         tools:layout="@layout/fragment_edit_playlist" />
 </navigation>
